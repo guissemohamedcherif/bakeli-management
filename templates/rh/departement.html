@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+        <h1 class="h3 mb-0 text-gray-800">Departements</h1>
+        </div>          
+ <!-- Divider -->
+ <hr class="sidebar-divider">
+
+ <nav class="navbar navbar-expand navbar-light bg-light topbar mb-4 static-top shadow">
+
+  <!-- Topbar Search -->
+  <form
+      class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+      <div class="input-group">
+          <input id="searchTxt" type="text" class="form-control bg-blue border-10 small" placeholder="Search for..."
+              aria-label="Search" aria-describedby="basic-addon2">
+          <div class="input-group-append">
+              <button class="btn btn-primary" type="button">
+                  <i class="fas fa-search fa-sm"></i>
+              </button>
+          </div>
+      </div>
+  </form>
+
+  <!-- Topbar Navbar -->
+ <!-- Page Heading -->
+<div class="d-sm-flex align-items-center ">
+<button data-toggle="modal" data-target="#myModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+class="fas fa-plus fa-sm text-white-50"></i> Ajouter un employe</button>
+</div>
+
+</nav>
+
+        <table id="deptTable" class="table table-striped">
+            <tr>
+              <th>Code</th>
+              <th>Nom</th>
+              <th>Statut</th>
+              <th style="text-align:center" colspan="2">Actions</th>
+            </tr>
+            {% if departements %}
+            {% for departement in departements %}
+            <tr id="departement-{{departement.id}}">
+              <td class="codeClass posteData" name="code">{{departement.code}}</td>
+              <td class="nomClass posteData" name="nom">{{departement.nom}}</td>
+              <td  class="statutClass posteData" name="stat">{{departement.statut}}</td>
+              <td style="display:none;" class="descriptionClass posteData" name="descript">{{departement.description}}</td>
+              <td class="align-center">
+                  <button class="btn btn-success form-control" onClick="editDept({{departement.id}})" data-toggle="modal" data-target="#myModal">MODIFIER</button>
+              </td>
+              <td class="align-center">
+                  <button class="btn btn-danger form-control" onClick="deleteDept({{departement.id}})">SUPPRIMER</button>
+              </td>
+          </tr>
+            {% endfor %}
+            {% else %}       
+            {% endif %}
+          </table>    
+    </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </div>
+         
+        <form id="adddept" action="">
+        <div class="modal-body">
+            <input class="form-control" id="form-id" type="hidden" name="formId"/>
+            <label >CODE</label>
+            <input class="form-control" id="form-code" type="text" name="formCode"/>
+            <hr>
+            <label >NOM</label>
+            <input class="form-control" id="form-nom" type="text" name="formNom"/><hr>
+            <label >DESCRIPTION</label>
+            <textarea class="form-control" id="form-description" name="formDescription"></textarea><hr>
+            <label >STATUT</label>
+            <select class="form-control" id="form-statut" name="formStatut">
+              <option value=""></option>
+              <option value="ACTIVE">ACTIVE</option>
+              <option value="INACTIVE">INACTIVE</option>
+            </select>
+        </div>
+        <div class="modal-footer">
+            <button id="btn_save" name="btn" type="submit" class="btn btn-primary" >Enregistrer</button>
+            <button id="btn_close" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+  <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+ 
+
+<script>
+
+        $('#adddept').submit(function() {
+         
+        var temoin = $('#btn_save').text();
+        var codeInput = $('input[name="formCode"]').val().trim();
+        var nomInput = $('input[name="formNom"]').val().trim();
+        var descriptionInput = $('input[name="formDescription"]').val().trim();
+        var statutInput = $("#form-statut option:selected" ).text();
+    
+          var compare = temoin.localeCompare('Enregistrer');
+    
+          if(compare == 0)
+          {
+            if (codeInput && nomInput && descriptionInput && statutInput) {
+              // Create Ajax Call
+              $.ajax({
+                  url: '{% url "dept_create" %}',
+                  data: {
+                      'code': codeInput,
+                      'nom': nomInput,
+                      'description': descriptionInput,
+                      'statut': statutInput 
+                  },
+                  
+                  dataType: 'json',
+                  success: function (data) {
+                      if (data.departement) {
+                        appendToDeptTable(data.departement);
+                      }
+                  }
+              });
+            } else {
+              alert("All fields must have a valid value.");
+          }
+          $('form#adddept').trigger("reset");
+          }
+    
+          else 
+          {
+            var idInput = $('input[name="formId"]').val().trim();
+    
+            if (codeInput && nomInput && descriptionInput && statutInput) {
+              // Create Ajax Call
+              $.ajax({
+                  url: '{% url "dept_update" %}',
+                  data: {
+                      'id': idInput,
+                      'code': codeInput,
+                      'nom': nomInput,
+                      'description': descriptionInput,
+                      'statut': statutInput 
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                      if (data.departement) {
+                        updateToDeptTable(data.departement);
+                      }
+                  }
+              });
+             } else {
+              alert("All fields must have a valid value.");
+          }
+          $('form#adddept').trigger("reset");
+          $('#myModal').modal('hide');
+          }
+    
+        return false; 
+       });
+
+
+       function appendToDeptTable(departement) {
+        $("#deptTable > tbody:last-child").append(`
+              <tr id="departement-${departement.id}">
+                  <td  name="code">${departement.code}</td>
+                  '<td name="nom">${departement.nom}</td>
+                  '<td name="statut">${departement.statut}</td>
+                  '<td align="center">
+                      <button id='edit' class="btn btn-success form-control" onClick="editDept(${departement.id})" data-toggle="modal" data-target="#myModal")">MODIFIER</button>
+                  </td>
+                  <td align="center">
+                      <button class="btn btn-danger form-control" onClick="deleteDept(${departement.id})">SUPPRIMER</button>
+                  </td>
+              </tr>
+          `);
+      } 
+
+      function editDept(id) {
+        if (id) {
+          tr_id = "#departement-" + id;
+          $('#form-id').val(id);
+          $('#form-code').val($(tr_id).find(".codeClass").text());
+          $('#form-nom').val($(tr_id).find(".nomClass").text());
+          $('#form-description').val($(tr_id).find(".descriptionClass").text());
+          var stat = ($(tr_id).find(".statutClass").text());
+          document.getElementById('form-statut').value=stat;
+          $('#btn_save').text('Modifier'); 
+        }
+      }
+
+      function updateToDeptTable(departement){
+        $("#deptTable #departement-" + departement.id).children('.posteData').each(function() {
+            var attr = $(this).attr('name');
+            if (attr == 'code') {
+              $(this).val(departement.code);
+            } else if (attr == 'nom') {
+              $(this).text(departement.nom);
+            } else if (attr == 'stat'){
+              $(this).text(departement.statut);
+            }else if (attr == 'descript'){
+              $(this).text(departement.description);
+            }
+          });
+    }
+
+    // Delete Django Ajax Call
+function deleteDept(id) {
+var action = confirm("Etes vous sure de vouloir supprimer ce departement ?");
+if (action != false) {
+  $.ajax({
+      url: '{% url "dept_delete" %}',
+      data: {
+          'id': id,
+      },
+      dataType: 'json',
+      success: function (data) {
+          if (data.deleted) {
+            $("#deptTable #departement-" + id).remove();
+          }
+      }
+  });
+}
+}
+</script>
+<script src ="{% static 'js/search.js' %}" ></script>
+
+{% endblock content %}
