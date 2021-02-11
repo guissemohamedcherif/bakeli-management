@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'm7-$remio1ch2h_obj9*igmz^vmf&5-61#m_l(@_x6@o&e@5g6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1','bakelitest.herokuapp.com']
 
