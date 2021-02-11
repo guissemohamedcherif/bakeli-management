@@ -64,7 +64,7 @@
             <label >SHORT NAME</label>
             <input class="form-control" id="form-abrev" type="text" name="formAbrev"/><hr>
             <label >DESCRIPTION</label>
-            <textarea class="form-control" id="form-description" type="textarea" name="formDescription"></textarea><hr>
+            <textarea class="form-control" id="form-description" name="formDescription"></textarea><hr>
             <label >STATUT</label>
             <select class="form-control" id="form-statut" name="formStatut">
               <option value=""></option>
@@ -88,14 +88,13 @@
 
   <script>
     $('#addposte').submit(function() {
-     
+
     var temoin = $('#btn_save').text();
     var designationInput = $('input[name="formDesignation"]').val().trim();
     var abrevInput = $('input[name="formAbrev"]').val().trim();
-    var descriptionInput = $('input[name="formDescription"]').val().trim();
+    var descriptionInput = $('#form-description').val();
     var statutInput = $("#form-statut option:selected" ).text();
-
-      var compare = temoin.localeCompare('Enregistrer');
+    var compare = temoin.localeCompare('Enregistrer');
 
       if(compare == 0)
       {
