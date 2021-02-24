@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% load crispy_forms_tags %} 
+
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+        <h1 class="h3 mb-0 text-gray-800">Infos Utilisateur</h1>
+        </div>          
+
+        <!-- Main Content Here -->
+          <div class="card o-hidden border-0 shadow-lg my-8 col-lg-8">
+            <div class="card-body">
+                <p><strong><u>PRENOM</u> :  </strong>  {{test.first_name}} </p>
+                <p><strong><u>NOM</u> : </strong> {{test.last_name}} </p>
+                <p><strong><u>NOM UTILISATEUR</u> : </strong> {{test.username}} </p>
+                <p><strong><u>EMAIL</u> : </strong> {{test.email}} </p>
+                <p><strong><u>BIO</u> : </strong> {{test.profile.bio}} </p>
+                <p><strong><u>TELEPHONE</u> : </strong> {{test.profile.tel}} </p>
+                <p><strong><u>DATE DE NAISSANCE</u> : </strong> {{test.profile.naissance}} </p>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="getId({{user.id}})">Permisions</button>
+            </div>
+          </div>
+       
+    </div>
+    <!-- /.container-fluid -->
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </div>
+         
+        <form id="addperm" action="">
+        <div class="modal-body">
+          <input class="form-control" id="form-id" type="hidden" name="formId"/>
+            <label style="text-align: center;"> ACTIVER UTILISATEUR </label>
+            <select class="form-control" id="form-active" name="formActive">
+              <option value=""></option>
+              <option value="ACTIVE">ACTIVER</option>
+              <option value="INACTIVE">DEACTIVER</option>
+            </select>
+            <hr class="sidebar-divider">
+
+            <label style="text-align: center;"> ADMIN PERMISSION </label>
+            <select class="form-control" id="form-admin" name="formAdmin">
+              <option value=""></option>
+              <option value="ACTIVE">ACTIVER</option>
+              <option value="INACTIVE">DEACTIVER</option>
+            </select>
+
+        </div>
+        <div class="modal-footer">
+            <button id="btn_save" name="btn" type="submit" class="btn btn-primary" >APPLIQUER</button>
+            <button id="btn_close" type="button" class="btn btn-default" data-dismiss="modal">ANNULER</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+  <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script>
+
+    function getId(id) {
+      $('#form-id').val(id);
+    }
+
+    $('#addperm').submit(function() {
+    var activInput = $("#form-active").val();
+    var adminInput = $("#form-admin").val();
+    var idInput = $('input[name="formId"]').val().trim();
+          if (activInput || adminInput) {
+          // Create Ajax Call
+          $.ajax({
+            url: '{% url "userAddInfo" %}',
+              data: {
+                  'id': idInput,
+                  'is_active': activInput,
+                  'is_admin':adminInput
+              },
+              dataType: 'json',
+              success: function (data) {
+                if (data.user) {
+                  alert(data.user.id)
+                }
+              }
+          });
+         } else {
+          alert("All fields must have a valid value.");
+      }
+      $('form#addposte').trigger("reset");
+      location.reload(true);
+      $('#myModal').modal('hide');
+      
+    return false; 
+   });
+</script>
+
+{% endblock content %}

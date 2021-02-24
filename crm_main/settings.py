@@ -27,8 +27,7 @@ SECRET_KEY = 'm7-$remio1ch2h_obj9*igmz^vmf&5-61#m_l(@_x6@o&e@5g6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['127.0.0.1','bakelitest.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1','andu-si.herokuapp.com']
 
 
 # Application definition
@@ -40,6 +39,7 @@ DEFAULT_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
 ]
 
 THIRD_PARTY_APPS =[
@@ -143,7 +143,7 @@ except ImportError:
     pass
 
 LOGIN_REDIRECT_URL = '/base'
-
+LOGIN_URL = '/login'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 from django.contrib.messages import constants as messages
@@ -155,5 +155,7 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+AUTH_USER_MODEL = "userprofile.CustomUser"
+
 
 django_heroku.settings(locals())

@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DATABASES = {
     'default': {
        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django_shop', 
+        'NAME': 'schoolDb', 
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',

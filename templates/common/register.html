@@ -33,36 +33,77 @@
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block ">
+          
+                    <div class="col sm" style="height: 100%;">
                         <img src="{% static 'img/login.png' %}" class="img-responsive"> 
                     </div>
-                    <div class="col-lg-7">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Creer votre Compte!</h1>
-                            </div>
-                            <form method="POST">
-                                {% csrf_token %}
-                                {{form | crispy}}
-                            
-                                <button type="submit" class = "btn btn-primary">Enregistrer</button>
-                                <hr>
-                            </form>
-                            <hr>
-                            <div class="text-center">
-                                <a class="small" href="forgot-password.html">Mot de passe oublie ?</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="login.html">Vous avez deja un compte ? Login!</a>
-                            </div>
+                    <div class="col-sm">
+                        <div class="p-4">
+                          <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Creer votre Compte!</h1>
                         </div>
-                      
+                        <br>
+                            {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert {{ message.tags }} m-2" id="msg" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                          <br>
+                            <form id="formRegister" method="POST" action="{% url 'register' %}">
+                                {% csrf_token %}
+                                        <input class="form-control" id="form-id" type="hidden" name="formId"/>
+                                        <div class="row">
+                                          <div class="col-sm">
+                                            {{ signup_form.first_name|as_crispy_field }}
+                                          </div>
+                                          <div class="col-sm">
+                                            {{ signup_form.last_name|as_crispy_field }}
+                                          </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                          <div class="col-sm">
+                                            {{ signup_form.email|as_crispy_field }}
+                                          </div>
+
+                                          <div class="col-sm">
+                                            {{ signup_form.username|as_crispy_field }}
+                                          </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                          <div class="col-sm">
+                                            {{ signup_form.password1|as_crispy_field }}
+                                          </div>
+                                            <div class="col-sm">
+                                              {{ signup_form.password2|as_crispy_field }}
+                                            </div>
+                                        </div>
+                                        <hr> 
+                                        <div class="row">
+                                          <div class="col-sm">
+                                            {{ profile_form.tel|as_crispy_field }}
+                                          </div>
+                                            <div class="col-sm">
+                                              {{ profile_form.naissance|as_crispy_field }}
+                                          </div>
+                                        </div>
+                                        <br>
+                                        <div class="text-right" >
+                                          <button type="submit" class = "btn btn-primary">ENREGISTRER</button>
+                                            <a href="{% url 'login' %}" class = "btn btn-link">
+                                              <strong>RETOUR</strong></a>                                
+                                    </div>         
+                            </form>
+                              </div>
+                        </div>                  
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
     <!-- Bootstrap core JavaScript-->
@@ -75,6 +116,5 @@
     <!-- Custom scripts for all pages-->
     <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
 
-</body>
-
-</html>
+     </body>
+     </html>

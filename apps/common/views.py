@@ -1,32 +1,52 @@
 from django.shortcuts import render
 from django.views.generic import View, TemplateView, CreateView, ListView
-from .forms import SignUpForm, UserForm, ProfileForm
+from .forms import SignUpForm, UserForm, ProfileForm, EcoleForm
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from apps.userprofile.models import Profile
+from apps.userprofile.models import Profile, CustomUser
+from apps.common.models import Ecole, Niveau, Classe
 from django.contrib import messages
-from apps.common.models import Poste,Departement, Employe
 from django.http import JsonResponse
-from django.core.serializers import serialize 
+from django.core import serializers
 import json
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from django.contrib.auth import authenticate,login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib import messages
+from django.http import HttpResponse
+from django.contrib.auth.views import PasswordChangeView
 
 
-class HomeView(TemplateView):
+def HomeView(request,id):
     template_name = 'common/home.html'
-    
+    ecole = Ecole.objects.get(admin_id=id)
+    classes = Classe.objects.all()
+    listClass = []
+    try:
+        niveaux = Niveau.objects.filter(ecole_id= ecole.id)
+    except Niveau.DoesNotExist:
+        niveaux = None
+    if niveaux:
+       for classe in classes:
+           for niveau in niveaux:
+               if classe.niveau_id == niveau.id:
+                   listClass.append(classe)
+           
+           
+    countNiv = niveaux.count()
+    countClss = len(listClass)
+    context = {'countNiv': countNiv, 'countClss': countClss}
+        
+    return render(request,template_name, context)
  
 class DashboardView(LoginRequiredMixin,TemplateView):
         template_name = 'base.html'  
-        login_url = reverse_lazy('home') 
-    
-class SignUpView(CreateView):
-    
-    form_class = SignUpForm
-    success_url = reverse_lazy('login')
-    template_name = 'common/register.html'
-    
+        login_url = reverse_lazy('login') 
+
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'common/profile.html'
@@ -59,233 +79,301 @@ class ProfileUpdateView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+
+#  ********* Users functions **********
+
+def getUsers(request):
+    users = User.objects.all()
+    template = "admin/users.html"
+    context = {"users":users}
     
-
-class PosteView(ListView):
-    model = Poste
-    template_name = 'rh/poste.html'
-    context_object_name = 'postes'
+    return render(request, template,context)
     
-    
-
-class CreatePoste(View):
-    def  get(self, request):
-        designation1 = request.GET.get('designation', None)
-        abrev1 = request.GET.get('abrev', None)
-        description1 = request.GET.get('description', None)
-        statut1 = request.GET.get('statut', None)
-
-
-        obj = Poste.objects.create(
-            designation = designation1,
-            abrev = abrev1,
-            description = description1,
-            statut = statut1
-        )
-
-        poste = {'id':obj.id,'designation':obj.designation,'abrev':obj.abrev,'description':obj.description,'statut':obj.statut}
-
-        data = {
-            'poste': poste
-        }
-        return JsonResponse(data)
-    
-    
-class UpdatePoste(View):
-    def  get(self, request):
-        id1 = request.GET.get('id', None)
-        designation1 = request.GET.get('designation', None)
-        abrev1 = request.GET.get('abrev', None)
-        description1 = request.GET.get('description', None)
-        statut1 = request.GET.get('statut', None)
-
-        obj2 = Poste.objects.get(id=id1)
-        obj2.designation = designation1
-        obj2.abrev = abrev1
-        obj2.description = description1
-        obj2.statut = statut1
-        obj2.save()
-
-        poste = {'id':obj2.id,'designation':obj2.designation,'abrev':obj2.abrev,'description':obj2.description,'statut':obj2.statut}
-
-        data = {
-            'poste': poste
-        }
-        return JsonResponse(data)
-    
-    
-class DeletePoste(View):
-    def  get(self, request):
-        id1 = request.GET.get('id', None)
-        Poste.objects.get(id=id1).delete()
-        data = {
+def deleteUser(request):
+    id1 = request.GET.get('id', None)
+    user = User.objects.get(id=id1)
+    user.delete()
+    data = {
             'deleted': True
         }
-        return JsonResponse(data)
-
- # Departement function 
- 
-class DeptView(ListView):
-        model = Departement
-        template_name = 'rh/departement.html'
-        context_object_name = 'departements'
-    
-    
-
-class CreateDept(View):
-    def  get(self, request):
-        code1 = request.GET.get('code', None)
-        nom1 = request.GET.get('nom', None)
-        description1 = request.GET.get('description', None)
-        statut1 = request.GET.get('statut', None)
+    return JsonResponse(data)
 
 
-        obj = Departement.objects.create(
-            code = code1,
-            nom = nom1,
-            description = description1,
-            statut = statut1
-        )
+def InfoUserView(request, id= None):
+    if id:
+        user = User.objects.get(id=id)     
+        return render (request, template_name= "admin/userInfos.html", context={'test': user})
 
-        departement = {'id':obj.id,'code':obj.code,'nom':obj.nom,'description':obj.description,'statut':obj.statut}
-
-        data = {
-            'departement': departement
-        }
-        return JsonResponse(data)
-    
-    
-class UpdateDept(View):
+class addPermission(View):
     def  get(self, request):
         id1 = request.GET.get('id', None)
-        code1 = request.GET.get('code', None)
-        nom1 = request.GET.get('nom', None)
-        description1 = request.GET.get('description', None)
-        statut1 = request.GET.get('statut', None)
+        is_active1 = request.GET.get('is_active', None)
+        is_admin = request.GET.get('is_admin', None)
 
-        obj2 = Departement.objects.get(id=id1)
-        obj2.code = code1
-        obj2.nom = nom1
-        obj2.description = description1
-        obj2.statut = statut1
+
+        obj2 = User.objects.get(id=id1)
+        if (is_active1 == "ACTIVE"):
+            obj2.is_active = True
+        elif (is_active1 == "INACTIVE"):
+            obj2.is_active = False
+            
+        if(is_admin == "ACTIVE"):
+            obj2.is_active = True
+            obj2.is_staff = True
+            obj2.is_superuser = True
+        elif(is_admin == "INACTIVE"):
+            obj2.is_staff = False
+            obj2.is_superuser = False
+           
         obj2.save()
 
-        departement = {'id':obj2.id,'code':obj2.code,'nom':obj2.nom,'description':obj2.description,'statut':obj2.statut}
-
-        data = {
-            'departement': departement
-        }
-        return JsonResponse(data)
-    
-    
-class DeleteDept(View):
-    def  get(self, request):
-        id1 = request.GET.get('id', None)
-        Departement.objects.get(id=id1).delete()
-        data = {
-            'deleted': True
-        }
-        return JsonResponse(data)
-    
-# Employee class and function
-
-class EmpView(ListView):
-        model = Employe
-        template_name = 'rh/employe.html'
-        context_object_name = 'employes'
-    
-
-def getEmp(request):
-            employes = Employe.objects.all()
-            posts = Poste.objects.all()
-            depts = Departement.objects.all()
-        
-            return render(request, template_name = "rh/employe.html",context = {"results":posts, "employes":employes,"depts":depts})
-        
-class CreateEmp(View):
+class CreateUser(View):
     
     def  get(self, request):
-        code1 = request.GET.get('code', None)
+        prenom1 = request.GET.get('prenom', None)
         nom1 = request.GET.get('nom', None)
-        tel = request.GET.get('telephone', None)
-        mail = request.GET.get('email', None)
-        statut1 = request.GET.get('statut', None)
-        poste1 = request.GET.get('poste', None)
-        departement1 = request.GET.get('departement', None)
+        tel1 = request.GET.get('telephone', None)
+        email1 = request.GET.get('email', None)
+        username = request.GET.get('username', None)
+        password1 = request.GET.get('password', None)
+        role1 = request.GET.get('role', None)
+        naissance1 = request.GET.get('naissance', None)
         
-        post1 = Poste.objects.get(id=poste1)
-        depart = Departement.objects.get(id=departement1)       
-
-        obj = Employe.objects.create(
-            code = code1,
-            nom = nom1,
-            telephone = tel,
-            email = mail,
-            statut = statut1,
-            poste = post1,
-            departement = depart
+        obj = User.objects.create(
+            first_name = prenom1,
+            last_name = nom1,
+            username = username,
+            email = email1,
+            password = password1
         )
-
-        employe = {'id':obj.id,
-                   'code':obj.code,
+        profile = Profile.objects.get(user_id = obj.id)
+        profile.tel = tel1
+        profile.naissance = naissance1
+        profile.role = role1
+        
+        profile.save()
+        
+        user = User.objects.get(id = obj.id)
+        if(role1 == "SUPER_ADMIN"):
+             user.is_staff = True
+             user.is_superuser = True
+             user.save()
+            
+        
+        user = {'id':obj.id,
+                   'prenom':obj.prenom,
                    'nom':obj.nom,
-                   'telephone':obj.telephone,
+                   'username':obj.username,
                    'email':obj.email,
-                   'statut':obj.statut,
-                   'poste':obj.poste,
-                   'departement':obj.departement
+                   'password':obj.password
                    }
 
         data = {
-            'employe': employe
+            'user': user
         }
         return JsonResponse(data)
     
-class DeleteEmp(View):
+def signup(request):
+
+    if request.method == "POST":
+        signup_form = SignUpForm(request.POST)
+        profile_form = ProfileForm(request.POST)
+        
+        if signup_form.is_valid() and profile_form.is_valid():
+            user = signup_form.save()
+            
+            obj = CustomUser.objects.latest('id')
+            tel= profile_form.cleaned_data.get("tel")
+            naissance= profile_form.cleaned_data.get("naissance")
+            role = profile_form.cleaned_data.get("role")
+            profile = Profile.objects.get(user_id=obj)
+            profile.tel = tel
+            profile.naissance = naissance
+            profile.role = "ADMINISTRATEUR"
+            profile.save() 
+            
+            ecole = Ecole.objects.create(
+                admin_id = obj.id
+            )
+
+            messages.success(request, 'Vous vous inscrit avec success !')
+            return redirect('login')
+
+
+    else:
+        signup_form = SignUpForm()
+        profile_form = ProfileForm()
+        ecoleform = EcoleForm()
+    
+    context = {'signup_form': signup_form, 'profile_form': profile_form} 
+    return render (request, 'common/register.html',context)
+
+        
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'common/change-password.html'
+    success_url = reverse_lazy('base')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Votre mot de passe a été modifié.')
+        return super().form_valid(form)
+    
+    
+def getSchool(request,id=None):
+    
+    try:
+        ecole = Ecole.objects.get(admin_id = id)
+    except:
+        return redirect ('base')
+    template_name = 'common/ecole.html'
+    if ecole:
+        
+        context = {'ecole':ecole}
+    else :
+        context = {}
+    return render(request, template_name, context)
+
+
+def updateSchool(request,id=None):
+    
+    ecole = Ecole.objects.get(admin_id=id)
+    formecole = EcoleForm(instance=ecole)
+    if request.method == "POST":
+        formecole = EcoleForm(request.POST)
+        if formecole.is_valid():
+            ecole.nom = formecole.cleaned_data.get("nom")
+            ecole.tel = formecole.cleaned_data.get("tel")
+            ecole.email = formecole.cleaned_data.get("email")
+            ecole.adress = formecole.cleaned_data.get("adress")
+
+            ecole.save()
+            messages.success(request, 'Votre ecole a ete enregistrée avec success')
+            return redirect('schoolProfile',id=id)
+
+    context = {'formecole': formecole}
+    return render(request, 'common/schoolUpdates.html', context)
+
+
+def getNiveau(request,id=None):
+    
+    ecole = Ecole.objects.get(admin_id=id)
+    template_name = 'ecole/niveau.html'
+    try:
+        niveaux = Niveau.objects.filter(ecole_id= ecole.id)
+    except Niveau.DoesNotExist:
+        niveaux = None
+        
+    context = {'niveaux': niveaux}
+     
+    return render(request,template_name,context)
+
+
+def createNiveau(request,id=None):
+    ecole = Ecole.objects.get(admin_id=id)
+    nom1 = request.GET.get('nom', None)
+    template = 'ecole/niveau.html'
+    
+    obj = Niveau.objects.create(
+        nom = nom1,
+        ecole = ecole
+    )
+    niveau = {'id':obj.id,
+            'nom':obj.nom,
+            'ecole': obj.ecole
+                   }
+    
+    data = {
+            'niveau': niveau
+        }
+    return JsonResponse(data)
+
+class UpdateNiveau(View):
     def  get(self, request):
         id1 = request.GET.get('id', None)
-        Employe.objects.get(id=id1).delete()
+        nom1 = request.GET.get('nom', None)
+        
+        obj = Niveau.objects.get(id=id1)
+        obj.nom = nom1
+        obj.save()
+
+        niveau = {'id':obj.id,'nom':obj.nom,'ecole':obj.ecole.nom}
+
         data = {
+            'niveau': niveau
+        }
+        return JsonResponse(data)
+
+def deleteNiveau(request):
+    id1 = request.GET.get('id', None)
+    niveau = Niveau.objects.get(id=id1)
+    niveau.delete()
+    data = {
             'deleted': True
         }
-        return JsonResponse(data)
+    return JsonResponse(data)
+         
     
-class UpdateEmp(View):
+def getClasse(request,id=None):
+    template_name = 'ecole/classe.html'
+    listclasse = []
+    ecole = Ecole.objects.get(admin_id=id)
+    classes = Classe.objects.all()
+    id1 = ecole.id
+    
+    niveaux = Niveau.objects.filter(ecole_id= id1)
+    if niveaux:
+        for classe in classes:
+            for niv in niveaux:
+                if classe.niveau_id == niv.id:
+                    listclasse.append(classe)
+                
+    context = {'list': listclasse, 'nivs':niveaux}
+     
+    return render(request,template_name,context)
+
+
+def createClasse(request,id=None):
+
+    nom1 = request.GET.get('nom', None)
+    niveau1 =  request.GET.get('niveau', None)
+    template = 'ecole/class.html'
+    niv = Niveau.objects.get(id=niveau1)
+    
+    obj = Classe.objects.create(
+        nom = nom1,
+        niveau = niv,
+    )
+    classe = {
+            'id':obj.id,
+            'nom':obj.nom,
+            'niveau': obj.niveau,
+                   }
+    
+    data = {
+            'classe': classe
+        }
+    return JsonResponse(data)
+
+class UpdateClasse(View):
     def  get(self, request):
         id1 = request.GET.get('id', None)
-        code1 = request.GET.get('code', None)
         nom1 = request.GET.get('nom', None)
-        tel1 = request.GET.get('tel', None)
-        email1 = request.GET.get('email', None)
-        stat1 = request.GET.get('statut', None)
-        poste1 = request.GET.get('poste', None)
-        departement1 = request.GET.get('departement', None)
+        niveau1 = request.GET.get('niveau', None)
         
-        post1 = Poste.objects.get(id=poste1)
-        depart = Departement.objects.get(id=departement1)       
+        niveau = Niveau.objects.get(id=niveau1)
 
 
-        obj2 = Employe.objects.get(id=id1)
-        obj2.code = code1
-        obj2.nom = nom1
-        obj2.telephone = tel1
-        obj2.email = email1
-        obj2.statut = stat1
-        obj2.poste = post1
-        obj2.departement = depart
-        obj2.save()
-
-       
-def searchDept(request):
-    if request.method == 'POST':
-        search_str = json.loads(request.body).get('searchText')
-        departements = Departement.objects.filter(
-            code__istartswith=search_str) | Departement.objects.filter(
-            nom__istartswith=search_str) | Departement.objects.filter(
-            description__icontains=search_str) | Departement.objects.filter(
-            statut__istartswith=search_str)
+        obj = Classe.objects.get(id=id1)
+        obj.nom = nom1
+        obj.niveau = niveau
+        obj.save()
         
-        data = departements.values()
-        return JsonResponse(list(data), safe=False)
         
-    
+def deleteClasse(request):
+    id1 = request.GET.get('id', None)
+    classe = Classe.objects.get(id=id1)
+    classe.delete()
+    data = {
+            'deleted': True
+        }
+    return JsonResponse(data)

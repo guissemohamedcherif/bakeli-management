@@ -16,54 +16,52 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
-from apps.common.views import HomeView,SignUpView,DashboardView,ProfileView,ProfileUpdateView
-from apps.common.views import PosteView,CreatePoste,UpdatePoste
+from apps.common.views import HomeView,DashboardView,ProfileView,ProfileUpdateView
 from django.contrib.auth import views as auth_views
 from apps.common import views
 from django.views.static import serve
 from django.conf.urls import url
 from django.conf import settings
-
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', HomeView.as_view(), name= 'home'),
-    
+    path(r'^homePage/(?P<id>\d+)/$', views.HomeView, name= 'home'),
+
     url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}), 
     url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
     
-    path('register/',SignUpView.as_view(), name='register'),
-    
-    path('login/', auth_views.LoginView.as_view(template_name='common/login.html'), name='login'),
-    
-    path('logout', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
-    path('base/',DashboardView.as_view(), name='base'),
-    
-    path('change-password', auth_views.PasswordChangeView.as_view(
-        template_name = 'common/change-password.html', success_url ='/'), 
-         name = 'change-password'),
-    
     path('profile-update/', ProfileUpdateView.as_view(), name='profile-update'),
     path('profile/', ProfileView.as_view(), name='profile'),
+    path('usercreation/', views.CreateUser.as_view(), name='createUser'),
+    path('register/',views.signup, name='register'),
+
+    path('', auth_views.LoginView.as_view(template_name='common/login.html'), name='login'),
+
+    path('logout', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('base/',DashboardView.as_view(), name='base'),
     
-    # Poste urls
-    path('poste/', PosteView.as_view(), name='poste'),
-    path('poste/create', views.CreatePoste.as_view(), name='poste_create'),
-    path('poste/update', views.UpdatePoste.as_view(), name='poste_update'),
-    path('poste/delete/',  views.DeletePoste.as_view(), name='poste_delete'),
-    #End Poste urls
+    path('change-password', views.CustomPasswordChangeView.as_view(), 
+         name = 'change-password'),
     
-    # Departement urls
-    path('departement/', views.DeptView.as_view(), name='dept'),
-    path('departement/create', views.CreateDept.as_view(), name='dept_create'),
-    path('departement/update', views.UpdateDept.as_view(), name='dept_update'),
-    path('departement/delete/',  views.DeleteDept.as_view(), name='dept_delete'),
+    # users urls
+    path('getusers/', views.getUsers, name='getUsers'),
+    path('getusers/delete', views.deleteUser, name='user_delete'),
+    path(r'^userInfos/(?P<id>\d+)/$', views.InfoUserView, name='userInfo'),
+    path('userInfos/useraddInfo/', views.addPermission.as_view(), name='userAddInfo'),
     
-    # Employes urls
-    path('getEmp/', views.getEmp, name='getEmp'),
-    path('employe/create', views.CreateEmp.as_view(), name='emp_create'),
-    path('employe/update', views.UpdateEmp.as_view(), name='emp_update'),
-    path('employe/delete/',  views.DeleteEmp.as_view(), name='emp_delete'),
+    # school urls
+    path(r'^schools/(?P<id>\d+)/$', views.getSchool, name='schoolProfile'),
+    path(r'^update/(?P<id>\d+)/$', views.updateSchool, name='schoolUpdate'),
+    path(r'^niveaux/(?P<id>\d+)/$', views.getNiveau, name='allNiveaux'), 
+    path(r'^niveau_create/(?P<id>\d+)/$', views.createNiveau, name='createNiveau'),  
+    path('level-update', views.UpdateNiveau.as_view(), name='update_niveau'), 
+    path('level-deleted', views.deleteNiveau, name='delete_niveau'),  
+    
+    path(r'^classes/(?P<id>\d+)/$', views.getClasse, name='allClasses'), 
+    path(r'^classes-create/(?P<id>\d+)/$', views.createClasse, name='createClasses'),  
+    path('classe-update', views.UpdateClasse.as_view(), name='update_classe'), 
+    path('classe-deleted', views.deleteClasse, name='delete_classe'),  
 
 ]
 
