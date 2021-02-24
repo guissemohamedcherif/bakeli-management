@@ -62,6 +62,9 @@ urlpatterns = [
     path(r'^classes-create/(?P<id>\d+)/$', views.createClasse, name='createClasses'),  
     path('classe-update', views.UpdateClasse.as_view(), name='update_classe'), 
     path('classe-deleted', views.deleteClasse, name='delete_classe'),  
+    
+    # Student urls
+    path(r'^students/(?P<id>\d+)/$', views.getStudents, name='allStudents'), 
 
 ]
 

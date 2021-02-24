@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+        <h1 class="h3 mb-0 text-gray-800">Eleves</h1>
+        </div>          
+ <!-- Divider -->
+ <hr class="sidebar-divider">
+
+     <!-- Topbar -->
+     <nav class="navbar navbar-expand navbar-light bg-light topbar mb-4 static-top shadow">
+
+      <!-- Topbar Search -->
+      <form
+          class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+          <div class="input-group">
+              <input type="text" class="form-control bg-blue border-10 small" placeholder="Search for..."
+                  aria-label="Search" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                  <button class="btn btn-primary" type="button">
+                      <i class="fas fa-search fa-sm"></i>
+                  </button>
+              </div>
+          </div>
+      </form>
+
+      <!-- Topbar Navbar -->
+     <!-- Page Heading -->
+<div class="d-sm-flex align-items-center ">
+  <button data-toggle="modal" data-target="#myModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+  class="fas fa-plus fa-sm text-white-50"></i> Ajouter Niveau</button>
+  </div>
+
+  </nav>
+  <!-- End of Topbar -->
+
+        <table id="studentTable" class="table table-striped ">
+            <tr class="d-flex">
+              <th class="col-md" style="text-align:center" ><strong>PRENOM</strong></th>
+              <th class="col-md" style="text-align:center" ><strong>NOM</strong></th>
+              <th class="col-md" style="text-align:center" ><strong>ADRESSE</strong></th>
+              <th class="col-md" style="text-align:center" ><strong>TELEPHONE PARENT</strong></th>
+              <th class="col-md" style="text-align:center" ><strong>CLASSE</strong></th>
+
+              <th class="col-md" style="text-align:center" colspan="2"><strong>ACTIONS</strong></th>
+            </tr>
+            {% if students %}
+            {% for student in students %}
+            <tr class="d-flex" id="student-{{student.id}}">
+              <td class="prenomClass posteData col-md" name="prenom" style="text-align:center">{{student.prenom}}</td>
+              <td class="nomClass posteData col-md" name="nom" style="text-align:center">{{student.nom}}</td>
+              <td class="adresseClass posteData col-md" name="adresse" style="text-align:center">{{student.adresse}}</td>
+              <td class="telClass posteData col-md" name="tel" style="text-align:center">{{student.tel}}</td>
+              <td class="classeClass posteData col-md" name="classe" style="text-align:center">{{student.classe.nom}}</td>
+              <td class="col-md">
+                  <div class="row">
+                      <div class="col-sm">
+                        <button class="btn btn-success" onClick="" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
+                      </div>
+                      <div class="col-sm">
+                        <button class="btn btn-danger" onClick=""><i class="fas fa-archive"></i></button>
+                      </div>
+                  </div>
+              </td>            
+          </tr>
+            {% endfor %}              
+            {% endif %}
+          </table>    
+    </div>
+    {% endblock content %}

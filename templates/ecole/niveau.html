@@ -52,11 +52,11 @@
               <td class="ecoleClass posteData col-md" name="ecole" style="text-align:center">{{niveau.ecole.nom}}</td>
               <td class="col-md">
                   <div class="row">
-                      <div class="col">
-                        <button class="btn btn-success col-md" onClick="editNiveau({{niveau.id}})" data-toggle="modal" data-target="#myModal">MODIFIER</button>
+                      <div class="col-sm">
+                        <button class="btn btn-success" style="margin-left:100px" onClick="editNiveau({{niveau.id}})" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
                       </div>
-                      <div class="col">
-                        <button class="btn btn-danger col-md" onClick="deleteNiveau({{niveau.id}})">SUPPRIMER</button>
+                      <div class="col-sm">
+                        <button class="btn btn-danger" onClick="deleteNiveau({{niveau.id}})"><i class="fas fa-archive"></i></button>
                       </div>
                   </div>
               </td>            

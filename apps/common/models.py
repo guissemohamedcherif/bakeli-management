@@ -19,3 +19,13 @@ class Classe(models.Model):
     nom = models.CharField(max_length=250, blank=False)
     niveau = models.ForeignKey(Niveau, on_delete=models.CASCADE,blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
+    
+class Eleve(models.Model):
+    prenom = models.CharField(max_length=250, blank=False)
+    nom = models.CharField(max_length=250, blank=False)
+    adresse = models.TextField() 
+    tel = models.CharField(max_length=15, blank=False)
+    classe = models.ForeignKey(Classe, on_delete=models.CASCADE,blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+

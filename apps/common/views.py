@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from apps.userprofile.models import Profile, CustomUser
-from apps.common.models import Ecole, Niveau, Classe
+from apps.common.models import Ecole, Niveau, Classe, Eleve
 from django.contrib import messages
 from django.http import JsonResponse
 from django.core import serializers
@@ -377,3 +377,28 @@ def deleteClasse(request):
             'deleted': True
         }
     return JsonResponse(data)
+
+
+def getStudents(request,id):
+    template_name = 'ecole/student.html' 
+    ecole = Ecole.objects.get(admin_id=id)
+    classes = Classe.objects.all()
+    eleves = Eleve.objects.all()
+    listclasse = []
+    listStudents = []
+    id1 = ecole.id
+    
+    niveaux = Niveau.objects.filter(ecole_id= id1)
+    if niveaux:
+        for classe in classes:
+            for niv in niveaux:
+                if classe.niveau_id == niv.id:
+                    listclasse.append(classe)
+    if listclasse:
+        for elev in eleves:
+            for clss in listclasse:
+                if elev.classe_id == clss.id:
+                    listStudents.append(elev)
+                    
+    context={'students': listStudents}
+    return render(request,template_name,context)
