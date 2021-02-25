@@ -53,10 +53,10 @@
               <td class="col-md">
                   <div class="row">
                       <div class="col">
-                        <button class="btn btn-success col-md" onClick="editClasse({{classe.id}}, {{classe.niveau.id}})" data-toggle="modal" data-target="#myModal">MODIFIER</button>
+                        <button class="btn btn-success" style="float: right" onClick="editClasse({{classe.id}}, {{classe.niveau.id}})" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
                       </div>
                       <div class="col">
-                        <button class="btn btn-danger col-md" onClick="deleteClasse({{classe.id}})">SUPPRIMER</button>
+                        <button class="btn btn-warning" style="float: left" onClick="deleteClasse({{classe.id}})"><i class="fas fa-archive"></i></button>
                       </div>
                   </div>
               </td>            

@@ -43,20 +43,20 @@
             <tr class="d-flex">
               <th class="col-md" style="text-align:center" ><strong>Niveau</strong></th>
               <th class="col-md" style="text-align:center" ><strong>Ecole</strong></th>
-              <th class="col-md" style="text-align:center" colspan="2">Actions</th>
+              <th class="col" style="text-align:center" colspan="2">Actions</th>
             </tr>
             {% if niveaux %}
             {% for niveau in niveaux %}
             <tr class="d-flex" id="niveau-{{niveau.id}}">
               <td class="nomClass posteData col-md" name="nom" style="text-align:center">{{niveau.nom}}</td>
               <td class="ecoleClass posteData col-md" name="ecole" style="text-align:center">{{niveau.ecole.nom}}</td>
-              <td class="col-md">
+              <td class="col">
                   <div class="row">
-                      <div class="col-sm">
-                        <button class="btn btn-success" style="margin-left:100px" onClick="editNiveau({{niveau.id}})" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
+                      <div class="col">
+                        <button class="btn btn-success" style="float:right" onClick="editNiveau({{niveau.id}})" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
                       </div>
-                      <div class="col-sm">
-                        <button class="btn btn-danger" onClick="deleteNiveau({{niveau.id}})"><i class="fas fa-archive"></i></button>
+                      <div class="col">
+                        <button class="btn btn-warning" style="float:left" onClick="deleteNiveau({{niveau.id}})"><i class="fas fa-archive"></i></button>
                       </div>
                   </div>
               </td>            
