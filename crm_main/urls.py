@@ -65,6 +65,9 @@ urlpatterns = [
     
     # Student urls
     path(r'^students/(?P<id>\d+)/$', views.getStudents, name='allStudents'), 
+    path(r'^inscriptions/(?P<id>\d+)/$', views.Inscriptions, name='makeInscription'), 
+    path('inscriptions-create', views.createInscription, name='createInscription'), 
+    path('populate', views.populateDropClasse, name='populateclasses'), 
 
 ]
 

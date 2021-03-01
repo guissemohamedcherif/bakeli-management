@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+        <h1 class="h3 mb-0 text-gray-800">Inscription</h1>
+        </div>          
+ <!-- Divider -->
+ <hr class="sidebar-divider">
+ 
+   <div class="row">
+    <div class="card o-hidden" style="text-align:center;height: 100%; width: 800px; margin:auto"> 
+        <div>
+            <h1 class="h3 mb-0 text-gray-500" style="text-align:center; margin-top:10px">Inscrire un eleve</h1>
+            </div> 
+            <form id="addInscription" action="">
+                <div class="modal-body">
+ <div class="row" style = "margin-top:20px;">
+    <div class="col-sm" style = "width: 15px;margin-left:10px;text-align:center;">
+        <label>PRENOM</label>
+        <input id="prenId"  name="prenomName" type="text" class="form-control" aria-label="prenom" aria-describedby="basic-addon1">
+    </div>
+    <div class="col-sm" style = "margin-right:10px;text-align:center;">
+        <label>NOM</label>
+        <input id="nomId" name="nomName" type="text" class="form-control" aria-label="nom" aria-describedby="basic-addon1">
+    </div>
+ </div>
+ <div class="row" style="margin-top: 20px; margin-bottom:20px">
+    <div class="col-sm" style = "margin-left:10px;text-align:center;">
+        <label>TELEPHONE</label>
+        <input id="telId" name="telName" type="text" class="form-control" aria-label="tel" aria-describedby="basic-addon1">
+    </div>
+    <div class="col-sm" style = "margin-right:10px; text-align:center;">
+        <label>ADRESSE</label>
+        <textarea id="adressId" name="adressName" type="text" class="form-control" aria-label="tel" aria-describedby="basic-addon1"></textarea>
+    </div>
+        
+ </div>
+ <div class="row" style="margin-top: 20px;">
+    <div class="col-sm" style = "margin-left:10px;text-align:center;">
+        <label>MONTANT</label>
+        <input id="mttId" name="mttName" type="number" class="form-control" aria-label="mtt" aria-describedby="basic-addon1">
+     </div> 
+     <div class="col-sm" style = "margin-right:10px; text-align:center;">
+        <label>DATE INSCRIPTION</label>
+        <input id="dateId" name="dateName" type="date" class="form-control" aria-label="date" aria-describedby="basic-addon1">
+    </div>
+ </div>
+ 
+ <div class="row" style="margin-top: 20px;">
+    <div class="col-sm" style = "margin-left:10px;text-align:center;">
+        <label>NIVEAUX</label>         
+        <select class="form-control" id="niveauId" name="formNiveau">   
+            <option value="">--- ---</option>
+            {% for niv in niveaux %}
+          <option value="{{niv.id}}"> {{niv.nom}}</option>
+          {% endfor %}
+        </select>
+     </div>
+    <div class="col-sm" style="text-align:center; margin-right:10px;">
+        <label>CLASSES</label>         
+        <select class="form-control" id="classeId" name="formClasse">   
+          
+        </select>
+     </div>
+ </div>
+ <hr class="sidebar-divider">
+
+ <div class="modal-footer" style="margin-top: 50px">
+    <button id="btn_save" onClick="saveDatas({{isSchool}})" name="btn" type="submit" class="btn btn-primary" >Enregistrer</button>
+    <button id="btn_close" onClick="resetAll()" class="btn btn-"type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+</div>
+</form>
+    </div>  
+</div>
+
+<div class="row" style="width: 100%;">
+    <table style="margin: top 10px;" id="studTable" class="table table-striped">
+        <thead>
+            <tr class="d-flex">
+                <th class="col" style="text-align:center" ><strong>PRENOM</strong></th>
+                <th class="col" style="text-align:center" ><strong>NOM</strong></th>
+                <th class="col" style="text-align:center" ><strong>CONTACT</strong></th>
+                <th class="col" style="text-align:center" ><strong>INSCRIT(E) LE :</strong></th>
+                <th class="col" style="text-align:center" colspan="2" ><strong>ACTIONS</strong></th>
+
+              </tr>
+        </thead>
+        <tbody>
+            {% if inscriptions %}
+            {% for ins in inscriptions %}
+            <tr class="d-flex" id="ins-{{ins.id}}">
+              <td class="prenomClass posteData col-md" name="prenom" style="text-align:center">{{ins.eleve.prenom}}</td>
+              <td class="nomClass posteData col-md" name="nom" style="text-align:center">{{ins.eleve.nom}}</td>
+              <td class="telClass posteData col-md" name="tel" style="text-align:center">{{ins.eleve.tel}}</td>
+              <td class="dateClass posteData col-md" name="date" style="text-align:center">{{ins.date}}</td>
+              <td class="col">
+                <div class="row">
+                    <div class="col">
+                      <button class="btn btn-success" style="float:right" onClick="" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
+                    </div>
+                    <div class="col">
+                      <button class="btn btn-warning" style="float:left" onClick=""><i class="fas fa-archive"></i></button>
+                    </div>
+                </div>
+            </td>    
+          </tr>
+            {% endfor %}              
+            {% endif %}
+        </tbody>  
+      </table> 
+</div>
+
+</div>
+
+ <script>
+/*   let thetable = document.getElementById('studTable').getElementsByTagName('tbody')[0];
+    for (let i = 0; i < thetable.rows.length; i++)
+    {
+        thetable.rows[i].onclick = function()
+        {
+            TableRowClick(this);
+        };
+    }                       
+
+function TableRowClick(therow) {
+    $("#prenId").val(therow.cells[0].innerHTML)
+    $("#nomId").val(therow.cells[1].innerHTML)
+    $("#telId").val(therow.cells[2].innerHTML)
+    $("#idStud").val(therow.cells[3].innerHTML)
+};  */
+
+function resetAll() {
+    $("#prenId").val("")
+    $("#nomId").val('')
+    $("#telId").val('')
+    $("#mttId").val('')
+    $("#dateId").val('')
+    $("#adressId").val('')
+    $('#niveauId').get(0).selectedIndex = 0;
+    $('#classeId').get(0).selectedIndex = 0;
+}
+ </script>
+ <script>
+
+        function saveDatas(idSkool){
+            var idsch = idSkool;
+            var nomInput = $('input[name="nomName"]').val().trim();
+            var prenomInput = $('input[name="prenomName"]').val().trim();
+            var telInput = $('input[name="telName"]').val().trim();
+            var dateInput = $('input[name="dateName"]').val().trim();
+            var mttInput = $('input[name="mttName"]').val().trim();
+            var adressInput = $('#adressId').val().trim();
+            var classeInput = $("#classeId").val();
+            
+      
+                if (nomInput && prenomInput && telInput && dateInput && mttInput && classeInput && adressInput) {
+                  // Create Ajax Call
+                  $.ajax({
+                      url: '{% url "createInscription" %}',
+                      data: {
+                          'nom': nomInput,
+                          'prenom': prenomInput,
+                          'adresse':adressInput,
+                          'tel':telInput,
+                          'date':dateInput,
+                          'mtt': mttInput,
+                          'classe':classeInput,
+                          'ischl':idsch,
+                      },
+                      
+                      dataType: 'json',
+                      success: function (data) {
+                          if (data.inscription) {
+                            location.reload(true);
+                          }
+                      }
+                  });
+                } else {
+                  alert("Remplir tous les champs.");
+              }
+              $('form#addInscription').trigger("reset");
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+        $('#niveauId').change(function() {
+        
+            const niveau_id = $(this).val();  // get the selected country ID from the HTML input
+            
+            $.ajax({                       // initialize an AJAX request
+                url: '{% url "populateclasses"%}',                    // set the url of the request (= /persons/ajax/load-cities/ )
+                data: {
+                    'niveau_id': niveau_id       // add the country id to the GET parameters
+                },
+                success: function (data) { 
+                    $("#classeId").html(data);  // replace the contents of the city input with the data that came from the server                
+                }
+            });
+        });    
+ </script>
+
+{% endblock content %}
+
+
+
+
+
+  

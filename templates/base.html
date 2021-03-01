@@ -105,7 +105,7 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header"> Finances :</h6>
             <a class="collapse-item" href="#">&#128905; MENSUALITES</a>
-            <a class="collapse-item" href="#">&#128905; INSCRIPTIONS</a>
+            <a class="collapse-item" href="{% url 'makeInscription' user.id %}">&#128905; INSCRIPTIONS</a>
         </div>
     </div>
 </li>
@@ -151,19 +151,17 @@
 
             <!-- Main Content -->
             <div id="content">
-
-                <!-- Topbar -->
      
                 <!-- Topbar -->
-                <nav class="navbar topbar mb-4 static-top shadow">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-                      
+                        
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.first_name}} {{user.last_name}}</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600">{{user.first_name}} {{user.last_name}}</span>
                                 <img class="img-profile rounded-circle"
                                     src="{% static 'img/undraw_profile.svg' %}">
                             </a>
@@ -171,7 +169,7 @@
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="{% url 'schoolProfile' id=user.id %}">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    <i class="fas fa-school fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Mon Ecole
                                 </a>
                                 <a class="dropdown-item" href="{% url 'profile' %}">
@@ -205,12 +203,8 @@
         <!-- End of Content Wrapper -->
 
     </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+        </div>
+   
 
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -249,7 +243,7 @@
     <!-- Page level custom scripts -->
     <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
     <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
-   
+
 </body>
 
 </html>

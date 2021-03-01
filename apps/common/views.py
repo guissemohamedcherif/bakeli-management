@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from apps.userprofile.models import Profile, CustomUser
-from apps.common.models import Ecole, Niveau, Classe, Eleve
+from apps.common.models import Ecole, Niveau, Classe, Eleve, Inscription
 from django.contrib import messages
 from django.http import JsonResponse
 from django.core import serializers
@@ -402,3 +402,78 @@ def getStudents(request,id):
                     
     context={'students': listStudents}
     return render(request,template_name,context)
+
+
+def Inscriptions(request,id=None):
+    template_name = "ecole/inscription.html"
+    ecole = Ecole.objects.get(admin_id=id)
+    idSkool = ecole.id
+    classes = Classe.objects.all()
+    inscriptions = Inscription.objects.all()
+    listInscrip = []
+    id1 = ecole.id
+    
+    niveaux = Niveau.objects.filter(ecole_id= id1)
+    eleves  = Eleve.objects.filter(ecole_id= id1) 
+    
+    for ins in inscriptions:
+        for eleve in eleves:
+            if ins.eleve_id == eleve.id:
+                listInscrip.append(ins)
+                 
+    context={'niveaux':niveaux,'isSchool':idSkool,'inscriptions':listInscrip}
+    return render(request,template_name, context)
+
+
+def createInscription(request):
+    template = 'ecole/inscription.html'
+
+    nom1 = request.GET.get('nom', None)
+    prenom1 = request.GET.get('prenom', None)
+    tel1 = request.GET.get('tel', None)
+    date1 = request.GET.get('date', None)
+    mtt1 = request.GET.get('mtt', None)
+    ad1 = request.GET.get('adresse', None)
+    classe1 =  request.GET.get('classe', None)
+    school1 = request.GET.get('ischl',None)
+    
+    ecole = Ecole.objects.get(id=school1)
+    classe = Classe.objects.get(id=classe1)
+    
+    
+    
+    elev = Eleve.objects.create(
+        prenom = prenom1,
+        nom = nom1,
+        tel = tel1,
+        adresse = ad1,
+        classe = classe,
+        ecole = ecole,
+    )
+   
+    
+    obj = Inscription.objects.create(
+        num = 1,
+        date = date1,
+        montant = mtt1,
+        eleve = elev
+    )
+    inscription = {
+            'id':obj.id,
+            'date':obj.date,
+            'montant': obj.montant,
+            'eleve':obj.eleve
+                   }
+    
+    data = {
+            'inscription': inscription
+        }
+    return JsonResponse(data)
+
+
+def populateDropClasse(request):
+    template_name = "ecole/populateClasse.html"
+    niveauId = request.GET.get('niveau_id')
+    classesDrop = Classe.objects.filter(niveau_id=niveauId)
+    context = {'classesDrop':classesDrop}
+    return render(request,template_name, context)
