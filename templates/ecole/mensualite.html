@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div style="text-align:center" class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+        <h1 class="h3 mb-0 text-gray-800">Mensualites</h1>
+        </div>          
+ <!-- Divider -->
+ <hr class="sidebar-divider">
+         
+ <nav class="navbar navbar-expand navbar-light">
+
+  <!-- Topbar Search -->
+  <div class="row" style="width:600px;">
+    <div class="col-sm" style="text-align:center;margin-right:10px;">        
+      <select class="form-control" id="niveauId" name="formNiveau">   
+          <option value="">--- Choisir Niveau ---</option>
+          {% for niv in niveaux %}
+          <option value="{{niv.id}}"> {{niv.nom}}</option>
+          {% endfor %}
+      </select>
+    </div>
+    <div class="col-sm" style="text-align:center; margin-left:10px;">
+        <select onchange="searchDatas()" class="form-control" id="classeId" name="formClasse">    
+        </select>
+  </div>
+
+  </div>
+</nav>
+
+<div class="row" style="width: 100%; margin-top:20px;">
+    <table style="margin: top 10px;" id="studTable" class="table table-striped">
+        <thead>
+            <tr style="display:flex;">
+                <th class="col" style="text-align:center"><strong>PRENOM</strong></th>
+                <th class="col" style="text-align:center"><strong>NOM</strong></th>
+                <th class="col" style="text-align:center"><strong>CONTACT</strong></th>
+                <th class="col" style="text-align:center"><strong>INSCRIT(E) LE :</strong></th>
+                <th class="col" style="text-align:center"><strong>VOIR MENSUALITES</strong></th>
+
+              </tr>
+        </thead>
+        <tbody>
+            {% if elements %}
+            {% for ins in elements %}
+            <tr style="display:flex;" id="ins-{{ins.id}}">
+              <td class="idelClass posteData col-md" style="display:none;"  name="idel" style="text-align:center">{{ins.eleve.classe_id}}</td>
+              <td class="prenomClass posteData col-md" name="prenom" style="text-align:center">{{ins.eleve.prenom}}</td>
+              <td class="nomClass posteData col-md" name="nom" style="text-align:center">{{ins.eleve.nom}}</td>
+              <td class="telClass posteData col-md" name="tel" style="text-align:center">{{ins.eleve.tel}}</td>
+              <td class="dateClass posteData col-md" name="date" style="text-align:center">{{ins.date}}</td>
+              <td class="col-md" style="text-align:center">                
+                <a class="btn btn-secondary" href="{% url 'getMens' ins.eleve.id %}"><i class="fas fa-eye"></i></a>            
+            </td>    
+          </tr>
+            {% endfor %}              
+            {% endif %}
+        </tbody>  
+      </table> 
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+        $('#niveauId').change(function() {
+        
+            const niveau_id = $(this).val();  
+            
+            $.ajax({                       
+                url: '{% url "populateclasses"%}',                   
+                data: {
+                    'niveau_id': niveau_id      
+                },
+                success: function (data) { 
+                    $("#classeId").html(data);               
+                }
+            });
+        }); 
+
+        function searchDatas(){
+      
+          var input,table,tr,td,filter,displayD;
+          input = document.getElementById("classeId");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("studTable");
+          tr = table.getElementsByTagName("tr");
+          
+          for(i=0;i<tr.length;i++)
+          {
+              td = tr[i].getElementsByTagName("td")[0];
+              
+              if (td){
+                displayD = td.innerText;
+                if(displayD.toUpperCase().indexOf(filter)>-1)
+                {
+                  tr[i].style.display="flex";
+                }else
+                {
+                  tr[i].style.display="none";
+                }
+              }
+          }
+        }
+      </script>
+{% endblock content %}

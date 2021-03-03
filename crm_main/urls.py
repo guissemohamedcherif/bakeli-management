@@ -68,6 +68,11 @@ urlpatterns = [
     path(r'^inscriptions/(?P<id>\d+)/$', views.Inscriptions, name='makeInscription'), 
     path('inscriptions-create', views.createInscription, name='createInscription'), 
     path('populate', views.populateDropClasse, name='populateclasses'), 
+    
+    path(r'^mensualites/(?P<id>\d+)/$', views.Mensualites, name='mensualites'), 
+    path(r'^getMensualites/(?P<id>\d+)/$', views.getMensByStudent, name='getMens'), 
+    path(r'^getMensualites/(?P<id>\d+)/$', views.getMensByStudent, name='getMens'), 
+    path('mens-create', views.createMensualite, name='createMens'), 
 
 ]
 

@@ -1,86 +1,45 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
+        {% extends 'base.html' %}
+        {% load static %}
+        {% block content %}
 
 
-    <!-- Begin Page Content -->
-    <div class="container-fluid">
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
-        <h1 class="h3 mb-0 text-gray-800">Inscription</h1>
-        </div>          
- <!-- Divider -->
- <hr class="sidebar-divider">
- 
-   <div class="row">
-    <div class="card o-hidden" style="text-align:center;height: 100%; width: 800px; margin:auto"> 
-        <div>
-            <h1 class="h3 mb-0 text-gray-500" style="text-align:center; margin-top:10px">Inscrire un eleve</h1>
-            </div> 
-            <form id="addInscription" action="">
-                <div class="modal-body">
- <div class="row" style = "margin-top:20px;">
-    <div class="col-sm" style = "width: 15px;margin-left:10px;text-align:center;">
-        <label>PRENOM</label>
-        <input id="prenId"  name="prenomName" type="text" class="form-control" aria-label="prenom" aria-describedby="basic-addon1">
-    </div>
-    <div class="col-sm" style = "margin-right:10px;text-align:center;">
-        <label>NOM</label>
-        <input id="nomId" name="nomName" type="text" class="form-control" aria-label="nom" aria-describedby="basic-addon1">
-    </div>
- </div>
- <div class="row" style="margin-top: 20px; margin-bottom:20px">
-    <div class="col-sm" style = "margin-left:10px;text-align:center;">
-        <label>TELEPHONE</label>
-        <input id="telId" name="telName" type="text" class="form-control" aria-label="tel" aria-describedby="basic-addon1">
-    </div>
-    <div class="col-sm" style = "margin-right:10px; text-align:center;">
-        <label>ADRESSE</label>
-        <textarea id="adressId" name="adressName" type="text" class="form-control" aria-label="tel" aria-describedby="basic-addon1"></textarea>
-    </div>
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+                <h1 class="h3 mb-0 text-gray-800">Inscription</h1>
+                </div>          
+        <!-- Divider -->
+        <hr class="sidebar-divider">
         
- </div>
- <div class="row" style="margin-top: 20px;">
-    <div class="col-sm" style = "margin-left:10px;text-align:center;">
-        <label>MONTANT</label>
-        <input id="mttId" name="mttName" type="number" class="form-control" aria-label="mtt" aria-describedby="basic-addon1">
-     </div> 
-     <div class="col-sm" style = "margin-right:10px; text-align:center;">
-        <label>DATE INSCRIPTION</label>
-        <input id="dateId" name="dateName" type="date" class="form-control" aria-label="date" aria-describedby="basic-addon1">
-    </div>
- </div>
+        <nav class="navbar navbar-expand navbar-light bg-light topbar mb-4 static-top shadow">
+
+            <!-- Topbar Search -->
+            <form
+                class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                <div class="input-group">
+                    <input type="text" class="form-control bg-blue border-10 small" placeholder="Recherche..."
+                        aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Topbar Navbar -->
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center ">
+        <button data-toggle="modal" data-target="#myModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        class="fas fa-plus fa-sm text-white-50"></i> Nouvel Inscription</button>
+        </div>
+
+</nav>
  
- <div class="row" style="margin-top: 20px;">
-    <div class="col-sm" style = "margin-left:10px;text-align:center;">
-        <label>NIVEAUX</label>         
-        <select class="form-control" id="niveauId" name="formNiveau">   
-            <option value="">--- ---</option>
-            {% for niv in niveaux %}
-          <option value="{{niv.id}}"> {{niv.nom}}</option>
-          {% endfor %}
-        </select>
-     </div>
-    <div class="col-sm" style="text-align:center; margin-right:10px;">
-        <label>CLASSES</label>         
-        <select class="form-control" id="classeId" name="formClasse">   
-          
-        </select>
-     </div>
- </div>
- <hr class="sidebar-divider">
 
- <div class="modal-footer" style="margin-top: 50px">
-    <button id="btn_save" onClick="saveDatas({{isSchool}})" name="btn" type="submit" class="btn btn-primary" >Enregistrer</button>
-    <button id="btn_close" onClick="resetAll()" class="btn btn-"type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-</div>
-</form>
-    </div>  
-</div>
-
-<div class="row" style="width: 100%;">
-    <table style="margin: top 10px;" id="studTable" class="table table-striped">
+    <table style="margin: top 10px;" id="inscriptionTable" class="table table-striped">
         <thead>
             <tr class="d-flex">
                 <th class="col" style="text-align:center" ><strong>PRENOM</strong></th>
@@ -116,24 +75,81 @@
       </table> 
 </div>
 
-</div>
+                <!-- Modal -->
+        <div style="margin:auto;" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content" >
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>    
+                <form id="addInscription" action="">
+                    <div class="modal-body">
+                        
+        <input id="idSkl" name="idName" type="hidden" value="{{ isSchool }}">
 
+        <div class="row" style = "margin-top:20px;">
+        <div class="col-sm" style = "width: 15px;margin-left:10px;text-align:center;">
+            <label>PRENOM</label>
+            <input id="prenId"  name="prenomName" type="text" class="form-control" aria-label="prenom" aria-describedby="basic-addon1">
+        </div>
+        <div class="col-sm" style = "margin-right:10px;text-align:center;">
+            <label>NOM</label>
+            <input id="nomId" name="nomName" type="text" class="form-control" aria-label="nom" aria-describedby="basic-addon1">
+        </div>
+        </div>
+        <div class="row" style="margin-top: 20px; margin-bottom:20px">
+        <div class="col-sm" style = "margin-left:10px;text-align:center;">
+            <label>TELEPHONE</label>
+            <input id="telId" name="telName" type="text" class="form-control" aria-label="tel" aria-describedby="basic-addon1">
+        </div>
+        <div class="col-sm" style = "margin-right:10px; text-align:center;">
+            <label>ADRESSE</label>
+            <textarea id="adressId" name="adressName" type="text" class="form-control" aria-label="tel" aria-describedby="basic-addon1"></textarea>
+        </div>
+            
+        </div>
+        <div class="row" style="margin-top: 20px;">
+        <div class="col-sm" style = "margin-left:10px;text-align:center;">
+            <label>MONTANT</label>
+            <input id="mttId" name="mttName" type="number" class="form-control" aria-label="mtt" aria-describedby="basic-addon1">
+        </div> 
+        <div class="col-sm" style = "margin-right:10px; text-align:center;">
+            <label>DATE INSCRIPTION</label>
+            <input id="dateId" name="dateName" type="date" class="form-control" aria-label="date" aria-describedby="basic-addon1">
+        </div>
+        </div>
+
+        <div class="row" style="margin-top: 20px;">
+        <div class="col-sm" style = "margin-left:10px;text-align:center;">
+            <label>NIVEAUX</label>         
+            <select class="form-control" id="niveauId" name="formNiveau">   
+                <option value="">--- ---</option>
+                {% for niv in niveaux %}
+            <option value="{{niv.id}}"> {{niv.nom}}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="col-sm" style="text-align:center; margin-right:10px;">
+            <label>CLASSES</label>         
+            <select class="form-control" id="classeId" name="formClasse">    
+            </select>
+        </div>
+        </div>
+        <hr class="sidebar-divider">
+
+        <div class="modal-footer" style="margin-top: 50px">
+        <button id="btn_save" onClick="" name="btn" type="submit" class="btn btn-primary" >Enregistrer</button>
+        <button id="btn_close" onClick="resetAll()" class="btn btn-"type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+  <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
  <script>
-/*   let thetable = document.getElementById('studTable').getElementsByTagName('tbody')[0];
-    for (let i = 0; i < thetable.rows.length; i++)
-    {
-        thetable.rows[i].onclick = function()
-        {
-            TableRowClick(this);
-        };
-    }                       
-
-function TableRowClick(therow) {
-    $("#prenId").val(therow.cells[0].innerHTML)
-    $("#nomId").val(therow.cells[1].innerHTML)
-    $("#telId").val(therow.cells[2].innerHTML)
-    $("#idStud").val(therow.cells[3].innerHTML)
-};  */
 
 function resetAll() {
     $("#prenId").val("")
@@ -148,8 +164,8 @@ function resetAll() {
  </script>
  <script>
 
-        function saveDatas(idSkool){
-            var idsch = idSkool;
+    $('#addInscription').submit(function() {
+            var idsch = $('#idSkl').val();
             var nomInput = $('input[name="nomName"]').val().trim();
             var prenomInput = $('input[name="prenomName"]').val().trim();
             var telInput = $('input[name="telName"]').val().trim();
@@ -177,32 +193,70 @@ function resetAll() {
                       dataType: 'json',
                       success: function (data) {
                           if (data.inscription) {
-                            location.reload(true);
+                            appendToIncripTable(data.inscription)
                           }
                       }
                   });
                 } else {
                   alert("Remplir tous les champs.");
+                  return false;
               }
               $('form#addInscription').trigger("reset");
-        }
+        });
+
+        function appendToIncripTable(inscription) {
+            $("#inscriptionTable > tbody:last-child").append(`
+                  <tr class="d-flex" id="ins-${inscription.id}">
+                      <td class="prenomClass posteData col-md" name="prenom" style="text-align:center">${inscription.prenom}</td>
+                      '<td class="nomClass posteData col-md" name="nom" style="text-align:center">${inscription.nom}</td>
+                      '<td class="telClass posteData col-md" name="tel" style="text-align:center">${inscription.tel}</td>
+                      '<td class="dateClass posteData col-md" name="date" style="text-align:center">${inscription.date}</td>
+                      '<td class="col">
+                        <div class="row">
+                            <div class="col">
+                              <button class="btn btn-success" style="float:right" onClick="" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
+                            </div>
+                            <div class="col">
+                              <button class="btn btn-warning" style="float:left" onClick=""><i class="fas fa-archive"></i></button>
+                            </div>
+                        </div>
+                    </td>    
+                  </tr>
+              `);
+          }
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
         $('#niveauId').change(function() {
         
-            const niveau_id = $(this).val();  // get the selected country ID from the HTML input
+            const niveau_id = $(this).val();  
             
-            $.ajax({                       // initialize an AJAX request
-                url: '{% url "populateclasses"%}',                    // set the url of the request (= /persons/ajax/load-cities/ )
+            $.ajax({                       
+                url: '{% url "populateclasses"%}',                   
                 data: {
-                    'niveau_id': niveau_id       // add the country id to the GET parameters
+                    'niveau_id': niveau_id      
                 },
                 success: function (data) { 
-                    $("#classeId").html(data);  // replace the contents of the city input with the data that came from the server                
+                    $("#classeId").html(data);               
                 }
             });
-        });    
+        }); 
+        
+/*   let thetable = document.getElementById('studTable').getElementsByTagName('tbody')[0];
+    for (let i = 0; i < thetable.rows.length; i++)
+    {
+        thetable.rows[i].onclick = function()
+        {
+            TableRowClick(this);
+        };
+    }                       
+
+function TableRowClick(therow) {
+    $("#prenId").val(therow.cells[0].innerHTML)
+    $("#nomId").val(therow.cells[1].innerHTML)
+    $("#telId").val(therow.cells[2].innerHTML)
+    $("#idStud").val(therow.cells[3].innerHTML)
+};  */
  </script>
 
 {% endblock content %}

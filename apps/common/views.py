@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from apps.userprofile.models import Profile, CustomUser
-from apps.common.models import Ecole, Niveau, Classe, Eleve, Inscription
+from apps.common.models import Ecole, Niveau, Classe, Eleve, Inscription, Mensualite
 from django.contrib import messages
 from django.http import JsonResponse
 from django.core import serializers
@@ -271,10 +271,12 @@ def getNiveau(request,id=None):
 def createNiveau(request,id=None):
     ecole = Ecole.objects.get(admin_id=id)
     nom1 = request.GET.get('nom', None)
+    tarif1 = request.GET.get('tarif', None)
     template = 'ecole/niveau.html'
     
     obj = Niveau.objects.create(
         nom = nom1,
+        tarif = tarif1,
         ecole = ecole
     )
     niveau = {'id':obj.id,
@@ -291,12 +293,14 @@ class UpdateNiveau(View):
     def  get(self, request):
         id1 = request.GET.get('id', None)
         nom1 = request.GET.get('nom', None)
+        tarif1 = request.GET.get('tarif', None)
         
         obj = Niveau.objects.get(id=id1)
         obj.nom = nom1
+        obj.tarif = tarif1
         obj.save()
 
-        niveau = {'id':obj.id,'nom':obj.nom,'ecole':obj.ecole.nom}
+        niveau = {'id':obj.id,'nom':obj.nom,'tarif':obj.tarif,'ecole':obj.ecole.nom}
 
         data = {
             'niveau': niveau
@@ -450,7 +454,6 @@ def createInscription(request):
         classe = classe,
         ecole = ecole,
     )
-   
     
     obj = Inscription.objects.create(
         num = 1,
@@ -458,11 +461,14 @@ def createInscription(request):
         montant = mtt1,
         eleve = elev
     )
+    
     inscription = {
             'id':obj.id,
             'date':obj.date,
             'montant': obj.montant,
-            'eleve':obj.eleve
+            'nom':obj.eleve.nom,
+            'prenom':obj.eleve.prenom,
+            'tel':obj.eleve.tel
                    }
     
     data = {
@@ -477,3 +483,62 @@ def populateDropClasse(request):
     classesDrop = Classe.objects.filter(niveau_id=niveauId)
     context = {'classesDrop':classesDrop}
     return render(request,template_name, context)
+
+
+def Mensualites(request, id=None):
+    template_name = "ecole/mensualite.html"
+    ecole = Ecole.objects.get(admin_id=id)
+    eleves = Eleve.objects.filter(ecole_id=ecole.id)
+    inscriptions = Inscription.objects.all()
+    niveaux = Niveau.objects.filter(ecole_id=ecole.id)
+    listInscrip = []
+    for ins in inscriptions:
+        for eleve in eleves:
+            if ins.eleve_id == eleve.id:
+                listInscrip.append(ins)
+    context = {'elements':listInscrip, 'niveaux':niveaux}
+    return render (request,template_name,context)
+
+
+def getMensByStudent(request,id=None):
+    template_name = "ecole/mensDetails.html"
+    eleve = Eleve.objects.get(id=id)
+    classe = Classe.objects.get(id=eleve.classe_id)
+    niveau = Niveau.objects.get(id=classe.niveau_id)
+    mensualites = Mensualite.objects.all()
+    listMens = []
+    listMois = ["JANVIER","FEVRIER","MARS","AVRIL","MAI","JUIN","JUILLET","AOUT","SEPTEMBRE","OCTOBRE","NOVEMBRE","DECEMBRE"]
+    
+    for mens in mensualites:
+        if mens.eleve_id == eleve.id:
+           listMens.append(mens) 
+    
+    context =  {'eleve':eleve, 'mensualities':listMens,'niveau':niveau,'listMois':listMois}
+    return render (request,template_name,context)
+
+
+def createMensualite(request):
+    mois1 = request.GET.get('mois', None)
+    montant1 = request.GET.get('mtt', None)
+    date1 = request.GET.get('date', None)
+    elev_id = request.GET.get('idT',None)
+    eleve = Eleve.objects.get(id=elev_id)
+    
+    obj = Mensualite.objects.create(
+        mois = mois1,
+        montant = montant1,
+        date = date1,
+        eleve = eleve
+    )
+    
+    mens = {
+            'id':obj.id,
+            'mois':obj.mois,
+            'montant': obj.montant,
+            'date':obj.date,
+            }
+    
+    data = {
+            'mens': mens
+        }
+    return JsonResponse(data)

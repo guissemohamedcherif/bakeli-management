@@ -42,6 +42,7 @@
         <table id="nivTable" class="table table-striped ">
             <tr class="d-flex">
               <th class="col-md" style="text-align:center" ><strong>NIVEAUX</strong></th>
+              <th class="col-md" style="text-align:center" ><strong>TARIFS</strong></th>
               <th class="col-md" style="text-align:center" ><strong>ECOLE</strong></th>
               <th class="col" style="text-align:center" colspan="2"><strong>ACTIONS</strong></th>
             </tr>
@@ -49,6 +50,7 @@
             {% for niveau in niveaux %}
             <tr class="d-flex" id="niveau-{{niveau.id}}">
               <td class="nomClass posteData col-md" name="nom" style="text-align:center">{{niveau.nom}}</td>
+              <td class="tarifClass posteData col-md" name="tarif" style="text-align:center">{{niveau.tarif}}</td>
               <td class="ecoleClass posteData col-md" name="ecole" style="text-align:center">{{niveau.ecole.nom}}</td>
               <td class="col">
                   <div class="row">
@@ -80,6 +82,9 @@
             <label >NOM</label>
             <input class="form-control" id="form-nom" type="text" name="formNom"/>
             <hr>
+            <label >TARIF</label>
+            <input class="form-control" id="form-tarif" type="number" name="formTarif"/>
+            <hr>
         </div>
         <div class="modal-footer">
             <button id="btn_save" name="btn" type="submit" class="btn btn-primary" >Enregistrer</button>
@@ -99,17 +104,19 @@
     $('#addniveau').submit(function() {
     var temoin = $('#btn_save').text();
     var nomInput = $('input[name="formNom"]').val().trim();
+    var tarifInput = $('input[name="formTarif"]').val().trim();
 
     var compare = temoin.localeCompare('Enregistrer');
 
       if(compare == 0)
       {
-        if (nomInput) {
+        if (nomInput && tarifInput) {
           // Create Ajax Call
           $.ajax({
               url: '{% url "createNiveau" user.id %}',
               data: {
                   'nom': nomInput,
+                  'tarif': tarifInput,
               },
               
               dataType: 'json',
@@ -121,35 +128,35 @@
           });
         } else {
           alert("Remplir tous les champs.");
+          return false;
       }
       $('form#addniveau').trigger("reset");
-      $('#myModal').modal('hide'); 
          }
 
       else 
       {
         var idInput = $('input[name="formId"]').val().trim();
-        if (nomInput) {
+        if (nomInput && tarifInput) {
           // Create Ajax Call
           $.ajax({
               url: '{% url "update_niveau" %}',
               data: {
                   'id': idInput,
                   'nom': nomInput,
+                  'tarif':tarifInput
               },
               dataType: 'json',
               success: function (data) {
                   if (data.niveau) {
                     updateToNivTable(data.niveau);
-                    location.reload(true);
                   }
               }
           });
          } else {
           alert("Remplir tous les champs.");
+          return false;
       }
       $('form#addniveau').trigger("reset");
-      $('#myModal').modal('hide');
       }
    });
 
@@ -158,6 +165,7 @@
     $("#nivTable >= tbody:last-child").append(`
           <tr class="d-flex" id="niveau-${niveau.id}">
               <td class="nomClass col-md"  name="nom" style="text-align:center">${niveau.nom}</td>
+              <td class="tarifClass col-md"  name="tarif" style="text-align:center">${niveau.tarif}</td>
               <td class="ecoleClass col-md" name="ecole" style="text-align:center">${niveau.ecole.nom}</td>
               '<td class="col-md">
                 <div class="row">
@@ -178,6 +186,7 @@
             tr_id = "#niveau-" + id;
             $('#form-id').val(id);
             $('#form-nom').val($(tr_id).find(".nomClass").text());
+            $('#form-tarif').val($(tr_id).find(".tarifClass").text());
             $('#btn_save').text('Modifier');     
           }
         }

@@ -156,6 +156,4 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 AUTH_USER_MODEL = "userprofile.CustomUser"
-
-
 django_heroku.settings(locals())

@@ -12,6 +12,7 @@ class Ecole(models.Model):
 
 class Niveau(models.Model):
     nom = models.CharField(max_length=250, blank=False)
+    tarif = models.FloatField()
     ecole = models.ForeignKey(Ecole, on_delete=models.CASCADE,blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     
@@ -32,7 +33,7 @@ class Eleve(models.Model):
 
 
 class Inscription(models.Model):
-    num = models.IntegerField(max_length=25)
+    num = models.IntegerField()
     date = models.CharField(max_length=250)
     montant = models.FloatField()
     eleve = models.ForeignKey(Eleve, on_delete=models.CASCADE,blank=True, null=True)
@@ -44,5 +45,13 @@ class Paiement(models.Model):
     inscription = models.ForeignKey(Inscription, on_delete=models.CASCADE,blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
+class Mensualite(models.Model):
+    montant = models.FloatField()
+    mois = models.CharField(max_length=250)
+    date = models.CharField(max_length=250)
+    eleve = models.ForeignKey(Eleve, on_delete=models.CASCADE,blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    
     
     
