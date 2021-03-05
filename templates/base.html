@@ -40,6 +40,29 @@
                 </div>
                 <div class="sidebar-brand-text mx-3"><strong>FAMBODJ FAMILY</strong></div>
             </a>
+            <hr class="sidebar-divider my-0">
+
+
+            {% if user.is_active and user.is_staff and user.is_superuser %}         
+
+   <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin"
+        aria-expanded="true" aria-controls="collapseUtilities">
+        <i class="fas fa-tools"></i>
+             <span> <strong>ADMINISTRATION</strong> </span>
+    </a>
+    <div id="collapseAdmin" class="collapse" aria-labelledby="headingUtilities"
+        data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Admin:</h6>
+            <a class="collapse-item" href="{% url 'userPage' %}">UTILISATEURS</a>
+        </div>
+    </div>
+</li>
+
+ <!-- Divider -->
+ <hr class="sidebar-divider my-0">
+ {% endif %} 
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">

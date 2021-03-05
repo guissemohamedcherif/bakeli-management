@@ -52,10 +52,9 @@
               <td class="firstClass posteData" name="first">{{user.first_name}}</td>
               <td class="lastClass posteData" name="last">{{user.last_name}}</td>
               <td class="emailClass posteData" name="email">{{user.email}}</td>
-              <td class="telClass posteData" name="telefone">{{user.profile.tel}}</td>
-              <td class="roleClass posteData" name="role">{{user.profile.role}}</td>
+          
               <td class="align-center">
-                <a class="btn btn-info form-control" href="{% url 'userInfo' id=user.id %}">
+                <a class="btn btn-info form-control" href="">
                     <i class="fas fa-eye"></i>
                 </a>
               </td>
@@ -167,7 +166,7 @@
         if (prenomInput) {
           // Create Ajax Call
           $.ajax({
-              url: '{% url "createUser" %}',
+              url: '',
               data: {
                   'prenom': prenomInput,
                   'nom': nomInput,
@@ -201,7 +200,7 @@
         var action = confirm("Etes vous sure de vouloir supprimer cet Utilisateur ?");
         if (action != false) {
           $.ajax({
-              url: '{% url "user_delete" %}',
+              url: '',
               data: {
                   'id': id,
               },

@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import View, TemplateView, CreateView, ListView
-from .forms import SignUpForm, UserForm, ProfileForm
+from .forms import SignUpForm, UserForm
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from apps.userprofile.models import Profile, CustomUser
+from apps.userprofile.models import  CustomUser
 from django.contrib import messages
 from django.http import JsonResponse
 import json
@@ -26,3 +26,50 @@ import html.parser
 class DashboardView(LoginRequiredMixin,TemplateView):
         template_name = 'base.html'  
         login_url = reverse_lazy('login') 
+
+
+def getUsers(request):
+    users = CustomUser.objects.all()
+    template = "admin/users.html"
+    context = {"users":users}
+    return render(request, template,context)
+    
+class CreateUser(View):
+    
+    def  get(self, request):
+        prenom1 = request.GET.get('prenom', None)
+        nom1 = request.GET.get('nom', None)
+        tel1 = request.GET.get('tel', None)
+        adress = request.GET.get('adress', None)
+        email1 = request.GET.get('email', None)
+        username = request.GET.get('username', None)
+        password1 = request.GET.get('username', None)
+        
+        obj = CustomUser.objects.create(
+            first_name = prenom1,
+            last_name = nom1,
+            username = username,
+            tel = tel1,
+            adress = adress,
+            password = username
+        )
+      
+        
+        user = CustomUser.objects.get(id = obj.id)   
+        user.is_staff = True
+        user.is_superuser = True
+        user.save()
+            
+        
+        user = {'id':obj.id,
+                   'prenom':obj.prenom,
+                   'nom':obj.nom,
+                   'username':obj.username,
+                   'email':obj.email,
+                   'password':obj.password
+                   }
+
+        data = {
+            'user': user
+        }
+        return JsonResponse(data)

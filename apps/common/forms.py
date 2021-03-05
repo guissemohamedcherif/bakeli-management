@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from apps.userprofile.models import Profile, CustomUser
+from apps.userprofile.models import CustomUser
 from django.core.exceptions import ValidationError
 
 
@@ -52,19 +52,6 @@ class UserForm(forms.ModelForm):
 
 class DateInput(forms.DateInput):
     input_type = 'date'
-
-class ProfileForm(forms.ModelForm):
-    tel = forms.CharField(
-        label='TELEPHONE',
-    )
-
-    class Meta:
-        model = Profile
-        fields = [
-            'tel',
-            'naissance',
-        ]
-        widgets = {'naissance': DateInput(format='%d/%m/%Y')}
 
         
 class loginForm(forms.ModelForm):
