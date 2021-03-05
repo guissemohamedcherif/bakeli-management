@@ -7,20 +7,15 @@ from django.contrib.auth.models import AbstractUser
    
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True) 
+    tel = models.CharField(max_length=15)
+    adress = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
 
 class Profile(models.Model):
-    STATUTS_ELMTS = (
-        ('SUPER_ADMIN', 'SUPER_ADMIN'),
-        ('CAISSER(E)', 'CAISSER(E)'),
-        ('ADMINISTRATEUR', 'ADMINISTRATEUR'),  
-    )
-    
     
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     tel = models.CharField(max_length=12, blank=True)
     naissance = models.CharField(max_length=100,blank=True)
-    role = models.CharField(max_length=100, choices=STATUTS_ELMTS, default='SUPER_ADMIN')
     created_on = models.DateTimeField(auto_now_add=True)
 
    # profile_image = models.ImageField(default='login.png',upload_to='users/', null=True, blank=True)

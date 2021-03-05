@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Bakeli-Management</title>
+    <title>Fambodj-Family</title>
 
     <!-- Custom fonts for this template-->
     <link href=" {%static 'vendor/fontawesome-free/css/all.min.css'%} " rel="stylesheet" type="text/css">
@@ -38,111 +38,20 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3"><strong>ANDU SI</strong></div>
+                <div class="sidebar-brand-text mx-3"><strong>FAMBODJ FAMILY</strong></div>
             </a>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
         
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'home' user.id %}">
+                <a class="nav-link" href="">
                     <i class="fas fa-home fa-chart-area"></i>
-                    <span><strong>ACCUEIL</strong></span></a>
+                    <span><strong>LES MEMBRES</strong></span></a>
             </li>
          
               <!-- Divider -->
               <hr class="sidebar-divider my-0">
-
-   <!-- Nav Item - ADMIN Menu -->
-
-   <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin"
-        aria-expanded="true" aria-controls="collapseUtilities">
-        <i class="fas fa-school"></i>
-             <span> <strong>GERER ECOLE</strong> </span>
-    </a>
-    <div id="collapseAdmin" class="collapse" aria-labelledby="headingUtilities"
-        data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Gestion ecole:</h6>
-            <a class="collapse-item" href="{% url 'allNiveaux' user.id %}">&#128905; NIVEAUX</a>
-            <a class="collapse-item" href="{% url 'allClasses' user.id %}">&#128905; CLASSES</a>
-            <a class="collapse-item" href="{% url 'allStudents' user.id %}">&#128905; ELEVES</a>
-
-        </div>
-    </div>
-</li>
-{% if user.profile.role == "SUPER_ADMIN" %}         
-
-   <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin"
-        aria-expanded="true" aria-controls="collapseUtilities">
-        <i class="fas fa-tools"></i>
-             <span> <strong>ADMINISTRATION</strong> </span>
-    </a>
-    <div id="collapseAdmin" class="collapse" aria-labelledby="headingUtilities"
-        data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Admin:</h6>
-            <a class="collapse-item" href="{% url 'getUsers'%}">UTILISATEURS</a>
-            <a class="collapse-item" href="">REGLAGES</a>
-        </div>
-    </div>
-</li>
-
- <!-- Divider -->
- <hr class="sidebar-divider my-0">
- {% endif %} 
-   <!-- Nav Item - RH Menu -->
-   <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRh"
-        aria-expanded="true" aria-controls="collapseUtilities">
-        <i class="fas fa-wallet"></i>
-            <span> <strong>GESTION FINANCIERE</strong> </span>
-    </a>
-    <div id="collapseRh" class="collapse" aria-labelledby="headingUtilities"
-        data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header"> Finances :</h6>
-            <a class="collapse-item" href="{% url 'mensualites' user.id %}">&#128905; MENSUALITES</a>
-            <a class="collapse-item" href="{% url 'makeInscription' user.id %}">&#128905; INSCRIPTIONS</a>
-        </div>
-    </div>
-</li>
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-             <!--  - Gestion commercial Menu -->
-   <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGcom"
-        aria-expanded="true" aria-controls="collapseUtilities">
-        <i class="fas fa-coins"></i>
-        <span> <strong>ETAT FINANCIER</strong> </span>
-    </a>
-    <div id="collapseGcom" class="collapse" aria-labelledby="headingUtilities"
-        data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Etat financier:</h6>
-            <a class="collapse-item" href="">FOURNISSEURS</a>
-            <a class="collapse-item"  href="" data-toggle="collapse" data-target="#col"
-            aria-expanded="true">
-                        STOCK
-                </a>
-            <div class="accordion-body collapse" id="col" aria-labelledby="headingUtilities">
-                <div class="bg-blue py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="">Categories</a>
-                    <a class="collapse-item" href="">produits</a>
-                </div>
-            </div>
-            <a class="collapse-item" href="utilities-animation.html">COMMANDES</a>
-            <a class="collapse-item" href="utilities-animation.html">ACHATS</a>
-
-        </div>
-    </div>
-</li>
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
         </ul>
         <!-- End of Sidebar -->
 
@@ -168,15 +77,15 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{% url 'schoolProfile' id=user.id %}">
+                                <a class="dropdown-item" href="">
                                     <i class="fas fa-school fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Mon Ecole
                                 </a>
-                                <a class="dropdown-item" href="{% url 'profile' %}">
+                                <a class="dropdown-item" href="">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
-                                <a class="dropdown-item" href="{% url 'change-password' %}">
+                                <a class="dropdown-item" href="">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Changer mot de Passe
                                 </a>
@@ -243,7 +152,7 @@
     <!-- Page level custom scripts -->
     <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
     <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
-
+    </div>
 </body>
 
 </html>
