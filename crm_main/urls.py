@@ -19,6 +19,8 @@ urlpatterns = [
     path('base/',views.DashboardView.as_view(), name='base'),
     path('logout', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('users/',views.getUsers, name='userPage'),
+    path('create-user',views.CreateUser.as_view(), name='userCreate'),
+    path('members/',views.getMembers, name='memberPage'),
 
 ]
 

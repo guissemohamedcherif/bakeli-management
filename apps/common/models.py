@@ -13,6 +13,17 @@ class Person(models.Model):
     
 
 class Pere(models.Model):
+    person = models.ForeignKey(Person, on_delete=models.CASCADE,blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    
+
+class Mere(models.Model):
+    person = models.ForeignKey(Person, on_delete=models.CASCADE,blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+class Enfant(models.Model):
     person = models.OneToOneField(Person, on_delete=models.CASCADE)
+    pere = models.ForeignKey(Pere, on_delete=models.CASCADE,blank=True, null=True)
+    mere = models.ForeignKey(Mere, on_delete=models.CASCADE,blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
 

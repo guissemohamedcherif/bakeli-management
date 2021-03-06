@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from apps.userprofile.models import  CustomUser
+from apps.common.models import  Person,Pere,Mere,Enfant
 from django.contrib import messages
 from django.http import JsonResponse
 import json
@@ -40,18 +41,19 @@ class CreateUser(View):
         prenom1 = request.GET.get('prenom', None)
         nom1 = request.GET.get('nom', None)
         tel1 = request.GET.get('tel', None)
-        adress = request.GET.get('adress', None)
+        adress1 = request.GET.get('adress', None)
         email1 = request.GET.get('email', None)
         username = request.GET.get('username', None)
-        password1 = request.GET.get('username', None)
+        password1 = request.GET.get('password', None)
         
         obj = CustomUser.objects.create(
             first_name = prenom1,
             last_name = nom1,
-            username = username,
             tel = tel1,
-            adress = adress,
-            password = username
+            adress = adress1,
+            email = email1,
+            username = username,
+            password = make_password(password1)
         )
       
         
@@ -66,10 +68,17 @@ class CreateUser(View):
                    'nom':obj.nom,
                    'username':obj.username,
                    'email':obj.email,
-                   'password':obj.password
+                   'tel':obj.tel
                    }
 
         data = {
             'user': user
         }
         return JsonResponse(data)
+    
+    
+def getMembers(request):
+    persons = Person.objects.all()
+    template = "common/membre.html"
+    context = {"persons":persons}
+    return render(request, template,context)
