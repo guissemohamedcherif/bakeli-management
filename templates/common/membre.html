@@ -53,7 +53,7 @@
               <td class="nomClass posteData" name="nom">{{person.nom}}</td>
               <td class="telClass posteData" name="tel">{{person.tel}}</td>
               <td class="genreClass posteData" name="genre">{{person.genre}}</td>
-              <td class="adressClass posteData" name="adress">{{person.adress}}</td>
+              <td class="adressClass posteData" name="adress"><img src="{{person.image}}"></td>
               <td class="align-center">
                 <a class="btn btn-info form-control" href="">
                     <i class="fas fa-eye"></i>
@@ -114,9 +114,7 @@
           <label>ADRESSE</label>
           <textarea class="form-control" id="form-adress" name="formAdress"></textarea>
           <hr> 
-          <label>CHOISIR PHOTO</label>
-          <input type="file" class="form-control" id="form-img" name="formImg"/>
-          <hr>      
+         
       </div>
       <div class="modal-footer">
           <button id="btn_save" name="btn" type="submit" class="btn btn-primary" >Enregistrer</button>
@@ -134,16 +132,14 @@
 
 <script>
 
- /*   $('#adduser').submit(function() {
+    $('#addmember').submit(function() {
      
     var temoin = $('#btn_save').text();
     var prenomInput = $('input[name="formPrenom"]').val().trim();
     var nomInput = $('input[name="formNom"]').val().trim();
-    var userInput = $('input[name="formUser"]').val().trim();
     var telInput = $('input[name="formTel"]').val().trim();
-    var adressInput = $('input[name="formAdress"]').val().trim();
-    var emailInput = $('input[name="formEmail"]').val().trim();
-    var passInput = $('input[name="formPass"]').val().trim();
+    var adressInput = $('#form-adress').val().trim();
+    var genreInput = $('#form-genre').val();
     
 
     var compare = temoin.localeCompare('Enregistrer');
@@ -153,21 +149,19 @@
         if (prenomInput) {
           // Create Ajax Call
           $.ajax({
-              url: '{% url "userCreate" %}',
+              url: '{% url "memberCreate" %}',
               data: {
                   'prenom': prenomInput,
                   'nom': nomInput,
                   'tel': telInput,
-                  'email': emailInput,
-                  'username': userInput,
-                  'password': passInput,
-                  'adress':adressInput
+                  'adress':adressInput,
+                  'genre': genreInput,
               },
               
               
               dataType: 'json',
               success: function (data) {
-                  if (data.user) {
+                  if (data.person) {
                    
                   }
               }
@@ -179,7 +173,7 @@
       location.reload(true);
       }
     return false; 
-   }); */
+   }); 
 
    
     function deleteU(id) {

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import View, TemplateView, CreateView, ListView
-from .forms import SignUpForm, UserForm
+from .forms import SignUpForm, UserForm,PersonForm
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -21,8 +21,7 @@ from django.template.loader import get_template
 from django.shortcuts import HttpResponse
 from django.template.loader import get_template, render_to_string
 from fpdf import FPDF, HTMLMixin
-import html.parser    
-
+import html.parser  
 
 class DashboardView(LoginRequiredMixin,TemplateView):
         template_name = 'base.html'  
@@ -82,3 +81,36 @@ def getMembers(request):
     template = "common/membre.html"
     context = {"persons":persons}
     return render(request, template,context)
+
+
+class CreateMember(View):
+    
+    def  get(self, request):
+        prenom1 = request.GET.get('prenom', None)
+        nom1 = request.GET.get('nom', None)
+        tel1 = request.GET.get('tel', None)
+        adress1 = request.GET.get('adress', None)
+        genre = request.GET.get('genre', None)
+        
+        obj = Person.objects.create(
+            prenom = prenom1,
+            nom = nom1,
+            tel = tel1,
+            adress = adress1,
+            genre = genre,
+        )
+      
+            
+        
+        person = {'id':obj.id,
+                   'prenom':obj.prenom,
+                   'nom':obj.nom,
+                   'tel':obj.tel,
+                   'genre':obj.genre,
+                   }
+
+        data = {
+            'person': person
+        }
+        return JsonResponse(data)
+    

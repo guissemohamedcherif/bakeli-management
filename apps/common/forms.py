@@ -64,3 +64,20 @@ class loginForm(forms.ModelForm):
             'password',
             ]
             
+            
+class PersonForm(forms.ModelForm):
+        prenom = forms.CharField(label="PRENOM",max_length=250)
+        nom = forms.CharField(label="NOM",max_length=250)
+        adress = forms.CharField(label="ADRESSE",widget=forms.Textarea)
+        tel  = forms.CharField(label="TELEPHONE",max_length=10)
+        genre = forms.ChoiceField(label="GENRE",widget = forms.Select)
+        image = forms.ImageField()
+        class Meta:
+            fields = [
+                'prenom',
+                'nom',
+                'adress',
+                'tel',
+                'genre',
+                'image'
+            ]

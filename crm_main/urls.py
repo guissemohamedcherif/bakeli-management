@@ -21,6 +21,7 @@ urlpatterns = [
     path('users/',views.getUsers, name='userPage'),
     path('create-user',views.CreateUser.as_view(), name='userCreate'),
     path('members/',views.getMembers, name='memberPage'),
+    path('create-members/',views.CreateMember.as_view(), name='memberCreate'),
 
 ]
 
