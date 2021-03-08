@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %} 
+{% block content %}
+          <!-- Modal -->
+
+              <div class="modal-content">
+                
+                 
+                <div class="modal-body">
+                    <form method="POST" enctype="multipart/form-data">
+                      {% csrf_token %}
+      
+                      <div class="row">
+                        <div class="col-sm">
+                          {{form.prenom | as_crispy_field}}
+                        </div>
+                        <div class="col-sm">
+                          {{form.nom | as_crispy_field}}
+                        </div>
+                      </div>
+      
+                      <div class="row">
+                        <div class="col-sm">
+                          {{form.tel | as_crispy_field}}
+                        </div>
+                        <div class="col-sm">
+                          {{form.genre | as_crispy_field}}
+                        </div>
+                      </div>
+      
+                      {{form.adress | as_crispy_field}}
+                      <br>
+                      {{form.image | as_crispy_field}}
+                      <hr>
+                    <hr>      
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_save" name="btn" type="submit" class="btn btn-primary" >Modifer</button>
+                    <button id="btn_close" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                </div>
+                </form>
+              </div>
+          {% endblock content %}

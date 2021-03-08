@@ -23,7 +23,7 @@ from django.template.loader import get_template, render_to_string
 from fpdf import FPDF, HTMLMixin
 import html.parser  
 from .forms import PersonForm
-  
+from django.shortcuts import get_object_or_404
 
 
 class DashboardView(LoginRequiredMixin,TemplateView):
@@ -132,3 +132,13 @@ def deleteMember(request):
             'deleted': True
         }
     return JsonResponse(data)
+
+
+def MemberUpdateView(request,id):
+    obj = get_object_or_404(Person, id=id)
+    
+    form = PersonForm(request.POST or None,request.FILES or None ,instance=obj)
+    if form.is_valid():
+        form.save()
+        return redirect('memberCreate')
+    return render(request, 'common/editMember.html', {'form': form}) 

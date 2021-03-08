@@ -61,7 +61,7 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
         <td class="col-md">
             <div class="row">
                 <div class="col-sm">
-                  <button class="btn btn-secondary" style="float: right" onClick="" data-toggle="modal" data-target="#myModal"><i class="fas fa-eye"></i></button>
+                  <a href="{% url 'MemberUpdate' person.id %}" class="btn btn-secondary" style="float: right" onClick=""><i class="fas fa-eye"></i></a>
                 </div>
                 <div class="col-sm">
                   <button class="btn btn-warning" style="float: left" onClick="deleteMember({{person.id}})"><i class="fas fa-archive"></i></button>
