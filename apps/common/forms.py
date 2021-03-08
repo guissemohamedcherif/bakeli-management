@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from apps.userprofile.models import CustomUser
+from apps.common.models import Person
 from django.core.exceptions import ValidationError
 
 
@@ -66,18 +67,23 @@ class loginForm(forms.ModelForm):
             
             
 class PersonForm(forms.ModelForm):
+        GEEKS_CHOICES =( 
+        ("HOMME", "HOMME"), 
+        ("FEMME", "FEMME"), )
+    
         prenom = forms.CharField(label="PRENOM",max_length=250)
         nom = forms.CharField(label="NOM",max_length=250)
         adress = forms.CharField(label="ADRESSE",widget=forms.Textarea)
         tel  = forms.CharField(label="TELEPHONE",max_length=10)
-        genre = forms.ChoiceField(label="GENRE",widget = forms.Select)
-        image = forms.ImageField()
+        genre = forms.ChoiceField(label="GENRE",choices = GEEKS_CHOICES)
+        image = forms.ImageField(label="PHOTO")
         class Meta:
+            model = Person
             fields = [
                 'prenom',
                 'nom',
                 'adress',
                 'tel',
                 'genre',
-                'image'
+                'image',
             ]

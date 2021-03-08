@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import View, TemplateView, CreateView, ListView
-from .forms import SignUpForm, UserForm,PersonForm
+from .forms import SignUpForm, UserForm
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -22,6 +22,9 @@ from django.shortcuts import HttpResponse
 from django.template.loader import get_template, render_to_string
 from fpdf import FPDF, HTMLMixin
 import html.parser  
+from .forms import PersonForm
+  
+
 
 class DashboardView(LoginRequiredMixin,TemplateView):
         template_name = 'base.html'  
@@ -76,41 +79,56 @@ class CreateUser(View):
         return JsonResponse(data)
     
     
-def getMembers(request):
+
+def CreateMember(request):
     persons = Person.objects.all()
-    template = "common/membre.html"
-    context = {"persons":persons}
-    return render(request, template,context)
-
-
-class CreateMember(View):
-    
-    def  get(self, request):
-        prenom1 = request.GET.get('prenom', None)
-        nom1 = request.GET.get('nom', None)
-        tel1 = request.GET.get('tel', None)
-        adress1 = request.GET.get('adress', None)
-        genre = request.GET.get('genre', None)
-        
-        obj = Person.objects.create(
-            prenom = prenom1,
-            nom = nom1,
-            tel = tel1,
-            adress = adress1,
-            genre = genre,
-        )
-      
+    personform = PersonForm
+    template_name = "common/member.html"
+    if request.method == "POST":
+        personform = PersonForm(request.POST,request.FILES)  
+              
+        if personform.is_valid():
+            person = personform.save()
             
-        
-        person = {'id':obj.id,
-                   'prenom':obj.prenom,
-                   'nom':obj.nom,
-                   'tel':obj.tel,
-                   'genre':obj.genre,
-                   }
+            obj = Person.objects.latest('id')
+            
+            enfant = Enfant.objects.create(
+                person_id = obj.id
+            )
+            if obj.genre == "HOMME":
+                pere = Pere.objects.create(
+                    person_id = obj.id
+                )
+            if obj.genre == "FEMME":
+                mere = Mere.objects.create(
+                    person_id = obj.id
+                )
+            personform = PersonForm()
+            return redirect('memberCreate')
 
-        data = {
-            'person': person
-        }
-        return JsonResponse(data)
+    else:
+        personform = PersonForm() 
     
+    context = {'personform': personform, 'persons':persons} 
+    return render (request,template_name,context)
+
+
+def deleteMember(request):
+    id1 = request.GET.get('id', None)
+    person = Person.objects.get(id=id1)
+    person.stat = False
+    person.save()
+    if person.genre == "HOMME":
+        pere = Pere.objects.get(person_id = person.id)
+        pere.stat = False
+        pere.save()
+        
+    if person.genre == "FEMME":
+        mere = Mere.objects.get(person_id = person.id)
+        mere.stat = False
+        mere.save()
+        
+    data = {
+            'deleted': True
+        }
+    return JsonResponse(data)

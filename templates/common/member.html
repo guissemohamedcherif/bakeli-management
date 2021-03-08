@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %} 
+{% block content %}
+
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+              
+ <!-- Divider -->
+ <hr class="sidebar-divider">
+
+ <!-- Page Heading -->
+ <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+  <h1 class="h3 mb-0 text-gray-800">Les Membres de la Famille</h1>
+  </div>          
+<!-- Divider -->
+<hr class="sidebar-divider">
+
+<!-- Topbar -->
+<nav class="navbar navbar-expand navbar-light bg-light topbar mb-4 static-top shadow">
+
+<!-- Topbar Search -->
+<form
+    class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+    <div class="input-group">
+        <input type="text" class="form-control bg-blue border-10 small" placeholder="Search for..."
+            aria-label="Search" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="button">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
+        </div>
+    </div>
+</form>
+
+<!-- Topbar Navbar -->
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center ">
+<button data-toggle="modal" data-target="#myModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
+</div>
+
+</nav>
+<!-- End of Topbar -->
+  <table id="memberTable" class="table table-striped ">
+      <tr class="d-flex">
+        <th class="col-md" style="text-align:center" ><strong>PRENOM</strong></th>
+        <th class="col-md" style="text-align:center" ><strong>NOM</strong></th>
+        <th class="col-md" style="text-align:center" ><strong>TELEPHONE</strong></th>
+        <th class="col-md" style="text-align:center" ><strong>GENRE</strong></th>
+        <th class="col-md" style="text-align:center" colspan="2"><strong>ACTIONS</strong></th>
+      </tr>
+      {% if persons %}
+      {% for person in persons %}
+      <tr class="d-flex" id="person-{{person.id}}">
+        <td class="prenomClass posteData col-md" name="prenom" style="text-align:center">{{person.prenom}}</td>
+        <td class="nomClass posteData col-md" name="nom" style="text-align:center">{{person.nom}}</td>
+        <td class="adresseClass posteData col-md" name="adresse" style="text-align:center">{{person.tel}}</td>
+        <td class="telClass posteData col-md" name="tel" style="text-align:center">{{person.genre}}</td>
+        <td class="col-md">
+            <div class="row">
+                <div class="col-sm">
+                  <button class="btn btn-secondary" style="float: right" onClick="" data-toggle="modal" data-target="#myModal"><i class="fas fa-eye"></i></button>
+                </div>
+                <div class="col-sm">
+                  <button class="btn btn-warning" style="float: left" onClick="deleteMember({{person.id}})"><i class="fas fa-archive"></i></button>
+                </div>
+            </div>
+        </td>            
+    </tr>
+      {% endfor %}              
+      {% endif %}
+    </table> 
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          </div>
+           
+          <div class="modal-body">
+              <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="row">
+                  <div class="col-sm">
+                    {{personform.prenom | as_crispy_field}}
+                  </div>
+                  <div class="col-sm">
+                    {{personform.nom | as_crispy_field}}
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm">
+                    {{personform.tel | as_crispy_field}}
+                  </div>
+                  <div class="col-sm">
+                    {{personform.genre | as_crispy_field}}
+                  </div>
+                </div>
+
+                {{personform.adress | as_crispy_field}}
+                <br>
+                {{personform.image | as_crispy_field}}
+                <hr>
+              <hr>      
+          </div>
+          <div class="modal-footer">
+              <button id="btn_save" name="btn" type="submit" class="btn btn-primary" >Enregistrer</button>
+              <button id="btn_close" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+          </div>
+          </form>
+        </div>
+      </div>
+      </div>
+      
+      <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+      <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+      <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+      <script>
+
+      function deleteMember(id){
+        var action = confirm("Supprimer Membre ?");
+        if (action != false) {
+          $.ajax({
+              url: '{% url "memberDelete" %}',
+              data: {
+                  'id': id,
+              },
+              dataType: 'json',
+              success: function (data) {
+                  if (data.deleted) {
+                    $("#memberTable #person-" + id).remove();
+                  }
+              }
+          });
+        }
+        }
+
+      </script>
+{% endblock content %}

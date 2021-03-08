@@ -20,8 +20,8 @@ urlpatterns = [
     path('logout', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('users/',views.getUsers, name='userPage'),
     path('create-user',views.CreateUser.as_view(), name='userCreate'),
-    path('members/',views.getMembers, name='memberPage'),
-    path('create-members/',views.CreateMember.as_view(), name='memberCreate'),
+    path('create-members/',views.CreateMember, name='memberCreate'),
+    path('delete-member/',views.deleteMember, name='memberDelete'),
 
 ]
 
