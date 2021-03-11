@@ -20,7 +20,6 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from django.shortcuts import HttpResponse
 from django.template.loader import get_template, render_to_string
-from fpdf import FPDF, HTMLMixin
 import html.parser  
 from .forms import PersonForm
 from django.shortcuts import get_object_or_404
@@ -66,11 +65,12 @@ class CreateUser(View):
             
         
         user = {'id':obj.id,
-                   'prenom':obj.prenom,
-                   'nom':obj.nom,
+                   'prenom':obj.first_name,
+                   'nom':obj.last_name,
                    'username':obj.username,
                    'email':obj.email,
-                   'tel':obj.tel
+                   'tel':obj.tel,
+                   'adress':obj.adress
                    }
 
         data = {
@@ -78,7 +78,37 @@ class CreateUser(View):
         }
         return JsonResponse(data)
     
+
+class UpdateUser(View):
+    def  get(self, request):
+        id1 = request.GET.get('id', None)
+        nom1 = request.GET.get('nom', None)
+        prenom1 = request.GET.get('prenom', None)
+        tel1 = request.GET.get('tel', None)
+        adress1 = request.GET.get('adress', None)
+        email1 = request.GET.get('email', None)
+        username1 = request.GET.get('username', None)
+        pass1 = request.GET.get('password', None)
     
+        
+        obj = CustomUser.objects.get(id=id1)
+        obj.first_name = prenom1
+        obj.last_name = nom1
+        obj.tel = tel1
+        obj.adress = adress1
+        obj.email = email1
+        obj.username = username1
+        obj.password = make_password(pass1)
+
+        obj.save()
+
+        user = {'id':obj.id,'last_name':obj.last_name,'first_name':obj.first_name,'tel':obj.tel,'adress':obj.adress,'email':obj.email,'username':obj.username}
+
+        data = {
+            'user': user
+        }
+        return JsonResponse(data)
+
 
 def CreateMember(request):
     persons = Person.objects.all()

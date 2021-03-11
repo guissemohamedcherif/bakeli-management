@@ -23,6 +23,7 @@ urlpatterns = [
     path('create-members/',views.CreateMember, name='memberCreate'),
     path('delete-member/',views.deleteMember, name='memberDelete'),
     path(r'^member-update/(?P<id>\d+)/$', views.MemberUpdateView, name='MemberUpdate'),
+    path('user-update/', views.UpdateUser.as_view(), name='update_user'),
 
 ]
 
