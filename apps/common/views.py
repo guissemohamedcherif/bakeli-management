@@ -31,7 +31,7 @@ class DashboardView(LoginRequiredMixin,TemplateView):
 
 
 def getUsers(request):
-    users = CustomUser.objects.all()
+    users = CustomUser.objects.filter(stat=1)
     template = "admin/users.html"
     context = {"users":users}
     return render(request, template,context)
@@ -65,8 +65,8 @@ class CreateUser(View):
             
         
         user = {'id':obj.id,
-                   'prenom':obj.first_name,
-                   'nom':obj.last_name,
+                   'first_name':obj.first_name,
+                   'last_name':obj.last_name,
                    'username':obj.username,
                    'email':obj.email,
                    'tel':obj.tel,
@@ -102,12 +102,24 @@ class UpdateUser(View):
 
         obj.save()
 
-        user = {'id':obj.id,'last_name':obj.last_name,'first_name':obj.first_name,'tel':obj.tel,'adress':obj.adress,'email':obj.email,'username':obj.username}
+        user = {'id':obj.id,'first_name':"test",'last_name':obj.last_name,'tel':obj.tel,'adress':obj.adress,'email':obj.email,'username':obj.username}
 
         data = {
             'user': user
         }
         return JsonResponse(data)
+    
+    
+def deleteUser(request):
+    id = request.GET.get('id')
+    user = CustomUser.objects.get(id=id)
+    user.stat = False
+    user.save()
+        
+    data = {
+            'deleted': True
+        }
+    return JsonResponse(data)
 
 
 def CreateMember(request):

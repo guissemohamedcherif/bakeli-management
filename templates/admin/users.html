@@ -44,7 +44,6 @@
               <th>USERNAME</th>
               <th>EMAIL</th>
               <th>TELEPHONE</th>
-              <th>ADRESSE</th>
 
               <th style="text-align:center" colspan="2">Actions</th>
             </tr>
@@ -58,7 +57,7 @@
               <td class="usernameClass posteData" name="usernameName">{{user.username}}</td>
               <td class="emailClass posteData" name="emailName">{{user.email}}</td>
               <td class="telClass posteData" name="telName">{{user.tel}}</td>
-              <td class="adressClass posteData" name="adressName">{{user.adress}}</td>
+              <td class="adressClass posteData" style="display: none;" name="adressName">{{user.adress}}</td>
 
               <td class="align-center">
                 <button class="btn btn-success" style="float:right" onClick="edituser({{user.id}})" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
@@ -205,21 +204,19 @@
               dataType: 'json',
               success: function (data) {
                 if (data.user) {
-                    updateTouserTable(data.user)
-                  }
-              }
-          });
-          $('form#adduser').trigger("reset");
-          return true;
-         } 
-         else {
-          alert("Remplir tous les champs.");
-          return false;
-      }
-      $('form#adduser').trigger("reset");
-      }
-    return false; 
-   });
+                  updateTouserTable(data.user);
+                }
+            }
+        });
+       } else {
+        alert("All fields must have a valid value.");
+    }
+    $('form#adduser').trigger("reset");
+    $('#myModal').modal('hide');
+    }
+
+  return false; 
+ });
 
 
    function appendToUserTable(user){
@@ -249,32 +246,6 @@ let temp = `
    }
 
 
-   function updateTouserTable(user){
-    $("#userTable #user-"+user.id).children('.posteData').each(function() {
-
-        var attr = $(this).attr('name');
-        if (attr == 'firstName') {
-          $(this).val(user.first_name);
-        } 
-        if (attr == 'lastName') {
-          $(this).val(user.last_name);
-        } 
-        if (attr == 'usernameName') {
-          $(this).val(user.username);
-        } 
-        if (attr == 'emailName') {
-          $(this).val(user.email);
-        } 
-        if (attr == 'telName') {
-          $(this).val(user.tel);
-        } 
-          if (attr == 'adressName') {
-            $(this).val(user.adress);
-          }
-      });
-}
-
-
    function edituser(id) {
     if (id) {
       tr_id = "#user-" + id;
@@ -295,7 +266,7 @@ let temp = `
         var action = confirm("Etes vous sure de vouloir supprimer cet Utilisateur ?");
         if (action != false) {
           $.ajax({
-              url: '',
+              url: '{% url "Userdelete" %}',
               data: {
                   'id': id,
               },
@@ -303,7 +274,6 @@ let temp = `
               success: function (data) {
                   if (data.deleted) {
                     $("#userTable #user-" + id).remove();
-                    location.reload(true);
                   }
               }
           });
@@ -314,5 +284,29 @@ let temp = `
         $("#form-user").val("");
         $("#form-pass").val("");
       }
+</script>
+
+<script>
+  function updateTouserTable(user){
+   $("#userTable #user-" + user.id).children('.posteData').each(function() {
+
+       var attr = $(this).attr('name');
+       if (attr == "firstName") {
+         $(this).text(user.first_name);
+       }    
+       if (attr == "lastName") {
+        $(this).text(user.last_name);
+      } 
+      if (attr == "emailName") {
+        $(this).text(user.email);
+      } 
+      if (attr == "usernameName") {
+        $(this).text(user.username);
+      } 
+      if (attr == "telName") {
+        $(this).text(user.tel);
+      }  
+     });
+}
 </script>
 {% endblock content %}

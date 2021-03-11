@@ -9,4 +9,5 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True) 
     tel = models.CharField(max_length=15)
     adress = models.TextField()
+    stat = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
