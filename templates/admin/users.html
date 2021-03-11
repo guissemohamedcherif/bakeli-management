@@ -230,7 +230,6 @@ let temp = `
       <td>${user.username}</td>
       <td>${user.email}</td>
       <td>${user.tel}</td>
-      <td>${user.adress}</td>
 
       <td class="align-center">
         <button class="btn btn-success" style="float:right" onClick="edituser({{user.id}})" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
@@ -244,6 +243,7 @@ let temp = `
   </tr>
     `
     table.innerHTML += temp;
+    location.reload(true);
    }
 
 
@@ -282,8 +282,15 @@ let temp = `
       }
 
       function setTONull(){
+        $("#form-prenom").val("");
+        $("#form-nom").val("");
         $("#form-user").val("");
         $("#form-pass").val("");
+        $("#form-tel").val("");
+        $("#form-adress").val("");
+        $("#form-email").val("");
+
+        $("#btn_save").text('Enregistrer');
       }
 </script>
 
@@ -308,6 +315,7 @@ let temp = `
         $(this).text(user.tel);
       }  
      });
+     location.reload(true);
 }
 </script>
 {% endblock content %}

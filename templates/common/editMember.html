@@ -2,10 +2,8 @@
 {% load crispy_forms_tags %} 
 {% block content %}
           <!-- Modal -->
-
-              <div class="modal-content">
-                
-                 
+          <div style="margin:auto" class="col-lg-10">
+              <div class="modal-content"> 
                 <div class="modal-body">
                     <form method="POST" enctype="multipart/form-data">
                       {% csrf_token %}
@@ -39,5 +37,6 @@
                     <button id="btn_close" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
                 </div>
                 </form>
+              </div>
               </div>
           {% endblock content %}

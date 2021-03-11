@@ -102,7 +102,7 @@ class UpdateUser(View):
 
         obj.save()
 
-        user = {'id':obj.id,'first_name':"test",'last_name':obj.last_name,'tel':obj.tel,'adress':obj.adress,'email':obj.email,'username':obj.username}
+        user = {'id':obj.id,'first_name':obj.first_name,'last_name':obj.last_name,'tel':obj.tel,'adress':obj.adress,'email':obj.email,'username':obj.username}
 
         data = {
             'user': user
@@ -113,8 +113,7 @@ class UpdateUser(View):
 def deleteUser(request):
     id = request.GET.get('id')
     user = CustomUser.objects.get(id=id)
-    user.stat = False
-    user.save()
+    user.delete()
         
     data = {
             'deleted': True
