@@ -60,7 +60,7 @@
               <td class="adressClass posteData" style="display: none;" name="adressName">{{user.adress}}</td>
 
               <td class="align-center">
-                <button class="btn btn-success" style="float:right" onClick="edituser({{user.id}})" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
+                <button id="btn_edit" class="btn btn-success" style="float:right" onClick="edituser({{user.id}})" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
               </td>
             
               <td class="align-center">
@@ -221,29 +221,25 @@
 
 
    function appendToUserTable(user){
-    let table =  document.querySelector('table');
-
-let temp = `
-    <tr>
-      <td>${user.first_name}</td>
-      <td>${user.last_name}</td>
-      <td>${user.username}</td>
-      <td>${user.email}</td>
-      <td>${user.tel}</td>
-
-      <td class="align-center">
-        <button class="btn btn-success" style="float:right" onClick="edituser({{user.id}})" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
-      </td>
-    
-      <td class="align-center">
-          <button class="btn btn-danger" onClick="deleteU({{user.id}})">
-            <i class="fas fa-trash-alt"></i>
-          </button>
-      </td>
-  </tr>
-    `
-    table.innerHTML += temp;
-    location.reload(true);
+    $("#userTable > tbody:last-child").append(`
+                  <tr id="user-${user.id}">
+                    <td class="firstClass posteData" name="firstName">${user.first_name}</td>
+                    '<td class="lastClass posteData" name="lastName">${user.last_name}</td>
+                    '<td class="usernameClass posteData" name="usernameName">${user.username}</td>
+                    '<td class="emailClass posteData" name="emailName">${user.email}</td>
+                    '<td class="telClass posteData" name="telName">${user.tel}</td>
+                    '<td class="adressClass posteData" style="display: none;" name="adressName">${user.adress}</td>
+                      '<td class="align-center">
+                        <button id="btn_edit" class="btn btn-success" style="float:right" onClick="edituser(${user.id})" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
+                      </td>
+                    
+                     '<td class="align-center">
+                          <button class="btn btn-danger" onClick="deleteU(${user.id})">
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                      </td>
+                  </tr>
+              `);
    }
 
 
@@ -257,7 +253,6 @@ let temp = `
       $('#form-tel').val($(tr_id).find(".telClass").text());
       $('#form-email').val($(tr_id).find(".emailClass").text());
       $('#form-adress').val($(tr_id).find(".adressClass").text());
-
       $('#btn_save').text('Modifier');     
     }
   }
@@ -282,14 +277,7 @@ let temp = `
       }
 
       function setTONull(){
-        $("#form-prenom").val("");
-        $("#form-nom").val("");
-        $("#form-user").val("");
-        $("#form-pass").val("");
-        $("#form-tel").val("");
-        $("#form-adress").val("");
-        $("#form-email").val("");
-
+        $('form#adduser').trigger("reset");
         $("#btn_save").text('Enregistrer');
       }
 </script>
