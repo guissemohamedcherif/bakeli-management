@@ -44,7 +44,7 @@
               <th>USERNAME</th>
               <th>EMAIL</th>
               <th>TELEPHONE</th>
-
+              <th>ADRESSE</th>
               <th style="text-align:center" colspan="2">Actions</th>
             </tr>
           </thead>
@@ -52,15 +52,15 @@
             {% if users %}
             {% for user in users %}
             <tr id="user-{{user.id}}">
-              <td class="firstClass posteData" name="firstName">{{user.first_name}}</td>
-              <td class="lastClass posteData" name="lastName">{{user.last_name}}</td>
-              <td class="usernameClass posteData" name="usernameName">{{user.username}}</td>
-              <td class="emailClass posteData" name="emailName">{{user.email}}</td>
-              <td class="telClass posteData" name="telName">{{user.tel}}</td>
-              <td class="adressClass posteData" style="display: none;" name="adressName">{{user.adress}}</td>
+              <td class="firstClass userData" name="firstName">{{user.first_name}}</td>
+              <td class="lastClass userData" name="lastName">{{user.last_name}}</td>
+              <td class="usernameClass userData" name="usernameName">{{user.username}}</td>
+              <td class="emailClass userData" name="emailName">{{user.email}}</td>
+              <td class="telClass userData" name="telName">{{user.tel}}</td>
+              <td class="adressClass userData" name="adressName">{{user.adress}}</td>
 
               <td class="align-center">
-                <button id="btn_edit" class="btn btn-success" style="float:right" onClick="edituser({{user.id}})" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
+                <button id="btn_edit" class="btn btn-info" style="float:right" onClick="edituser({{user.id}})" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
               </td>
             
               <td class="align-center">
@@ -204,7 +204,7 @@
               dataType: 'json',
               success: function (data) {
                 if (data.user) {
-                  updateTouserTable(data.user);
+                  updateTouserTable(data.user)   ;        
                 }
             }
         });
@@ -223,12 +223,12 @@
    function appendToUserTable(user){
     $("#userTable > tbody:last-child").append(`
                   <tr id="user-${user.id}">
-                    <td class="firstClass posteData" name="firstName">${user.first_name}</td>
-                    '<td class="lastClass posteData" name="lastName">${user.last_name}</td>
-                    '<td class="usernameClass posteData" name="usernameName">${user.username}</td>
-                    '<td class="emailClass posteData" name="emailName">${user.email}</td>
-                    '<td class="telClass posteData" name="telName">${user.tel}</td>
-                    '<td class="adressClass posteData" style="display: none;" name="adressName">${user.adress}</td>
+                    <td class="firstClass userData" name="firstName">${user.first_name}</td>
+                    '<td class="lastClass userData" name="lastName">${user.last_name}</td>
+                    '<td class="usernameClass userData" name="usernameName">${user.username}</td>
+                    '<td class="emailClass userData" name="emailName">${user.email}</td>
+                    '<td class="telClass userData" name="telName">${user.tel}</td>
+                    '<td class="adressClass userData" name="adressName">${user.adress}</td>
                       '<td class="align-center">
                         <button id="btn_edit" class="btn btn-success" style="float:right" onClick="edituser(${user.id})" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
                       </td>
@@ -257,6 +257,32 @@
     }
   }
 
+  function updateTouserTable(user){
+    $("#userTable #user-"+user.id).children('.userData').each(function() {
+ 
+        var attr = $(this).attr('name');
+        if (attr == "firstName") {
+          $(this).text(user.first_name);
+        }    
+        if (attr == "lastName") {
+         $(this).text(user.last_name);
+       } 
+        if (attr == "emailName") {
+         $(this).text(user.email);
+       } 
+        if (attr == "usernameName") {
+         $(this).text(user.username);
+       } 
+        if (attr == "telName") {
+         $(this).text(user.tel);
+       } 
+       if(attr == "adressName"){
+         $(this).text(user.adress);
+       } 
+      });
+      location.reload(true);
+ }
+
    
     function deleteU(id) {
         var action = confirm("Etes vous sure de vouloir supprimer cet Utilisateur ?");
@@ -282,27 +308,4 @@
       }
 </script>
 
-<script>
-  function updateTouserTable(user){
-   $("#userTable #user-" + user.id).children('.posteData').each(function() {
-
-       var attr = $(this).attr('name');
-       if (attr == "firstName") {
-         $(this).text(user.first_name);
-       }    
-       if (attr == "lastName") {
-        $(this).text(user.last_name);
-      } 
-      if (attr == "emailName") {
-        $(this).text(user.email);
-      } 
-      if (attr == "usernameName") {
-        $(this).text(user.username);
-      } 
-      if (attr == "telName") {
-        $(this).text(user.tel);
-      }  
-     });
-}
-</script>
 {% endblock content %}

@@ -108,6 +108,7 @@ class UpdateUser(View):
             'user': user
         }
         return JsonResponse(data)
+        
     
     
 def deleteUser(request):
