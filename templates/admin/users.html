@@ -20,13 +20,9 @@
       <form
           class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
           <div class="input-group">
-              <input type="text" class="form-control bg-blue border-10 small" placeholder="Search for..."
+              <input id="searchtxt" onKeyup="searchUser()" type="text" class="form-control bg-blue border-10 small" placeholder="Search for..."
                   aria-label="Search" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                  <button class="btn btn-primary" type="button">
-                      <i class="fas fa-search fa-sm"></i>
-                  </button>
-              </div>
+             
           </div>
       </form>
 
@@ -306,6 +302,41 @@
         $('form#adduser').trigger("reset");
         $("#btn_save").text('Enregistrer');
       }
+
+    function searchUser(){
+        var input, filter, table, tr, td, i, textval;
+        input = document.getElementById("searchtxt");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("userTable");
+        tr = document.getElementsByTagName("tr");
+        for  (i = 0; i < tr.length; i++){
+          td = tr[i].getElementsByTagName("td")[0];         
+          td1 = tr[i].getElementsByTagName("td")[1];         
+          td2 = tr[i].getElementsByTagName("td")[2];         
+          td3 = tr[i].getElementsByTagName("td")[3];         
+          td4 = tr[i].getElementsByTagName("td")[4];         
+          td5 = tr[i].getElementsByTagName("td")[5];         
+
+          if(td){
+            textval = td.textContent || td.textContent;
+            textval1 = td1.textContent || td1.textContent;
+            textval2 = td2.textContent || td2.textContent;
+            textval3 = td3.textContent || td3.textContent;
+            textval4 = td4.textContent || td4.textContent;
+            textval5 = td5.textContent || td5.textContent;
+
+
+            if (textval.toUpperCase().indexOf(filter) > -1 || textval1.toUpperCase().indexOf(filter) > -1 || textval2.toUpperCase().indexOf(filter) > -1
+            || textval3.toUpperCase().indexOf(filter) > -1 || textval4.toUpperCase().indexOf(filter) > -1 || textval5.toUpperCase().indexOf(filter) > -1){ 
+              tr[i].style.display="";
+          }
+          else{
+            tr[i].style.display="none";
+          }
+        }     
+        }
+      }
+  
 </script>
 
 {% endblock content %}
