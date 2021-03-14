@@ -122,6 +122,7 @@ def deleteUser(request):
     return JsonResponse(data)
 
 
+
 def CreateMember(request):
     persons = Person.objects.all()
     personform = PersonForm
