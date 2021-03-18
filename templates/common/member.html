@@ -49,6 +49,8 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
         <th class="col-md" style="text-align:center" ><strong>NOM</strong></th>
         <th class="col-md" style="text-align:center" ><strong>TELEPHONE</strong></th>
         <th class="col-md" style="text-align:center" ><strong>GENRE</strong></th>
+        <th class="col-md" style="text-align:center" ><strong>AVATAR</strong></th>
+
         <th class="col-md" style="text-align:center" colspan="2"><strong>ACTIONS</strong></th>
       </tr>
       {% if persons %}
@@ -56,12 +58,14 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
       <tr class="d-flex" id="person-{{person.id}}">
         <td class="prenomClass posteData col-md" name="prenom" style="text-align:center">{{person.prenom}}</td>
         <td class="nomClass posteData col-md" name="nom" style="text-align:center">{{person.nom}}</td>
-        <td class="adresseClass posteData col-md" name="adresse" style="text-align:center">{{person.tel}}</td>
-        <td class="telClass posteData col-md" name="tel" style="text-align:center">{{person.genre}}</td>
+        <td class="telClass posteData col-md" name="tel" style="text-align:center">{{person.tel}}</td>
+        <td class="genreClass posteData col-md" name="genre" style="text-align:center">{{person.genre}}</td>
+        <td class="imgClass posteData col-md" name="img" style="text-align:center"><img src="{{person.image.url}}" width="40px" height="40px"/></td>
+
         <td class="col-md">
             <div class="row">
                 <div class="col-sm">
-                  <a href="{% url 'MemberUpdate' person.id %}" class="btn btn-secondary" style="float: right" onClick=""><i class="fas fa-eye"></i></a>
+                  <button class="btn btn-secondary" style="float: right" data-toggle="modal" data-target="#myModal2"   onClick="editMember({{person.id}})"><i class="fas fa-eye"></i></button>
                 </div>
                 <div class="col-sm">
                   <button class="btn btn-warning" style="float: left" onClick="deleteMember({{person.id}})"><i class="fas fa-archive"></i></button>
@@ -118,6 +122,29 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
         </div>
       </div>
       </div>
+
+
+        <!-- Modal -->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          </div>
+           
+          <div class="modal-body">
+              <form method="PUT" enctype="multipart/form-data">
+                {{formedit | crispy}}
+          </div>
+          <div class="modal-footer">
+              <button id="btn_save" name="btn" type="submit" class="btn btn-primary" >Modifier</button>
+              <button id="btn_close" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+          </div>
+          </form>
+        </div>
+      </div>
+      </div>
+      
       
       <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
       <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
@@ -143,6 +170,17 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
           });
         }
         }
+
+        function editMember(id){
+          var idInput = id;
+          $.ajax({
+            type: "PUT",
+            url: '{% url "update_user" %}',
+            data: {
+                'id': idInput,
+            },
+        });
+      }
 
       </script>
 {% endblock content %}

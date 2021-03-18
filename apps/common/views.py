@@ -177,11 +177,18 @@ def deleteMember(request):
     return JsonResponse(data)
 
 
-def MemberUpdateView(request,id):
-    obj = get_object_or_404(Person, id=id)
+def MemberUpdateView(request):
+    id1 = request.GET.get('id', None)
+    obj = get_object_or_404(Person, id=id1)
+    formedit = PersonForm()
+    if request.method == "PUT":
+        formedit = PersonForm(request.POST or None,request.FILES or None ,instance=obj)
+        context ={'formedit':formedit}
+        if formedit.is_valid():
+            formedit.save()
     
-    form = PersonForm(request.POST or None,request.FILES or None ,instance=obj)
-    if form.is_valid():
-        form.save()
-        return redirect('memberCreate')
-    return render(request, 'common/editMember.html', {'form': form}) 
+    else :
+        formedit = PersonForm()
+        context = {}
+            
+    return render(request, 'common/member.html', context) 
