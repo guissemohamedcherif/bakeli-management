@@ -124,7 +124,7 @@ def deleteUser(request):
 
 
 def CreateMember(request):
-    persons = Person.objects.all()
+    persons = Person.objects.filter(stat=True)
     personform = PersonForm
     template_name = "common/member.html"
     if request.method == "POST":
