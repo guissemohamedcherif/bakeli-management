@@ -157,18 +157,15 @@ def deleteUser(request):
 
 def deleteMember(request):
     id1 = request.GET.get('id', None)
-    person = Person.objects.get(id=id1)
-    person.stat = False
-    person.save()
+    person = Person.objects.get(id=id1).delete()
+   
     if person.genre == "HOMME":
-        pere = Pere.objects.get(person_id = person.id)
-        pere.stat = False
-        pere.save()
+        pere = Pere.objects.get(person_id = person.id).delete()
+      
         
     if person.genre == "FEMME":
-        mere = Mere.objects.get(person_id = person.id)
-        mere.stat = False
-        mere.save()
+        mere = Mere.objects.get(person_id = person.id).delete()
+        
         
     data = {
             'deleted': True
@@ -299,4 +296,3 @@ def MemberEdit (request):
             }
                 return JsonResponse(data)
     
-          
