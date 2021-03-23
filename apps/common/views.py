@@ -157,7 +157,7 @@ def deleteUser(request):
 
 def deleteMember(request):
     id1 = request.GET.get('id', None)
-    person = Person.objects.get(id=id1).delete()
+    person = Person.objects.get(id=id1)
    
     if person.genre == "HOMME":
         pere = Pere.objects.get(person_id = person.id).delete()
@@ -166,7 +166,7 @@ def deleteMember(request):
     if person.genre == "FEMME":
         mere = Mere.objects.get(person_id = person.id).delete()
         
-        
+    person.delete()   
     data = {
             'deleted': True
         }
