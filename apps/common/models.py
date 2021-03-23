@@ -11,7 +11,7 @@ class Person(models.Model):
     adress = models.TextField(blank=False)
     tel  = models.CharField(max_length=10, blank=False)
     genre = models.CharField(max_length=250, choices=genre_stat, default='')
-    image = models.ImageField(default='login.png',upload_to='users/', null=True, blank=True)
+    image = models.ImageField(default='users/login.png',upload_to='users/', null=True, blank=True)
     stat = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
     

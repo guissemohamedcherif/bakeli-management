@@ -122,8 +122,7 @@ def deleteUser(request):
     return JsonResponse(data)
 
 
-
-def CreateMember(request):
+''' def CreateMember(request):
     persons = Person.objects.filter(stat=True)
     personform = PersonForm
     template_name = "common/member.html"
@@ -154,7 +153,7 @@ def CreateMember(request):
     
     context = {'personform': personform, 'persons':persons} 
     return render (request,template_name,context)
-
+'''
 
 def deleteMember(request):
     id1 = request.GET.get('id', None)
@@ -191,4 +190,113 @@ def MemberUpdateView(request):
         formedit = PersonForm()
         context = {}
             
-    return render(request, 'common/member.html', context) 
+
+
+def CreateMember(request):
+    persons = Person.objects.all()
+    context = {'persons': persons}
+    return render(request, 'common/member.html',context) 
+
+def mCreate(request):
+    if request.method == 'POST':
+        if request.is_ajax():
+            prenom = request.POST.get('formPrenom')
+            nom = request.POST.get('formNom')
+            tel = request.POST.get('formTel')
+            genre = request.POST.get('formGenre')
+            adress = request.POST.get('formAdress')
+            image = request.FILES.get('formImage')
+            
+            if image:
+            
+                obj = Person.objects.create(
+                    prenom=prenom,
+                    nom = nom,
+                    tel = tel,
+                    genre = genre,
+                    adress = adress, 
+                    image=image)
+            else:
+               obj = Person.objects.create(
+                    prenom=prenom,
+                    nom = nom,
+                    tel = tel,
+                    genre = genre,
+                    adress = adress) 
+            
+            obj2 = Person.objects.latest('id')
+            
+            enfant = Enfant.objects.create(
+                person_id = obj2.id
+            )
+            if obj2.genre == "HOMME":
+                pere = Pere.objects.create(
+                    person_id = obj2.id
+                )
+            if obj2.genre == "FEMME":
+                mere = Mere.objects.create(
+                    person_id = obj2.id
+                )
+            
+            person = {'id':obj.id,
+                   'prenom':obj.prenom,
+                   'nom':obj.nom,
+                   'tel':obj.tel,
+                   'genre':obj.genre,
+                   'adress':obj.adress,
+                   'image':obj.image.url,    
+                   }
+
+            data = {
+                'person': person
+            }
+            return JsonResponse(data)
+        
+         
+def MemberEdit (request):
+        
+        if request.method == 'POST':
+            if request.is_ajax():
+                id1 = request.POST.get('formId')
+                prenom = request.POST.get('formPrenom')
+                nom = request.POST.get('formNom')
+                tel = request.POST.get('formTel')
+                genre = request.POST.get('formGenre')
+                adress = request.POST.get('formAdress')
+                image = request.FILES.get('formImage')
+                
+                obj = Person.objects.get(id=id1)
+                obj.prenom = prenom
+                obj.nom = nom
+                obj.tel = tel
+                obj.genre = genre
+                obj.adress = adress
+                
+                if image:
+                    obj.image = image
+                obj.save()
+                if image:
+                    person = {
+                        'id':obj.id,
+                        'prenom':obj.prenom,
+                        'nom':obj.nom,
+                        'tel':obj.tel,
+                        'genre':obj.genre,
+                        'adress':obj.adress,
+                        'image':obj.image.url     
+                    }
+                else:
+                    person = {
+                        'id':obj.id,
+                        'prenom':obj.prenom,
+                        'nom':obj.nom,
+                        'tel':obj.tel,
+                        'genre':obj.genre,
+                        'adress':obj.adress,               
+                    }
+                data = {
+                'person': person
+            }
+                return JsonResponse(data)
+    
+          
