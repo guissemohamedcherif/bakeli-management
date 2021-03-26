@@ -5,7 +5,6 @@
 
     <!-- Begin Page Content -->
     <div class="container-fluid">
-
               
  <!-- Divider -->
  <hr class="sidebar-divider">
@@ -24,13 +23,9 @@
 <form
     class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
     <div class="input-group">
-        <input type="text" class="form-control bg-blue border-10 small" placeholder="Search for..."
+        <input type="text" id="txtmembre" onKeyup="searchMember()" class="form-control bg-blue border-10 small" placeholder="Search for..."
             aria-label="Search" aria-describedby="basic-addon2">
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="button">
-                <i class="fas fa-search fa-sm"></i>
-            </button>
-        </div>
+       
     </div>
 </form>
 
@@ -40,7 +35,6 @@
 <button data-toggle="modal" data-target="#myModal2" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
 class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
 </div>
-
 </nav>
 <!-- End of Topbar -->
   <table id="memberTable" class="table table-striped data-table">
@@ -82,10 +76,47 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
       {% endfor %}              
       {% endif %}
     </tbody>
-    </table> 
+    </table>
 
+    <nav style="float:right" aria-label="...">
+      {% if persons.has_other_pages %}
+      <ul class="pagination">
+        {% if persons.has_previous %}
+        <li class="page-item">
+        <a href="?page={{ persons.previous_page_number }}" class="page-link">Previous</a>
+      </li>
+        {% else %}
+        <li class="page-item disabled">
+          <span class="page-link">Previous</span>
+        </li>
+        {% endif %}
 
- 
+        {% for i in persons.paginator.page_range %}
+        {% if persons.number == i %}
+        <li class="page-item active">
+          <span class="page-link">
+            {{ i }} 
+            <span class="sr-only">(current)</span>
+          </span>
+        </li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if persons.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ persons.next_page_number }}">Next</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <span class="page-link">Next</span>
+        </li>
+      </ul>
+      {% endif %}
+    </nav> 
+    {% endif %}
+    
+
 
         <!-- Modal -->
     <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -174,7 +205,8 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
       </script>
 
       <script>
-        $('#ajax').submit(function() {
+        $('#ajax').submit(function(event) {
+          event.preventDefault();
           var prenomInput = $('input[name="formPrenom"]').val().trim();
           var nomInput = $('input[name="formNom"]').val().trim();
           var telInput = $('input[name="formTel"]').val().trim();
@@ -187,7 +219,6 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
           if(compare == 0)
           {
             if (prenomInput && nomInput && telInput && adressInput && genreInput=="HOMME" || genreInput=="FEMME" ) {
-          event.preventDefault();
           var data = new FormData($('#ajax').get(0));
           console.log(data)
       
@@ -213,7 +244,7 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
         }
         else{
           if (prenomInput && nomInput && telInput && adressInput && genreInput=="HOMME" || genreInput=="FEMME" ) {
-            event.preventDefault();
+            
             var data = new FormData($('#ajax').get(0));
             console.log(data)
         
@@ -278,5 +309,39 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
          function updateMemberTable(person){
          location.reload(true);
          }
+
+        function searchMember(){
+          var input, filter, table, tr, td, i, textval;
+        input = document.getElementById("txtmembre");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("memberTable");
+        tr = document.getElementsByTagName("tr");
+        for  (i = 0; i < tr.length; i++){
+          td = tr[i].getElementsByTagName("td")[0];         
+          td1 = tr[i].getElementsByTagName("td")[1];         
+          td2 = tr[i].getElementsByTagName("td")[2];         
+          td3 = tr[i].getElementsByTagName("td")[3];         
+          td4 = tr[i].getElementsByTagName("td")[4];         
+          td5 = tr[i].getElementsByTagName("td")[5];         
+
+          if(td){
+            textval = td.textContent || td.textContent;
+            textval1 = td1.textContent || td1.textContent;
+            textval2 = td2.textContent || td2.textContent;
+            textval3 = td3.textContent || td3.textContent;
+            textval4 = td4.textContent || td4.textContent;
+            textval5 = td5.textContent || td5.textContent;
+
+
+            if (textval.toUpperCase().indexOf(filter) > -1 || textval1.toUpperCase().indexOf(filter) > -1 || textval2.toUpperCase().indexOf(filter) > -1
+            || textval3.toUpperCase().indexOf(filter) > -1 || textval4.toUpperCase().indexOf(filter) > -1 || textval5.toUpperCase().indexOf(filter) > -1){ 
+              tr[i].style.display="flex";
+          }
+          else{
+            tr[i].style.display="none";
+          }
+        }     
+        }
+        }
       </script>
 {% endblock content %}

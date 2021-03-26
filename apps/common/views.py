@@ -23,6 +23,7 @@ from django.template.loader import get_template, render_to_string
 import html.parser  
 from .forms import PersonForm
 from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 class DashboardView(LoginRequiredMixin,TemplateView):
@@ -190,9 +191,18 @@ def MemberUpdateView(request):
 
 
 def CreateMember(request):
-    persons = Person.objects.all()
-    context = {'persons': persons}
-    return render(request, 'common/member.html',context) 
+    person_list = Person.objects.all()
+    
+    page = request.GET.get('page', 1)
+ 
+    paginator = Paginator(person_list, 5)
+    try:
+        persons = paginator.page(page)
+    except PageNotAnInteger:
+        persons = paginator.page(1)
+    except EmptyPage:
+        persons = paginator.page(paginator.num_pages)
+    return render(request, 'common/member.html',{'persons': persons}) 
 
 def mCreate(request):
     if request.method == 'POST':
