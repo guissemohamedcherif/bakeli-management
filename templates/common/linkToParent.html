@@ -212,8 +212,11 @@
                         },
                         
                         dataType: 'json',
-                        success: function () {
-                          
+                        success: function (data) {
+                          if (data.person){
+                              alert("Membre lier a son parent avec success")
+                              location.href="{% url 'memberCreate' %}"
+                          }
                         }
                     });
                   } else {

@@ -325,9 +325,17 @@ def createLinkParent(request):
         pere = Person.objects.get(id=idP)
     if idM:
         obj.mere_id = idM
-        mere = Person.objects.get(person_id=idM)
+        mere = Person.objects.get(id=idM)
     
     obj.save()
+    pers = {
+        'id': obj.id
+    }
+    data = {
+                'person': pers
+            }
+    return JsonResponse(data)
+    
     
     
     
