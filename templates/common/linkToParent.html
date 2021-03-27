@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+        <h1 class="h3 mb-0 text-gray-800">Parents de <strong>{{niit.prenom}} {{niit.nom}}</strong></h1>
+        </div>          
+ <!-- Divider -->
+ <hr class="sidebar-divider">
+ <div class="row" style="width:600px; margin-bottom: 20px;">
+    <div class="col-sm" style="text-align:center;margin-right:10px;">        
+      <select onchange="searchDatas()" class="form-control" id="parentId">   
+          <option value="">--- Choisir Pere/Mere ---</option>
+          <option value="HOMME"> PERE </option>
+          <option value="FEMME"> MERE </option>
+      </select>
+    </div>
+    <div class="col-sm" style="text-align:center; margin-left:10px;">
+        <input type="text" onkeyup="searchParent()" class="form-control" id="txtparent" placeholder="Rechercher Parent ...">    
+  </div>  
+  </div>
+  <hr class="sidebar-divider">
+    <div class="card o-hidden" style="text-align:center;"> 
+
+    <div class="row">
+        <div class="col-sm">
+            <table id="parentTable" class="table table-striped">
+                <thead>
+                    <tr style="display:flex;">
+                        <th class="col" style="text-align:center" ><strong>PRENOM</strong></th>
+                        <th class="col" style="text-align:center" ><strong>NOM</strong></th>
+                        <th class="col" style="text-align:center" ><strong>TELEPHONE</strong></th>
+                        <th class="col" style="text-align:center" ><strong>ADRESSE</strong></th>
+                      </tr>
+                </thead>
+                {% if persons %}
+                {% for person in persons %}
+                <tbody>
+                    <tr style="display:flex;">
+                     <td class="idClass col-md" id="idPers" name="idD" style="text-align:center;display:none;">{{person.id}}</td>
+                      <td class="prenClass col-md" name="prenom" style="text-align:center">{{person.prenom}}</td>
+                      <td class="nomClass col-md" name="nom" style="text-align:center">{{person.nom}}</td>
+                      <td class="telClass col-md" name="tel" style="text-align:center">{{person.tel}}</td>
+                      <td class="adressClass col-md" name="adress" style="text-align:center">{{person.adress}}</td>
+                      <td class="genreClass col-md" name="genre" style="text-align:center; display:none;">{{person.genre}}</td>  
+                  </tr>  
+                {% endfor %}              
+                {% endif %}
+            </tbody>
+              </table> 
+        </div>
+        <div class="col-sm">
+            <form id="addParent" action="">
+        <div class="modal-body">
+    <div class="row">
+    <div class="col-sm" style = "margin-left:10px;text-align:center;">
+        <label>PRENOM</label>
+        <input id="prenomId" readonly value="{{niit.prenom}}" name="prenomName" type="text" class="form-control" aria-label="prenom" aria-describedby="basic-addon1">
+    </div>
+    <div class="col-sm" style = "margin-left:10px;text-align:center;">
+        <label>NOM</label>
+        <input id="nomId" readonly value="{{niit.nom}}" name="nomName" type="text" class="form-control" aria-label="nom" aria-describedby="basic-addon1">
+    </div> 
+    </div>
+    <hr class="sidebar-divider">
+    <div class="row">
+        <div class="col-sm" style = "margin-left:10px;text-align:center;">
+            <label>PRENOM PERE</label>
+            <input id="prenomPereId" readonly name="prenomPereName" type="text" class="form-control" aria-describedby="basic-addon1">
+        </div>
+        <div class="col-sm" style = "margin-left:10px;text-align:center;">
+            <label>NOM PERE</label>
+            <input id="nomPereId" readonly type="text" class="form-control" aria-describedby="basic-addon1">
+        </div> 
+        </div>
+            <hr class="sidebar-divider">
+        <div class="row">
+            <div class="col-sm" style = "margin-left:10px;text-align:center;">
+                <label>PRENOM MERE</label>
+                <input id="prenomMereId" readonly type="text" class="form-control"aria-describedby="basic-addon1">
+            </div>
+            <div class="col-sm" style = "margin-left:10px;text-align:center;">
+                <label>NOM MERE</label>
+                <input id="nomMereId" readonly type="text" class="form-control" aria-describedby="basic-addon1">
+            </div> 
+            </div>
+            <input id="idP" readonly type="hidden" class="form-control" aria-describedby="basic-addon1">
+            <input id="idM" readonly type="hidden" class="form-control" aria-describedby="basic-addon1">
+
+    <hr class="sidebar-divider">
+    <div class="modal-footer" style="margin-top: 50px">
+    <button id="btn_save" onClick="saveLink({{person.id}})" name="btn" type="button" class="btn btn-primary" >Enregistrer</button>
+    <button id="btn_close"  class="btn btn-"type="button" class="btn btn-default" onclick="resetAll()">Annuler</button>
+    </div>
+    </form>
+        </div>
+    </div>
+    </div>  
+    </div>
+
+    <script>
+      
+            let thetable = document.getElementById('parentTable'); 
+            for (let i = 1; i < thetable.rows.length; i++)
+                {
+                    thetable.rows[i].onclick = function()
+                    {
+                        TableRowClick(this);
+                    };
+                }                       
+	
+            function TableRowClick(therow) {
+                genre = therow.cells[5].innerHTML;
+                prenom = therow.cells[1].innerHTML;
+                nom = therow.cells[2].innerHTML;
+                id = therow.cells[0].innerHTML;
+                if(genre == "HOMME") {
+                    $("#prenomPereId").val(prenom);
+                    $("#nomPereId").val(nom);
+                    $("#idP").val(id);
+                }
+                if(genre == "FEMME") {
+                    $("#prenomMereId").val(prenom);
+                    $("#nomMereId").val(nom);
+                    $("#idM").val(id);
+                }
+            };
+
+            function resetAll(){
+                $('form#addParent').trigger("reset");
+            }
+
+            function searchDatas(){
+      
+                var input,table,tr,td,filter,displayD;
+                input = document.getElementById("parentId");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("parentTable");
+                tr = table.getElementsByTagName("tr");
+                
+                for(i=0;i<tr.length;i++)
+                {
+                    td = tr[i].getElementsByTagName("td")[5];
+                    
+                    if (td){
+                      displayD = td.innerText;
+                      if(displayD.toUpperCase().indexOf(filter)>-1)
+                      {
+                        tr[i].style.display="flex";
+                      }else
+                      {
+                        tr[i].style.display="none";
+                      }
+                    }
+                }
+              }
+
+              function searchParent(){
+                var input, filter, table, tr, td, i, textval;
+                input = document.getElementById("txtparent");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("parentTable");
+                tr = document.getElementsByTagName("tr");
+                for  (i = 0; i < tr.length; i++){
+                  td1 = tr[i].getElementsByTagName("td")[1];         
+                  td2 = tr[i].getElementsByTagName("td")[2];         
+                  td3 = tr[i].getElementsByTagName("td")[3]; 
+                  td4 = tr[i].getElementsByTagName("td")[4]; 
+                  td5 = tr[i].getElementsByTagName("td")[5]; 
+              
+                  if(td1){
+                    textval3 = td3.textContent || td3.textContent;
+                    textval1 = td1.textContent || td1.textContent;
+                    textval2 = td2.textContent || td2.textContent;
+                    textval4 = td4.textContent || td4.textContent;
+                    textval5 = td5.textContent || td5.textContent;
+
+                    if (textval3.toUpperCase().indexOf(filter) > -1 || textval1.toUpperCase().indexOf(filter) > -1 || textval2.toUpperCase().indexOf(filter) > -1 ||
+                    textval4.toUpperCase().indexOf(filter) > -1 || textval5.toUpperCase().indexOf(filter) > -1)
+                   { 
+                      tr[i].style="display:flex";
+                  }
+                  else{
+                    tr[i].style.display="none";
+                  }
+                }     
+                }
+              } 
+
+    </script>
+    <script>
+
+        function saveLink(id){
+            var idPers = id;
+            var idPere = $("#idP").val();
+            var idMere = $("#idM").val();
+            
+            if(idMere || idPere)
+                {
+                    // Create Ajax Call
+                    $.ajax({
+                        url: '{% url "linkCreate" %}',
+                        data: {
+                            'idPers': idPers,
+                            'idPere': idPere,
+                            'idMere':idMere,
+                        },
+                        
+                        dataType: 'json',
+                        success: function () {
+                          
+                        }
+                    });
+                  } else {
+                    alert("Remplir tous les champs.");
+                }
+                $('form#addParent').trigger("reset")
+            }
+
+    </script>
+
+    {% endblock content %}

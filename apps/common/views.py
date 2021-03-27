@@ -306,3 +306,23 @@ def MemberEdit (request):
             }
                 return JsonResponse(data)
     
+def linkParent(request,id):
+    temlate = "common/linkToParent.html"
+    niit = Person.objects.get(id=id)
+    persons = Person.objects.exclude(id = id)
+    context = {'niit':niit, 'persons':persons}
+    return render(request,temlate,context)
+
+def createLinkParent(request):
+    id = request.GET.get('idPers', None)
+    idP = request.GET.get('idPere', None)
+    idM = request.GET.get('idMere', None)
+    
+    obj = Enfant.objects.get(person_id=73)
+    if idP:
+        obj.pere_id = idP
+    if idM:
+        obj.mere_id = idM
+    
+    obj.save()
+    

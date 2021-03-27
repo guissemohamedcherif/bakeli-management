@@ -27,6 +27,8 @@ urlpatterns = [
     path('delete-user', views.deleteUser, name='Userdelete'),
     path('test-members/',views.mCreate, name='testcreate'),
     path('update-members/',views.MemberEdit, name='updateMember'),
+    url(r'^link/(?P<id>[0-9]+)/$', views.linkParent, name='openLink'), 
+    path('create-linkParent/',views.createLinkParent, name='linkCreate'),
 
 ]
 
