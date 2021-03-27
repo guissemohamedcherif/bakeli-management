@@ -321,11 +321,11 @@ def createLinkParent(request):
     
     obj = Enfant.objects.get(person_id=id)
     if idP:
-        obj.pere_id = idP
-        pere = Person.objects.get(id=idP)
+        pere = Pere.objects.get(person_id=idP)
+        obj.pere_id = pere.id
     if idM:
-        obj.mere_id = idM
-        mere = Person.objects.get(id=idM)
+        mere = Mere.objects.get(person_id=idM)
+        obj.mere_id = mere.id
     
     obj.save()
     pers = {
