@@ -40,7 +40,11 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
 <div style="margin-bottom: 10px;" class="d-sm-flex align-items-center ">
   <button data-toggle="modal" data-target="#myModal10" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
   class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre GENE</button>
+
+  <button onclick="disableChamps()" id="dis" style="margin-left:400px;" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm"><i
+    class="fas fa-plus fa-sm text-white-50"></i> Disable/Enable</button>
   </div>
+
   {% endif %}
 <!-- End of Topbar -->
   <table id="memberTable" class="table table-striped data-table">
@@ -87,15 +91,15 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
             </div>
         </td>   
         {% else %}  
-        <td class="col-md"><button disabled class="btn btn-success form-control" href="{% url 'openLink' person.id %}">LIER</button>
+        <td class="col-md"><button id="lierBtn" disabled class="btn btn-success form-control" href="{% url 'openLink' person.id %}">LIER</button>
         </td>
           <td class="col-md">
               <div class="row">
                   <div class="col-sm">
-                    <button disabled class="btn btn-info" style="float:right" onClick="editMember({{person.id}})" data-toggle="modal" data-target="#myModal2"><i class="fas fa-edit"></i></button>
+                    <button id="editBtn" disabled class="btn btn-info" style="float:right" onClick="editMember({{person.id}})" data-toggle="modal" data-target="#myModal2"><i class="fas fa-edit"></i></button>
                   </div>
                   <div class="col-sm">
-                    <button disabled class="btn btn-warning" style="float: left" onClick="deleteMember({{person.id}})"><i class="fas fa-archive"></i></button>
+                    <button id="deleteBtn" disabled class="btn btn-warning" style="float: left" onClick="deleteMember({{person.id}})"><i class="fas fa-archive"></i></button>
                   </div>
               </div>
           </td> 
@@ -501,6 +505,10 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
             url = url_page.replace('123', id)
             location.href=url;
          
+        }
+        function disableChamps(){
+          $('#editBtn').attr("disabled", false);
+          $('#deleteBtn').attr("disabled", false);
         }
       </script>
 {% endblock content %}
