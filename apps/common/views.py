@@ -223,7 +223,7 @@ def mCreate(request):
                     tel = tel,
                     genre = genre,
                     adress = adress, 
-                    gene = None,
+                    gene = 0,
                     image=image)
             else:
                obj = Person.objects.create(
@@ -231,7 +231,7 @@ def mCreate(request):
                     nom = nom,
                     tel = tel,
                     genre = genre,
-                    gene = None,
+                    gene = 0,
                     adress = adress) 
             
             obj2 = Person.objects.latest('id')
