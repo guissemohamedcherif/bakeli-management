@@ -56,8 +56,7 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
         <th class="col-md" style="text-align:center" ><strong>TELEPHONE</strong></th>
         <th class="col-md" style="text-align:center" ><strong>GENRE</strong></th>
         <th class="col-md" style="text-align:center" ><strong>AVATAR</strong></th>
-        <th class="col-md" style="text-align:center"><strong>LIER</strong></th>
-        <th class="col-md" style="text-align:center" colspan="2"><strong>ACTIONS</strong></th>
+        <th class="col-md" style="text-align:center" colspan="3"><strong>ACTIONS</strong></th>
       </tr>
     </thead>
     <tbody>
@@ -78,31 +77,18 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
         <td class="imgClass posteData col-md" name="img" style="text-align:center"><img src="{{person.image.url}}" width="40px" height="40px"/></td>
         {% endif %}
         {% if person.gene != 1 %}
-      <td class="col-md"><a class="btn btn-success form-control" href="{% url 'openLink' person.id %}">LIER</a>
-      </td>
-        <td class="col-md">
-            <div class="row">
-                <div class="col-sm">
-                  <button class="btn btn-info" style="float:right" onClick="editMember({{person.id}})" data-toggle="modal" data-target="#myModal2"><i class="fas fa-edit"></i></button>
-                </div>
-                <div class="col-sm">
-                  <button class="btn btn-warning" style="float: left" onClick="deleteMember({{person.id}})"><i class="fas fa-archive"></i></button>
-                </div>
-            </div>
-        </td>   
-        {% else %}  
-        <td class="col-md"><button id="lierBtn" disabled class="btn btn-success form-control" href="{% url 'openLink' person.id %}">LIER</button>
+      <td class="col-md">
+        <button class="btn btn-success" onclick="openLink2({{person.id}})"><i class="fas fa-link"></i></button>
+          <button class="btn btn-info"  onClick="editMember({{person.id}})" data-toggle="modal" data-target="#myModal2"><i class="fas fa-edit"></i></button>
+          <button class="btn btn-warning"  onClick="deleteMember({{person.id}})"><i class="fas fa-archive"></i></button>
         </td>
-          <td class="col-md">
-              <div class="row">
-                  <div class="col-sm">
-                    <button id="editBtn" disabled class="btn btn-info" style="float:right" onClick="editMember({{person.id}})" data-toggle="modal" data-target="#myModal2"><i class="fas fa-edit"></i></button>
-                  </div>
-                  <div class="col-sm">
-                    <button id="deleteBtn" disabled class="btn btn-warning" style="float: left" onClick="deleteMember({{person.id}})"><i class="fas fa-archive"></i></button>
-                  </div>
-              </div>
-          </td> 
+         
+        {% else %}  
+        <td class="col-md">
+          <button id="lierBtn" disabled class="btn btn-success" onclick="openLink2({{person.id}})"><i class="fas fa-link"></i></button>
+            <button id="editBtn" disabled class="btn btn-info" onClick="editMember({{person.id}})" data-toggle="modal" data-target="#myModal2"><i class="fas fa-edit"></i></button>
+            <button id="deleteBtn" disabled class="btn btn-warning" onClick="deleteMember({{person.id}})"><i class="fas fa-archive"></i></button>
+          </td>
           {% endif %}       
     </tr>
       {% endfor %}              
@@ -431,20 +417,12 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
                     '<td class="nomClass posteData col-md" name="nom" style="text-align:center">${person.nom}</td>
                     '<td class="telClass posteData col-md" name="tel" style="text-align:center">${person.tel}</td>
                     '<td class="genreClass posteData col-md" name="genre" style="text-align:center">${person.genre}</td>
-
                     '<td class="imgClass posteData col-md" name="img" style="text-align:center"><img src="${person.image}" width="40px" height="40px"/></td>
-                  <td class="col-md"><a class="btn btn-success form-control" onclick="openLink2(${person.id})">LIER</a>
-                  </td>
                     <td class="col-md">
-                        <div class="row">
-                            <div class="col-sm">
-                              <button class="btn btn-info" style="float:right" onClick="editMember(${person.id})" data-toggle="modal" data-target="#myModal2"><i class="fas fa-edit"></i></button>
-                            </div>
-                            <div class="col-sm">
-                              <button class="btn btn-warning" style="float: left" onClick="deleteMember(${person.id})"><i class="fas fa-archive"></i></button>
-                            </div>
-                        </div>
-                    </td>               
+                    <button class="btn btn-success" onclick="openLink2(${person.id})"><i class="fas fa-link"></i></button>
+                    <button class="btn btn-info"  onClick="editMember(${person.id})" data-toggle="modal" data-target="#myModal2"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-warning"  onClick="deleteMember(${person.id})"><i class="fas fa-archive"></i></button>
+                  </td>             
                   </tr>
                     `);
          }

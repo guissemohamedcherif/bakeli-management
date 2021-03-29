@@ -47,6 +47,8 @@ class CreateUser(View):
         email1 = request.GET.get('email', None)
         username = request.GET.get('username', None)
         password1 = request.GET.get('password', None)
+        stat1 = request.GET.get('stat', None)
+
         
         obj = CustomUser.objects.create(
             first_name = prenom1,
@@ -58,10 +60,12 @@ class CreateUser(View):
             password = make_password(password1)
         )
       
-        
         user = CustomUser.objects.get(id = obj.id)   
-        user.is_staff = True
-        user.is_superuser = True
+        if stat1 == "1":
+            user.stat = True
+        else:
+            user.stat = False
+        
         user.save()
             
         
@@ -71,7 +75,8 @@ class CreateUser(View):
                    'username':obj.username,
                    'email':obj.email,
                    'tel':obj.tel,
-                   'adress':obj.adress
+                   'adress':obj.adress,
+                   'stat':obj.stat
                    }
 
         data = {
@@ -90,6 +95,7 @@ class UpdateUser(View):
         email1 = request.GET.get('email', None)
         username1 = request.GET.get('username', None)
         pass1 = request.GET.get('password', None)
+        stat1 = request.GET.get('stat', None)
     
         
         obj = CustomUser.objects.get(id=id1)
@@ -99,11 +105,15 @@ class UpdateUser(View):
         obj.adress = adress1
         obj.email = email1
         obj.username = username1
+        if stat1 == "1":
+            obj.stat = True
+        else:
+            obj.stat = False
         obj.password = make_password(pass1)
 
         obj.save()
 
-        user = {'id':obj.id,'first_name':obj.first_name,'last_name':obj.last_name,'tel':obj.tel,'adress':obj.adress,'email':obj.email,'username':obj.username}
+        user = {'id':obj.id,'first_name':obj.first_name,'last_name':obj.last_name,'tel':obj.tel,'adress':obj.adress,'email':obj.email,'username':obj.username,'stat':obj.stat}
 
         data = {
             'user': user
