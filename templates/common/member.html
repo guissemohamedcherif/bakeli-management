@@ -36,10 +36,12 @@
 class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
 </div>
 </nav>
+{% if user.username == "guisse154" %}
 <div style="margin-bottom: 10px;" class="d-sm-flex align-items-center ">
   <button data-toggle="modal" data-target="#myModal10" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
   class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre GENE</button>
   </div>
+  {% endif %}
 <!-- End of Topbar -->
   <table id="memberTable" class="table table-striped data-table">
     <thead>
