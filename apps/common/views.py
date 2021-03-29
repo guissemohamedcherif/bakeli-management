@@ -332,7 +332,10 @@ def createLinkParent(request):
                 obj.pere_id = pe.id
                 enfPers = Person.objects.get(id=id)
                 perePers = Person.objects.get(id=pe.person_id)
-                enfPers.gene = perePers.gene + 1
+                if perePers.gene:
+                    enfPers.gene = perePers.gene + 1
+                else:
+                    enfPers.gene = None
                 enfPers.save()
                 obj.mere_id = None
         for me in mere :
@@ -340,7 +343,10 @@ def createLinkParent(request):
                 obj.mere_id = me.id
                 enfPers = Person.objects.get(id=id)
                 merePers = Person.objects.get(id=me.person_id)
-                enfPers.gene = merePers.gene + 1
+                if merePers.gene:
+                    enfPers.gene = merePers.gene + 1
+                else:
+                    enfPers.gene = None
                 enfPers.save()
                 obj.pere_id = None
         if obj.person_id:
