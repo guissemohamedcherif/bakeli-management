@@ -335,7 +335,7 @@ def createLinkParent(request):
                 if perePers.gene:
                     enfPers.gene = perePers.gene + 1
                 else:
-                    enfPers.gene = None
+                    enfPers.gene = enfPers.gene
                 enfPers.save()
                 obj.mere_id = None
         for me in mere :
@@ -346,7 +346,7 @@ def createLinkParent(request):
                 if merePers.gene:
                     enfPers.gene = merePers.gene + 1
                 else:
-                    enfPers.gene = None
+                    enfPers.gene = enfPers.gene
                 enfPers.save()
                 obj.pere_id = None
         if obj.person_id:
