@@ -58,9 +58,6 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
       {% if persons %}
       {% for person in persons %}
       <tr style="display:flex;" id="person-{{person.id}}">
-        {% if person.gene == 0 %}
-        <td class="geneClass posteData col-md" name="gene" style="text-align:center"></td>
-        {% else %}
         <td class="geneClass posteData col-md" name="gene" style="text-align:center">GENE :  {{person.gene}}</td>
         {% endif %}
         <td class="prenomClass posteData col-md" name="prenom" style="text-align:center">{{person.prenom}}</td>

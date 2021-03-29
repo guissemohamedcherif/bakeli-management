@@ -223,7 +223,7 @@ def mCreate(request):
                     tel = tel,
                     genre = genre,
                     adress = adress, 
-                    gene = 0,
+                    gene = None,
                     image=image)
             else:
                obj = Person.objects.create(
@@ -231,7 +231,7 @@ def mCreate(request):
                     nom = nom,
                     tel = tel,
                     genre = genre,
-                    gene = 0,
+                    gene = None,
                     adress = adress) 
             
             obj2 = Person.objects.latest('id')
@@ -333,7 +333,7 @@ def createLinkParent(request):
                 enfPers = Person.objects.get(id=id)
                 perePers = Person.objects.get(id=pe.person_id)
                 if perePers.gene:
-                    enfPers.gene = perePers.gene + "1"
+                    enfPers.gene = perePers.gene + 1
                 else:
                     enfPers.gene = enfPers.gene
                 enfPers.save()
@@ -344,7 +344,7 @@ def createLinkParent(request):
                 enfPers = Person.objects.get(id=id)
                 merePers = Person.objects.get(id=me.person_id)
                 if merePers.gene:
-                    enfPers.gene = merePers.gene + "1"
+                    enfPers.gene = merePers.gene + 1
                 else:
                     enfPers.gene = enfPers.gene
                 enfPers.save()
