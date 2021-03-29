@@ -214,7 +214,9 @@ def mCreate(request):
             genre = request.POST.get('formGenre')
             adress = request.POST.get('formAdress')
             image = request.FILES.get('formImage')
-            
+            gener = "0"
+            gen = int(gener)
+            gen = None
             if image:
             
                 obj = Person.objects.create(
@@ -223,7 +225,7 @@ def mCreate(request):
                     tel = tel,
                     genre = genre,
                     adress = adress, 
-                    gene = None,
+                    gene = gen,
                     image=image)
             else:
                obj = Person.objects.create(
@@ -231,7 +233,7 @@ def mCreate(request):
                     nom = nom,
                     tel = tel,
                     genre = genre,
-                    gene = None,
+                    gene = gen,
                     adress = adress) 
             
             obj2 = Person.objects.latest('id')
