@@ -13,7 +13,7 @@ class Person(models.Model):
     genre = models.CharField(max_length=250, choices=genre_stat, default='')
     image = models.ImageField(default='users/login.png',upload_to='users/', null=True, blank=True)
     stat = models.BooleanField(default=True)
-    gene =  models.CharField(max_length=100, blank=False)
+    gene =  models.IntegerField( blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     
 

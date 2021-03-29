@@ -70,27 +70,17 @@
     <hr class="sidebar-divider">
     <div class="row">
         <div class="col-sm" style = "margin-left:10px;text-align:center;">
-            <label>PRENOM PERE</label>
+            <label>PRENOM PARENT</label>
             <input id="prenomPereId" readonly name="prenomPereName" type="text" class="form-control" aria-describedby="basic-addon1">
         </div>
         <div class="col-sm" style = "margin-left:10px;text-align:center;">
-            <label>NOM PERE</label>
+            <label>NOM PARENT</label>
             <input id="nomPereId" readonly type="text" class="form-control" aria-describedby="basic-addon1">
         </div> 
         </div>
             <hr class="sidebar-divider">
-        <div class="row">
-            <div class="col-sm" style = "margin-left:10px;text-align:center;">
-                <label>PRENOM MERE</label>
-                <input id="prenomMereId" readonly type="text" class="form-control"aria-describedby="basic-addon1">
-            </div>
-            <div class="col-sm" style = "margin-left:10px;text-align:center;">
-                <label>NOM MERE</label>
-                <input id="nomMereId" readonly type="text" class="form-control" aria-describedby="basic-addon1">
-            </div> 
-            </div>
+     
             <input id="idP" readonly type="hidden" class="form-control" aria-describedby="basic-addon1">
-            <input id="idM" readonly type="hidden" class="form-control" aria-describedby="basic-addon1">
 
     <hr class="sidebar-divider">
     <div class="modal-footer" style="margin-top: 50px">
@@ -119,16 +109,10 @@
                 prenom = therow.cells[1].innerHTML;
                 nom = therow.cells[2].innerHTML;
                 id = therow.cells[0].innerHTML;
-                if(genre == "HOMME") {
+               
                     $("#prenomPereId").val(prenom);
                     $("#nomPereId").val(nom);
-                    $("#idP").val(id);
-                }
-                if(genre == "FEMME") {
-                    $("#prenomMereId").val(prenom);
-                    $("#nomMereId").val(nom);
-                    $("#idM").val(id);
-                }
+                    $("#idP").val(id);          
             };
 
             function resetAll(){
@@ -198,9 +182,8 @@
         function saveLink(id){
             var idPers = id;
             var idPere = $("#idP").val();
-            var idMere = $("#idM").val();
             
-            if(idMere || idPere)
+            if(idPere)
                 {
                     // Create Ajax Call
                     $.ajax({
@@ -208,7 +191,6 @@
                         data: {
                             'idPers': idPers,
                             'idPere': idPere,
-                            'idMere':idMere,
                         },
                         
                         dataType: 'json',
