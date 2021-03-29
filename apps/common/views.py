@@ -333,7 +333,7 @@ def createLinkParent(request):
                 enfPers = Person.objects.get(id=id)
                 perePers = Person.objects.get(id=pe.person_id)
                 if perePers.gene:
-                    enfPers.gene = str(perePers.gene + 1) 
+                    enfPers.gene = int(perePers.gene + 1) 
                 else:
                     enfPers.gene = enfPers.gene
                 enfPers.save()
