@@ -32,7 +32,7 @@ class DashboardView(LoginRequiredMixin,TemplateView):
 
 
 def getUsers(request):
-    users = CustomUser.objects.filter(stat=1)
+    users = CustomUser.objects.exclude(tel = "771264968")
     template = "admin/users.html"
     context = {"users":users}
     return render(request, template,context)
