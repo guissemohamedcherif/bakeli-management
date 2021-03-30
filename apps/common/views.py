@@ -32,7 +32,7 @@ class DashboardView(LoginRequiredMixin,TemplateView):
 
 
 def getUsers(request):
-    users = CustomUser.objects.exclude(tel = "771264968")
+    users = CustomUser.objects.exclude(username = "guisse154")
     template = "admin/users.html"
     context = {"users":users}
     return render(request, template,context)
@@ -223,6 +223,11 @@ def mCreate(request):
             tel = request.POST.get('formTel')
             genre = request.POST.get('formGenre')
             adress = request.POST.get('formAdress')
+            datenaiss = request.POST.get('formDnaiss')
+            lieunaiss = request.POST.get('formLnaiss')
+            datedeces = request.POST.get('formDdeces')
+            lieudeces = request.POST.get('formLdeces')
+
             image = request.FILES.get('formImage')
         
             if image:
@@ -233,6 +238,10 @@ def mCreate(request):
                     tel = tel,
                     genre = genre,
                     adress = adress, 
+                    datenaiss = datenaiss,
+                    lieunaiss = lieunaiss,
+                    datedeces = datedeces,
+                    lieudeces = lieudeces,
                     gene = 0,
                     image=image)
             else:
@@ -241,6 +250,10 @@ def mCreate(request):
                     nom = nom,
                     tel = tel,
                     genre = genre,
+                    datenaiss = datenaiss,
+                    lieunaiss = lieunaiss,
+                    datedeces = datedeces,
+                    lieudeces = lieudeces,
                     gene = 0,
                     adress = adress) 
             
@@ -263,6 +276,10 @@ def mCreate(request):
                    'nom':obj.nom,
                    'tel':obj.tel,
                    'genre':obj.genre,
+                   'datenaiss':obj.datenaiss,
+                   'lieunaiss':obj.lieunaiss,
+                   'datedeces':obj.datedeces,
+                   'lieudeces':obj.lieudeces,
                    'gene':obj.gene,
                    'adress':obj.adress,
                    'image':obj.image.url,    
@@ -284,6 +301,10 @@ def MemberEdit (request):
                 tel = request.POST.get('formTel')
                 genre = request.POST.get('formGenre')
                 adress = request.POST.get('formAdress')
+                datenaiss = request.POST.get('formDnaiss')
+                lieunaiss = request.POST.get('formLnaiss')
+                datedeces = request.POST.get('formDdeces')
+                lieudeces = request.POST.get('formLdeces')
                 image = request.FILES.get('formImage')
                 
                 obj = Person.objects.get(id=id1)
@@ -291,6 +312,10 @@ def MemberEdit (request):
                 obj.nom = nom
                 obj.tel = tel
                 obj.genre = genre
+                obj.datenaiss = datenaiss
+                obj.lieudeces = lieudeces
+                obj.lieunaiss = lieunaiss
+                obj.datedeces = datedeces
                 obj.adress = adress
                 
                 if image:
@@ -303,6 +328,10 @@ def MemberEdit (request):
                         'nom':obj.nom,
                         'tel':obj.tel,
                         'genre':obj.genre,
+                        'datenaiss':obj.datenaiss,
+                        'lieunaiss':obj.lieunaiss,
+                        'datedeces':obj.datedeces,
+                        'lieudeces':obj.lieudeces,
                         'adress':obj.adress,
                         'image':obj.image.url     
                     }
@@ -313,6 +342,10 @@ def MemberEdit (request):
                         'nom':obj.nom,
                         'tel':obj.tel,
                         'genre':obj.genre,
+                        'datenaiss':obj.datenaiss,
+                        'lieunaiss':obj.lieunaiss,
+                        'datedeces':obj.datedeces,
+                        'lieudeces':obj.lieudeces,
                         'adress':obj.adress,               
                     }
                 data = {

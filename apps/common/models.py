@@ -14,6 +14,10 @@ class Person(models.Model):
     image = models.ImageField(default='users/login.png',upload_to='users/', null=True, blank=True)
     stat = models.BooleanField(default=True)
     gene =  models.IntegerField( blank=True, null=True)
+    datenaiss = models.CharField(max_length=250, blank=True)
+    lieunaiss = models.TextField(blank=True)
+    datedeces = models.CharField(max_length=250, blank=True)
+    lieudeces = models.TextField(blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     
 
