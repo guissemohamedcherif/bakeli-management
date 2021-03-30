@@ -312,6 +312,29 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
                 
                 </div>
           </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm">
+              <label >DATE NAISSANCE</label>
+              <input readonly class="form-control" id="datenaissInf" type="text" name="formTelInf"/>
+            </div>
+              <div class="col-sm">
+                <label >LIEU NAISSANCE</label>
+                <input readonly class="form-control" id="lieunaissInf" name="formGenreInf"/>     
+                </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm">
+              <label >DATE DECES</label>
+              <input readonly class="form-control" id="datedecesInf" type="text" name="formTelInf"/>
+            </div>
+              <div class="col-sm">
+                <label >LIEU DECES</label>
+                <input readonly class="form-control" id="lieudecesInf" name="formGenreInf"/>   
+                
+                </div>
+          </div>
           <hr>      
               <label >ADRESSE</label>
               <input readonly class="form-control" id="adressInf" type="text" name="formAdressInf"/>
@@ -580,6 +603,11 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
           $('#telInf').val($(tr_id).find(".telClass").text());
           $('#adressInf').val($(tr_id).find(".adressClass").text());
           $('#genreInf').val($(tr_id).find(".genreClass").text())
+          $('#datenaissInf').val($(tr_id).find(".datenaissClass").text())
+          $('#lieunaissInf').val($(tr_id).find(".lieunaissClass").text())
+          $('#datedecesInf').val($(tr_id).find(".datedecesClass").text())
+          $('#lieudecesInf').val($(tr_id).find(".lieudecesClass").text())
+
         }
 
       </script>
