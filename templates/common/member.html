@@ -50,10 +50,10 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
   <table id="memberTable" class="table table-striped data-table">
     <thead>
       <tr style="display:flex;">
-        <th class="col-md" style="text-align:center" ><strong>GENERATION</strong></th>
+        <th class="col-md" style="text-align:center" ><strong>GENE</strong></th>
         <th class="col-md" style="text-align:center" ><strong>PRENOM</strong></th>
         <th class="col-md" style="text-align:center" ><strong>NOM</strong></th>
-        <th class="col-md" style="text-align:center" ><strong>TELEPHONE</strong></th>
+        <th class="col-md" style="text-align:center" ><strong>DATE NAISSANCE</strong></th>
         <th class="col-md" style="text-align:center" colspan="3"><strong>ACTIONS</strong></th>
       </tr>
     </thead>
@@ -68,20 +68,24 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
         {% endif %}
         <td class="prenomClass posteData col-md" name="prenom" style="text-align:center">{{person.prenom}}</td>
         <td class="nomClass posteData col-md" name="nom" style="text-align:center">{{person.nom}}</td>
-        <td class="telClass posteData col-md" name="tel" style="text-align:center">{{person.tel}}</td>
+        <td class="telClass posteData col-md" name="tel" style="text-align:center;display:none">{{person.tel}}</td>
         <td class="genreClass posteData col-md" name="genre" style="text-align:center;display:none">{{person.genre}}</td>
         <td class="adressClass posteData col-md" name="adress" style="text-align:center;display:none">{{person.adress}}</td>
-        <td class="datenaissClass posteData col-md" name="datenaiss" style="text-align:center;display:none">{{person.datenaiss}}</td>
+        <td class="datenaissClass posteData col-md" name="datenaiss" style="text-align:center;">{{person.datenaiss}}</td>
         <td class="lieunaissClass posteData col-md" name="lieunaiss" style="text-align:center;display:none">{{person.lieunaiss}}</td>
         <td class="datedecesClass posteData col-md" name="datedeces" style="text-align:center;display:none">{{person.datedeces}}</td>
         <td class="lieudecesClass posteData col-md" name="lieudeces" style="text-align:center;display:none">{{person.lieudeces}}</td>
+        <td class="imgClass1 posteData col-md" name="img1" style="text-align:center;display:none">{{person.image.url}}</td>
 
         {% if person.image %}
-        <td class="imgClass posteData col-md" name="img" style="text-align:center;display:none"><img src="{{person.image.url}}" width="40px" height="40px"/></td>
+        <td class="imgClass posteData col-md" name="img" style="text-align:center; display:none"><img src="{{person.image.url}}" width="40px" height="40px"/></td>
         {% endif %}
         {% if person.gene != 1 %}
       <td class="col-md" style="text-align:center">
-        <button class="btn btn-secondary" onclick="seeMember({{person.id}})" data-toggle="modal" data-target="#myModalInf"><i class="fas fa-eye"></i></button>
+        <a class="btn btn-secondary build-link" data-toggle="modal" data-target="#myModalInf"
+        data-prenom="{{ person.prenom }}"  data-image="{{ person.image.url }}" data-nom="{{ person.nom }}" data-tel="{{person.tel}}" data-adress="{{person.adress}}"
+        data-datenaiss="{{person.datenaiss}}" data-lieunaiss="{{person.lieunaiss}}" data-datedeces="{{person.lieudeces}}" data-lieudeces="{{person.lieudeces}}"
+        ><i class="fas fa-eye"></i></a>
 
         <button class="btn btn-success" onclick="openLink2({{person.id}})"><i class="fas fa-link"></i></button>
           <button class="btn btn-info"  onClick="editMember({{person.id}})" data-toggle="modal" data-target="#myModal2"><i class="fas fa-edit"></i></button>
@@ -287,60 +291,65 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
           </div>
            
-          <div class="modal-body">
-                <input class="form-control" id="idInf" type="hidden" name="formIdInf"/>
-          <div class="row">
-            <div class="col-sm">
-              <label >PRENOM</label>
-              <input readonly class="form-control" id="prenomInf" type="text" name="formPrenomInf"/>
+          <div style="margin:auto">
+              <img id="idImg" src="" width="300px" height="200px">
             </div>
-            <div class="col-sm">
-            <label >NOM</label>
-            <input readonly class="form-control" id="nomInf" type="text" name="formNomInf"/>
-            </div>
-          </div>
-          <hr>
-        
-          <div class="row">
-            <div class="col-sm">
-              <label >TELEPHONE</label>
-              <input readonly class="form-control" id="telInf" type="text" name="formTelInf"/>
-            </div>
-              <div class="col-sm">
-                <label >GENRE</label>
-                <input readonly class="form-control" id="genreInf" name="formGenreInf"/>   
-                
+            <div>
+              <div class="card o-hidden ">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <p><strong>PRENOM :</strong></p>
+                    </div>
+                    <div class="col"> <p id="idPrenom"></p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      <p><strong>NOM :</strong></p>
+                    </div>
+                    <div class="col"> <p id="idNom"></p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      <p><strong>TELEPHONE :</strong></p>
+                    </div>
+                    <div class="col"> <p id="idTel"></p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      <p><strong>ADRESSE :</strong></p>
+                    </div>
+                    <div class="col"> <p id="idAdress"></p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      <p><strong>DATE DE NAISSANCE :</strong></p>
+                    </div>
+                    <div class="col"> <p id="idDatenaiss"></p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      <p><strong>LIEU DE NAISSANCE :</strong></p>
+                    </div>
+                    <div class="col"> <p id="idLieunaiss"></p>
+                    </div>
+                  </div>
+                  
+                 
                 </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col-sm">
-              <label >DATE NAISSANCE</label>
-              <input readonly class="form-control" id="datenaissInf" type="text" name="formTelInf"/>
             </div>
-              <div class="col-sm">
-                <label >LIEU NAISSANCE</label>
-                <input readonly class="form-control" id="lieunaissInf" name="formGenreInf"/>     
-                </div>
           </div>
-          <hr>
-          <div class="row">
-            <div class="col-sm">
-              <label >DATE DECES</label>
-              <input readonly class="form-control" id="datedecesInf" type="text" name="formTelInf"/>
-            </div>
-              <div class="col-sm">
-                <label >LIEU DECES</label>
-                <input readonly class="form-control" id="lieudecesInf" name="formGenreInf"/>   
-                
-                </div>
-          </div>
-          <hr>      
-              <label >ADRESSE</label>
-              <input readonly class="form-control" id="adressInf" type="text" name="formAdressInf"/>
-              <hr>      
               
-          </div>     
         </div>
       </div>
       </div>
@@ -511,10 +520,10 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
                     <td class="geneClass posteData col-md" name="gene" style="text-align:center;"></td>
                     '<td class="prenomClass posteData col-md" name="prenom" style="text-align:center">${person.prenom}</td>
                     '<td class="nomClass posteData col-md" name="nom" style="text-align:center">${person.nom}</td>
-                    '<td class="telClass posteData col-md" name="tel" style="text-align:center">${person.tel}</td>
+                    '<td class="telClass posteData col-md" name="tel" style="text-align:center;display:none">${person.tel}</td>
                     <td class="genreClass posteData col-md" name="genre" style="text-align:center;display:none">${person.genre}</td>
         <td class="adressClass posteData col-md" name="adress" style="text-align:center;display:none">${person.adress}</td>
-        <td class="datenaissClass posteData col-md" name="datenaiss" style="text-align:center;display:none">${person.datenaiss}</td>
+        <td class="datenaissClass posteData col-md" name="datenaiss" style="text-align:center;">${person.datenaiss}</td>
         <td class="lieunaissClass posteData col-md" name="lieunaiss" style="text-align:center;display:none">${person.lieunaiss}</td>
         <td class="datedecesClass posteData col-md" name="datedeces" style="text-align:center;display:none">${person.datedeces}</td>
         <td class="lieudecesClass posteData col-md" name="lieudeces" style="text-align:center;display:none">${person.lieudeces}</td>
@@ -607,8 +616,20 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
           $('#lieunaissInf').val($(tr_id).find(".lieunaissClass").text())
           $('#datedecesInf').val($(tr_id).find(".datedecesClass").text())
           $('#lieudecesInf').val($(tr_id).find(".lieudecesClass").text())
+          $('#idImg').src(val($(tr_id).find(".imgClass1").text()))
 
         }
-
       </script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+          $('.build-link').click(function(){
+            $('#idPrenom').html($(this).data('prenom'));
+            $('#idNom').html($(this).data('nom'));
+            $('#idTel').html($(this).data('tel'));
+            $('#idAdress').html($(this).data('adress'));
+            $('#idDatenaiss').html($(this).data('datenaiss'));
+            $('#idLieunaiss').html($(this).data('lieunaiss'));
+            $('#idImg').attr("src",$(this).data('image'));
+          });
+        </script>
 {% endblock content %}
