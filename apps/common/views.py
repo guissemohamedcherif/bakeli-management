@@ -26,9 +26,14 @@ from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-class DashboardView(LoginRequiredMixin,TemplateView):
-        template_name = 'base.html'  
-        login_url = reverse_lazy('login') 
+@login_required(login_url='login')
+def DashboardView(request):
+        template_name = 'homePage.html'  
+        user = request.user
+        if request.user.is_authenticated:
+                return redirect ('home')
+        else:
+            return redirect ('login')
 
 
 def getUsers(request):
@@ -202,7 +207,6 @@ def MemberUpdateView(request):
         formedit = PersonForm()
         context = {}
             
-
 
 def CreateMember(request):
     person_list = Person.objects.all()
@@ -524,3 +528,14 @@ def MemberEdit2 (request):
                 'person': person
             }
                 return JsonResponse(data)
+
+def getHomePage(request):
+    template = "common/homePage.html"
+    membres = Person.objects.filter(stat=True).count()
+    persons = Person.objects.filter(stat=True)
+    membresH = Person.objects.filter(genre = "HOMME", stat=True).count()
+    membresF = Person.objects.filter(stat=True, genre = "FEMME").count()
+    users = CustomUser.objects.filter(stat=True).count()
+    users2 = CustomUser.objects.filter(stat=False).count()
+    context = {'membres': membres,'users':users,'users2':users2,'persons':persons}
+    return render(request,template,context)

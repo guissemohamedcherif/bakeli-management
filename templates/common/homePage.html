@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+       
+        
+             <!-- Content Row -->
+             <div class="row" style="margin-bottom: 10px">
+            
+                <!-- Earnings (Monthly) Card Example -->
+                <div class="col-sm">
+                    <div>
+                        <div style="text-align:center;"> 
+                            <i class="ic fas fa-user-friends fa-3x"></i>
+                            <h3 class="textcolor font-weight-bold" style="margin-top:15px;">{{membres}}</h3>
+                            <h5 class="texttxt text-gray-500" style="margin-top:15px;">Membres</h5>
+                        </div>
+                        
+                    </div>
+                </div>
+
+
+                <div class="col-sm">
+                    <div>
+                        <div style="text-align:center;"> 
+                            <i class="ic fas fa-users-cog fa-3x"></i>
+                            <h3 class="textcolor font-weight-bold" style="margin-top:15px;">{{users}}</h3>
+                            <h5 class="texttxt text-gray-500" style="margin-top:15px;">Administrateurs actifs</h5>
+                            <i class="icvert far fa-check-circle"></i>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="col-sm">
+                    <div>
+                        <div style="text-align:center;"> 
+                            <i class="ic fas fa-atlas fa-3x"></i>
+                            <h3 class="textcolor font-weight-bold" style="margin-top:15px;">{{users2}}</h3>
+                            <h5 class="texttxt text-gray-500" style="margin-top:15px;">Administrateurs inactifs</h5>
+                            <i class="icrouge fas fa-times-circle"></i>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top:40px;">
+                <div class="col-sm">
+                    <div style="overflow-y:scroll; overflow-x:hidden; height:300px;width:500px">
+                        {% if persons %}
+                            {% for person in persons %}
+                        <div class="card shadow" style="margin:5px; height:250px;">
+                            <div class="row">
+                                <div class="col-sm">
+                                    <img class="card-img-top" src="{{person.image.url}}" style="height: 250px;">
+                                </div>
+                                <div class="col-sm">
+                                    <div class="card-body">
+                                        <p class=card-title><strong><u>GENERATION</u> {{person.gene}}</strong></p>
+                                        <p class=card-title>{{person.prenom}}  {{person.nom}}</p>
+                                        <p class=card-title>{{person.tel}}</p>
+                                        <p class=card-title>{{person.comment}}</p>
+                                     </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        {% endfor  %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div style="overflow-y:scroll; overflow-x:hidden; height:400px;width:500px">
+                        <p>
+                            
+Le repas familial (gravure sur bois, xviie siècle).
+
+La famille de Philippe V d'Espagne (en 1723).
+
+Le portrait de famille est une des formes picturales répandues d'abord dans les familles nobles puis chez les familles bourgeoises (ici la famille Souchay vers 1805).
+
+Un peu de conversation, huile sur toile de Lilly Martin Spencer, vers 1851-1852
+
+Peinture à l'huile de Jean de Francqueville intitulée « En famille ».
+
+Portrait d'un chef camerounais et de sa famille (entre 1910 et 1930).
+
+Famille inuit (1917).
+
+Famille européenne photographiée au début du xxe siècle (1912).
+
+Famille congolaise (2007).
+
+Repas de famille au Japon (1980).
+La famille est :
+
+au sens large : l'ensemble des personnes ayant avec le sujet un lien de parenté ou d'alliance1 ;
+au sens strict : une personne ou un couple et leurs enfants vivant sous le même toit2.
+C'est une communauté de personnes existant dans toutes les sociétés humaines, selon l'anthropologue Claude Lévi-Strauss. Elle est dotée d'un domicile et crée entre ses membres une obligation morale de solidarité matérielle (entre époux, d’une part, et entre parents et enfants, d’autre part), censée les protéger et favoriser leur épanouissement social, physique et affectif.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+    </div>
+    
+    {% endblock content %}

@@ -5,7 +5,28 @@
 <html lang="en">
 
 <head>
-
+    <style>
+        .textcolor{
+            color: blue;
+        }
+        .ic{
+            color:rgb(79, 182, 223);
+        }
+        .icvert{
+            color:rgb(8, 163, 86);
+        }
+        .icrouge{
+            color:rgb(219, 9, 55);
+        }
+        #main { 
+            font-size:36px; 
+            font-weight:bold; 
+            color:#1560CE; 
+            text-align:center; 
+            margin-left:400px;
+            width: 320px;
+        } 
+    </style>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -41,8 +62,16 @@
             </a>
             <hr class="sidebar-divider my-0">
 
-
-            {% if user.stat %}         
+            {% if user.stat %}   
+            
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'home'%}">
+                    <i class="fas fa-home fa-chart-area"></i>
+                    <span><strong>ACCUEIL</strong></span></a>
+            </li>
+         
+              <!-- Divider -->
+              <hr class="sidebar-divider my-0">
 
    <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin"
@@ -85,9 +114,13 @@
      
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <div id="main">
+                        <marquee class="marq"  direction = "left" loop="" > 
+                            <div class="geek1">Bienvenu dans la <strong>Famille Fambodj</strong></div> 
+                        </marquee> 
+                    </div>
                     <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        
+                    <ul class="navbar-nav ml-auto"> 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
