@@ -10,22 +10,22 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
+        migrations.AlterField(
             model_name='person',
             name='datedeces',
             field=models.CharField(blank=True, max_length=250, null=True),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='person',
             name='datenaiss',
             field=models.CharField(blank=True, max_length=250, null=True),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='person',
             name='lieudeces',
             field=models.TextField(blank=True, null=True),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='person',
             name='lieunaiss',
             field=models.TextField(blank=True, null=True),
