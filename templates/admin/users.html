@@ -38,7 +38,7 @@
               <th>PRENOM</th>
               <th>NOM</th>
               <th>USERNAME</th>
-              <th>EMAIL</th>
+              <th>ROLE</th>
               <th>TELEPHONE</th>
               <th>ADRESSE</th>
               <th>STATUT</th>
@@ -53,7 +53,7 @@
               <td class="firstClass userData" name="firstName">{{user.first_name}}</td>
               <td class="lastClass userData" name="lastName">{{user.last_name}}</td>
               <td class="usernameClass userData" name="usernameName">{{user.username}}</td>
-              <td class="emailClass userData" name="emailName">{{user.email}}</td>
+              <td class="roleClass userData" name="roleName">{{user.role}}</td>
               <td class="telClass userData" name="telName">{{user.tel}}</td>
               <td class="adressClass userData" name="adressName">{{user.adress}}</td>
               <td class="statClass userData" name="statName">{{user.stat}}</td>
@@ -124,15 +124,28 @@
             </div>
           </div>
           <hr>
+          <div class="row">
+            <div class="col-sm">
               <label>STATUT</label>
               <select class="form-control" id="form-stat" name="formStat">
-                <option value="-- --"></option>
+                <option value="">-- --</option>
                 <option value="1">ACTIVER</option>
                 <option value="0">DESACTIVER</option>
               </select>
-            
-           
-     
+            </div>
+            <div class="col-sm">
+              <label>ROLE</label>
+              <select class="form-control" id="form-role" name="formRole">
+                <option value="">-- --</option>
+                <option value="PRESIDENT">PRESIDENT</option>
+                <option value="VICE PRESIDENT">VICE PRESIDENT</option>
+                <option value="SECRETAIRE GENERAL">SECRETAIRE GENERAL</option>
+                <option value="COMMUNICATEUR">COMMUNICATEUR</option>
+                <option value="ORGANISATEUR">ORGANISATEUR</option>
+              </select>
+            </div>
+          </div>
+
           <hr>      
       </div>
       <div class="modal-footer">
@@ -162,12 +175,13 @@
     var emailInput = $('input[name="formEmail"]').val().trim();
     var passInput = $('input[name="formPass"]').val().trim();
     var statInput = $('#form-stat').val();
+    var roleInput = $('#form-role').val();
 
     var compare = temoin.localeCompare('Enregistrer');
   
       if(compare == 0)
       {
-        if (prenomInput && nomInput && userInput && telInput && emailInput && passInput && statInput) {
+        if (prenomInput && nomInput && userInput && telInput && emailInput && passInput && statInput && roleInput) {
           // Create Ajax Call
           $.ajax({
               url: '{% url "userCreate" %}',
@@ -180,6 +194,7 @@
                   'password': passInput,
                   'adress':adressInput,
                   'stat': statInput,
+                  'role':roleInput,
               },
               
               
@@ -192,13 +207,14 @@
           });
         } else {
           alert("Remplir tous les champs.");
+          return false;
       }
       $('form#adduser').trigger("reset");
       }
       else 
       {
         var idInput = $('input[name="formId"]').val().trim();
-        if (prenomInput && nomInput && userInput && telInput && emailInput && passInput && statInput) {
+        if (prenomInput && nomInput && userInput && telInput && emailInput && passInput && statInput && roleInput) {
           // Create Ajax Call
           $.ajax({
               url: '{% url "update_user" %}',
@@ -212,6 +228,7 @@
                   'adress':adressInput,
                   'password': passInput,
                   'stat': statInput,
+                  'role': roleInput,
               },
               dataType: 'json',
               success: function (data) {
@@ -238,7 +255,7 @@
                     <td class="firstClass userData" name="firstName">${user.first_name}</td>
                     '<td class="lastClass userData" name="lastName">${user.last_name}</td>
                     '<td class="usernameClass userData" name="usernameName">${user.username}</td>
-                    '<td class="emailClass userData" name="emailName">${user.email}</td>
+                    '<td class="roleClass userData" name="roleName">${user.role}</td>
                     '<td class="telClass userData" name="telName">${user.tel}</td>
                     '<td class="adressClass userData" name="adressName">${user.adress}</td>
                     <td class="statClass userData" name="statName">${user.stat}</td>
@@ -297,6 +314,9 @@
        } 
        if(attr == "statName"){
         $(this).text(user.stat);
+      }
+      if(attr == "roleName"){
+        $(this).text(user.role);
       } 
       });
  }

@@ -48,6 +48,7 @@ class CreateUser(View):
         username = request.GET.get('username', None)
         password1 = request.GET.get('password', None)
         stat1 = request.GET.get('stat', None)
+        role1 = request.GET.get('role', None)
 
         
         obj = CustomUser.objects.create(
@@ -57,7 +58,8 @@ class CreateUser(View):
             adress = adress1,
             email = email1,
             username = username,
-            password = make_password(password1)
+            password = make_password(password1),
+            role = role1
         )
       
         user = CustomUser.objects.get(id = obj.id)   
@@ -76,6 +78,7 @@ class CreateUser(View):
                    'email':obj.email,
                    'tel':obj.tel,
                    'adress':obj.adress,
+                   'role':obj.role,
                    'stat':obj.stat
                    }
 
@@ -96,7 +99,7 @@ class UpdateUser(View):
         username1 = request.GET.get('username', None)
         pass1 = request.GET.get('password', None)
         stat1 = request.GET.get('stat', None)
-    
+        role1 = request.GET.get('role', None)
         
         obj = CustomUser.objects.get(id=id1)
         obj.first_name = prenom1
@@ -105,6 +108,7 @@ class UpdateUser(View):
         obj.adress = adress1
         obj.email = email1
         obj.username = username1
+        obj.role = role1
         if stat1 == "1":
             obj.stat = True
         else:
@@ -113,7 +117,7 @@ class UpdateUser(View):
 
         obj.save()
 
-        user = {'id':obj.id,'first_name':obj.first_name,'last_name':obj.last_name,'tel':obj.tel,'adress':obj.adress,'email':obj.email,'username':obj.username,'stat':obj.stat}
+        user = {'id':obj.id,'first_name':obj.first_name,'last_name':obj.last_name,'tel':obj.tel,'adress':obj.adress,'email':obj.email,'username':obj.username,'stat':obj.stat,'role':obj.role}
 
         data = {
             'user': user
@@ -227,6 +231,7 @@ def mCreate(request):
             lieunaiss = request.POST.get('formLnaiss')
             datedeces = request.POST.get('formDdeces')
             lieudeces = request.POST.get('formLdeces')
+            comment = request.POST.get('formComment')
 
             image = request.FILES.get('formImage')
         
@@ -242,6 +247,7 @@ def mCreate(request):
                     lieunaiss = lieunaiss,
                     datedeces = datedeces,
                     lieudeces = lieudeces,
+                    comment = comment,
                     gene = 0,
                     image=image)
             else:
@@ -254,6 +260,7 @@ def mCreate(request):
                     lieunaiss = lieunaiss,
                     datedeces = datedeces,
                     lieudeces = lieudeces,
+                    comment = comment,
                     gene = 0,
                     adress = adress) 
             
@@ -282,6 +289,7 @@ def mCreate(request):
                    'lieudeces':obj.lieudeces,
                    'gene':obj.gene,
                    'adress':obj.adress,
+                   'comment' : obj.comment,
                    'image':obj.image.url,    
                    }
 
@@ -301,6 +309,7 @@ def MemberEdit (request):
                 tel = request.POST.get('formTel')
                 genre = request.POST.get('formGenre')
                 adress = request.POST.get('formAdress')
+                comment = request.POST.get('formComment')
                 datenaiss = request.POST.get('formDnaiss')
                 lieunaiss = request.POST.get('formLnaiss')
                 datedeces = request.POST.get('formDdeces')
@@ -316,6 +325,7 @@ def MemberEdit (request):
                 obj.lieudeces = lieudeces
                 obj.lieunaiss = lieunaiss
                 obj.datedeces = datedeces
+                obj.comment = comment
                 obj.adress = adress
                 
                 if image:
@@ -333,6 +343,7 @@ def MemberEdit (request):
                         'datedeces':obj.datedeces,
                         'lieudeces':obj.lieudeces,
                         'adress':obj.adress,
+                        'comment':obj.comment,
                         'image':obj.image.url     
                     }
                 else:
@@ -346,7 +357,8 @@ def MemberEdit (request):
                         'lieunaiss':obj.lieunaiss,
                         'datedeces':obj.datedeces,
                         'lieudeces':obj.lieudeces,
-                        'adress':obj.adress,               
+                        'adress':obj.adress,  
+                        'comment':obj.comment,             
                     }
                 data = {
                 'person': person

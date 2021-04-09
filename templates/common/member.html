@@ -72,7 +72,8 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
         <td class="genreClass posteData col-md" name="genre" style="text-align:center;display:none">{{person.genre}}</td>
         <td class="adressClass posteData col-md" name="adress" style="text-align:center;display:none">{{person.adress}}</td>
         <td class="datenaissClass posteData col-md" name="datenaiss" style="text-align:center;">{{person.datenaiss}}</td>
-        <td class="lieunaissClass posteData col-md" name="lieunaiss" style="text-align:center;display:none">{{person.lieunaiss}}</td>
+        <td class="lieunaissClass posteData col-md" name="lieunaiss" style="text-align:center;display:none;">{{person.lieunaiss}}</td>
+        <td class="commentClass posteData col-md" name="comment" style="text-align:center;display:none">{{person.comment}}</td>
         <td class="datedecesClass posteData col-md" name="datedeces" style="text-align:center;display:none">{{person.datedeces}}</td>
         <td class="lieudecesClass posteData col-md" name="lieudeces" style="text-align:center;display:none">{{person.lieudeces}}</td>
         <td class="imgClass1 posteData col-md" name="img1" style="text-align:center;display:none">{{person.image.url}}</td>
@@ -207,10 +208,18 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
                 </div>
           </div>
 
-          <hr>      
+          <hr>   
+          <div class="row">
+            <div class="col-sm">
               <label >ADRESSE</label>
               <textarea class="form-control" id="adressId" type="text" name="formAdress"></textarea>
-              <hr>      
+            </div>
+            <div class="col-sm">
+              <label >DESCRIPTION</label>
+              <textarea class="form-control" id="commentId" type="text" name="formComment"></textarea>
+            </div>
+          </div>   
+              <hr>                  
                 <label>AVATAR</label>
                 <input class="form-control" id="imageId" type="FILE" name="formImage"/>
           <hr>      
@@ -264,9 +273,17 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
                 </div>
           </div>
           <hr>      
+          <div class="row">
+            <div class="col-sm">
               <label >ADRESSE</label>
-              <textarea class="form-control" id="adressId1" type="text" name="formAdress1"></textarea>
-              <hr>      
+              <textarea class="form-control" id="adressId" type="text" name="formAdress"></textarea>
+            </div>
+            <div class="col-sm">
+              <label >DESCRIPTION</label>
+              <textarea class="form-control" id="commentId" type="text" name="formComment"></textarea>
+            </div>
+          </div>   
+              <hr>     
                 <label>AVATAR</label>
                 <input class="form-control" id="imageId1" type="FILE" name="formImage1"/>
           <hr>  
@@ -391,13 +408,14 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
           var telInput = $('input[name="formTel"]').val().trim();
           var telInput = $('input[name="formTel"]').val().trim();
           var adressInput = $('#adressId').val().trim();
+          var commentInput = $('#commentId').val().trim();
           var genreInput= $('#genreId').val().trim()
           var temoin = $('#btn_save').text();
           var compare = temoin.localeCompare('Enregistrer');
   
           if(compare == 0)
           {
-            if (prenomInput && nomInput && telInput && adressInput && genreInput=="HOMME" || genreInput=="FEMME" ) {
+            if (prenomInput && nomInput && telInput && adressInput && commentId && genreInput=="HOMME" || genreInput=="FEMME" ) {
           var data = new FormData($('#ajax').get(0));
           console.log(data)
       
@@ -422,7 +440,7 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
         $('form#ajax').trigger("reset");
         }
         else{
-          if (prenomInput && nomInput && telInput && adressInput && genreInput=="HOMME" || genreInput=="FEMME" ) {
+          if (prenomInput && nomInput && telInput && adressInput && commentId && genreInput=="HOMME" || genreInput=="FEMME" ) {
             
             var data = new FormData($('#ajax').get(0));
             console.log(data)
@@ -524,7 +542,8 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
                     <td class="genreClass posteData col-md" name="genre" style="text-align:center;display:none">${person.genre}</td>
         <td class="adressClass posteData col-md" name="adress" style="text-align:center;display:none">${person.adress}</td>
         <td class="datenaissClass posteData col-md" name="datenaiss" style="text-align:center;">${person.datenaiss}</td>
-        <td class="lieunaissClass posteData col-md" name="lieunaiss" style="text-align:center;display:none">${person.lieunaiss}</td>
+        <td class="lieunaissClass posteData col-md" name="lieunaiss" style="text-align:center;display:none;">${person.lieunaiss}</td>
+        <td class="commentClass posteData col-md" name="comment" style="text-align:center;display:none">${person.comment}</td>
         <td class="datedecesClass posteData col-md" name="datedeces" style="text-align:center;display:none">${person.datedeces}</td>
         <td class="lieudecesClass posteData col-md" name="lieudeces" style="text-align:center;display:none">${person.lieudeces}</td>
                     <td class="col-md" style="text-align:center">
@@ -545,6 +564,7 @@ class="fas fa-plus fa-sm text-white-50"></i> Nouveau Membre</button>
           $('#nomId').val($(tr_id).find(".nomClass").text());
           $('#telId').val($(tr_id).find(".telClass").text());
           $('#adressId').val($(tr_id).find(".adressClass").text());
+          $('#commentId').val($(tr_id).find(".commentClass").text());
           $('#genreId').val($(tr_id).find(".genreClass").text());
           $('#dnaissId').val($(tr_id).find(".datenaissClass").text());
           $('#LnaissId').val($(tr_id).find(".lieunaissClass").text());

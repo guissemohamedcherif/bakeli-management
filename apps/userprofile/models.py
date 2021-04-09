@@ -10,4 +10,5 @@ class CustomUser(AbstractUser):
     tel = models.CharField(max_length=15)
     adress = models.TextField()
     stat = models.BooleanField(default=True)
+    role = models.CharField(max_length=250)
     created_on = models.DateTimeField(auto_now_add=True)
