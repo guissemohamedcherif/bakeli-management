@@ -14,9 +14,9 @@ urlpatterns = [
     url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}), 
     url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
     
-   # path('', auth_views.LoginView.as_view(template_name='common/login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='common/login.html'), name='login'),
     path('base/',views.DashboardView, name='base'),
-    path('logout', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('logout', auth_views.LogoutView.as_view(next_page='annoncePage'), name='logout'),
     path('users/',views.getUsers, name='userPage'),
     path('create-user',views.CreateUser.as_view(), name='userCreate'),
     path('create-members/',views.CreateMember, name='memberCreate'),
