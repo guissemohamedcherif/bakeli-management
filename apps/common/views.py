@@ -539,3 +539,10 @@ def getHomePage(request):
     users2 = CustomUser.objects.filter(stat=False).count()
     context = {'membres': membres,'users':users,'users2':users2,'persons':persons}
     return render(request,template,context)
+
+
+def annoncePageView(request):
+    template_name = "common/annonce.html"
+    persons = Person.objects.filter(stat=True)
+    context = {'persons':persons}
+    return render (request, template_name, context)
