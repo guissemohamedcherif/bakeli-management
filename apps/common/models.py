@@ -40,3 +40,8 @@ class Enfant(models.Model):
     stat = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
+
+class Annonces(models.Model):
+    titre = models.CharField(max_length=250, blank=True)
+    content = models.TextField()
+    created_on = models.DateTimeField(auto_now_add=True)

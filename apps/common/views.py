@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from apps.userprofile.models import  CustomUser
-from apps.common.models import  Person,Pere,Mere,Enfant
+from apps.common.models import  Person,Pere,Mere,Enfant, Annonces
 from django.contrib import messages
 from django.http import JsonResponse
 import json
@@ -544,5 +544,6 @@ def getHomePage(request):
 def annoncePageView(request):
     template_name = "common/annonce.html"
     persons = Person.objects.filter(stat=True)
-    context = {'persons':persons}
+    an = Annonces.objects.last
+    context = {'persons':persons, 'annonce':an}
     return render (request, template_name, context)
