@@ -1,0 +1,138 @@
+{% load static %}
+
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Fambodji Family</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+ 
+  <style>
+  .fakeimg {
+    height: 200px;
+    background: #aaa;
+  }
+  .jumbotron{
+    color: rgb(51, 113, 226); 
+  }
+  .card-title{
+    text-align: center;
+    text-shadow: bold;
+    
+  }
+  #main { 
+    font-size:33px; 
+    font-weight:bold; 
+    color:#1560CE; 
+    text-align:center; 
+    margin:auto;
+    
+}
+  </style>
+</head>
+<body>
+
+     <div id="connex" style="float:right;margin-top:25px;margin-right:30px"> 
+      <a class="nav-link" href="{% url 'login' %}" id="userDropdown" role="button"
+      >
+      <span class="mr-2 d-none d-lg-inline text-gray-600"><strong>CONNEXION</strong></span>
+      
+  </a>
+     </div>
+<div class="jumbotron text-center" style="margin-bottom:0;text-align:center; height:200px;">
+  <h1 style="text-align:center">Bienvenu dans la famille Fambodji</h1>
+  <p>Trouvez ici les membres de notre humble famille</p> 
+</div>
+
+<nav class="navbar navbar-inverse navbar-light bg-red ">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="{% url 'annoncePage' %}">Accueil</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="{% url 'aproposdenous' %}">A Propos !</a></li>
+        <li><a href="{% url 'membres' %}">Membres</a></li>
+        <li><a href="#">Annonces</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+  <div class="container">
+
+    {% block content %}  {% endblock content %}
+
+  </div>
+</body>
+
+<script>
+  function searchDatas(){
+
+      var input,table,tr,td,filter,displayD;
+      input = document.getElementById("genreId");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("mTable");
+      tr = table.getElementsByTagName("tr");
+      
+      for(i=0;i<tr.length;i++)
+      {
+          td = tr[i].getElementsByTagName("td")[0];
+          
+          if (td){
+            displayD = td.innerText;
+            if(displayD.toUpperCase().indexOf(filter)>-1)
+            {
+              tr[i].style.display="";
+            }else
+            {
+              tr[i].style.display="none";
+            }
+          }
+      }
+    }
+
+    function searchMember(){
+      var input, filter, table, tr, td, i, textval;
+    input = document.getElementById("txtmembre");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("mTable");
+    tr = document.getElementsByTagName("tr");
+    for  (i = 0; i < tr.length; i++){
+      td = tr[i].getElementsByTagName("td")[0];         
+      td1 = tr[i].getElementsByTagName("td")[1];         
+      td2 = tr[i].getElementsByTagName("td")[2];         
+      td3 = tr[i].getElementsByTagName("td")[3];         
+            
+
+      if(td){
+        textval = td.textContent || td.textContent;
+        textval1 = td1.textContent || td1.textContent;
+        textval2 = td2.textContent || td2.textContent;
+        textval3 = td3.textContent || td3.textContent;
+       
+
+
+        if (textval.toUpperCase().indexOf(filter) > -1 || textval1.toUpperCase().indexOf(filter) > -1 || textval2.toUpperCase().indexOf(filter) > -1
+        || textval3.toUpperCase().indexOf(filter) > -1 ){ 
+          tr[i].style.display="";
+      }
+      else{
+        tr[i].style.display="none";
+      }
+    }     
+    }
+    }
+</script>
+</html>
+

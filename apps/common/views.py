@@ -547,3 +547,17 @@ def annoncePageView(request):
     an = Annonces.objects.last
     context = {'persons':persons, 'annonce':an}
     return render (request, template_name, context)
+
+
+def Apropos(request):
+    template_name = "common/propos.html"
+    
+    context = {}
+    return render (request, template_name, context)
+
+
+def webMember(request):
+    template_name = "common/memberWeb.html"
+    persons = Person.objects.all()
+    context = {'persons': persons}
+    return render (request, template_name, context)

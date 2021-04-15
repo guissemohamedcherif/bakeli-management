@@ -1,214 +1,101 @@
-{% load static %}
+{% extends 'common/baseAnnonce.html' %}
+{% block content %}
 
-   <!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Fambodji Family</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <style>
-  .fakeimg {
-    height: 200px;
-    background: #aaa;
-  }
-  .jumbotron{
-    color: rgb(51, 113, 226); 
-  }
-  .card-title{
-    text-align: center;
-    text-shadow: bold;
+<div class="row">
+  <div class="col-sm-4" style="margin-right:5px">
+    <h2>A propos de nous </h2>
+  <div class="fakeimg">
+    <img src="media/users/famb.jpg" style="width:100%;height:100%;">
+  </div>
+  <div style="overflow-y:scroll; overflow-x:hidden;height:300px">
+    Le repas familial (gravure sur bois, xviie siècle).
     
-  }
-  #main { 
-    font-size:33px; 
-    font-weight:bold; 
-    color:#1560CE; 
-    text-align:center; 
-    margin:auto;
+    La famille de Philippe V d'Espagne (en 1723).
     
-}
-  </style>
-</head>
-<body>
-  
-     <div id="connex" style="float:right"> 
-      <a class="nav-link" href="{% url 'login' %}" id="userDropdown" role="button"
-      >
-      <span class="mr-2 d-none d-lg-inline text-gray-600"><strong>CONNEXION</strong></span>
-      <img class="img-profile rounded-circle" style="width: 50px;height:50px;"
-          src="media/users/login.png">
-  </a>
-     </div>
-<div class="jumbotron text-center" style="margin-bottom:0;text-align:center; height:200px;">
-  <h1 style="text-align:center">Bienvenu dans la famille Fambodji</h1>
-  <p>Trouvez ici les membres de notre humble famille</p> 
-</div>
-
-
-
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-4" style="margin-right:5px">
-        <h2>A propos de nous </h2>
-      <div class="fakeimg">
-        <img src="media/users/famb.jpg" style="width:100%;height:100%;">
-      </div>
-      <div style="overflow-y:scroll; overflow-x:hidden;height:300px">
-        Le repas familial (gravure sur bois, xviie siècle).
-        
-        La famille de Philippe V d'Espagne (en 1723).
-        
-        Le portrait de famille est une des formes picturales répandues d'abord dans les familles nobles puis chez les familles bourgeoises (ici la famille Souchay vers 1805).
-        
-        Un peu de conversation, huile sur toile de Lilly Martin Spencer, vers 1851-1852
-        
-        Peinture à l'huile de Jean de Francqueville intitulée « En famille ».
-        
-        Portrait d'un chef camerounais et de sa famille (entre 1910 et 1930).
-        
-        Famille inuit (1917).
-        
-        Famille européenne photographiée au début du xxe siècle (1912).
-        
-        Famille congolaise (2007).
-        
-        Repas de famille au Japon (1980).
-        La famille est :
-        Le portrait de famille est une des formes picturales répandues d'abord dans les familles nobles puis chez les familles bourgeoises (ici la famille Souchay vers 1805).
-        
-        Un peu de conversation, huile sur toile de Lilly Martin Spencer, vers 1851-1852
-        
-        Peinture à l'huile de Jean de Francqueville intitulée « En famille ».
-        
-        Portrait d'un chef camerounais et de sa famille (entre 1910 et 1930).
-        
-        Famille inuit (1917).
-        
-      </div>
-    </div>
-    <div class="col-sm-7" style="margin-left:5px">
-      <h2 style="text-align:center"><strong>ANNONCE DE LA SEMAINE</strong></h2>
-      <h5 style="text-align:center"><strong>Vous pouvez voir nos annonces ici !</strong></h5>
-      <div class="card shadow" style="height:200px">
-        <div class="card-body">
-          <h2 class="card-title" style="text-align:center"><u>{{annonce.titre}}</u></h2>
-          <div id="main" style="margin:auto;">
-            <marquee class="marq"  direction = "left" loop="" > 
-                <div class="geek1"><strong>{{annonce.content}}</strong></div> 
-            </marquee> 
-            <marquee class="marq"  direction = "right" loop="" > 
-              <div class="geek1"><strong>{{annonce.content}}</strong></div> 
-          </marquee> 
-        </div>
-       </div>
-      </div>
+    Le portrait de famille est une des formes picturales répandues d'abord dans les familles nobles puis chez les familles bourgeoises (ici la famille Souchay vers 1805).
     
-      <div class="card" style="height:200px;">
-      <table>
-        <th style="width:30%; text-align:center">
-          <select style="background-color: #7fb2ec98;" class="form-control" id="genreId" name="formNiveau" onchange="searchDatas()">   
-            <option value="">---  ---</option>
-            <option value="HOMME">HOMME</option>
-            <option value="FEMME">FEMME</option>
-        </select>
-        </th>
-        <th style="width:5%"></th>
-        <th style="width:30%;text-align:center">
-          <input style="background-color: #7fb2ec98;" type="text" id="txtmembre" onKeyup="searchMember()" class="form-control bg-blue border-10 small" placeholder="Rechercher ...">
-        </th>
-      </table>          
-  
-      <div style="overflow-y:scroll; overflow-x:hidden;margin-top:5px;height:200px;">
-        <table id="mTable" class="table table-striped" style="background-color: #7fb2ec98;">
-            <tr>
-             <th style="text-align:center;"><strong>GENERATION</strong></th>
-             <th style="text-align:center"><strong>PRENOM</strong></th>
-             <th style="text-align:center"><strong>NOM</strong></th>
-             <th style="text-align:center"><strong>AVATAR</strong></th>
-            </tr>
-            {% if persons %}
-             {% for person in persons %}
-           <tr>
-             <td style="text-align:center;display:none"> {{person.genre}} </td>
-             <td style="text-align:center;width:10%;"> {{person.gene}} </td>
-             <td style="text-align:center"> {{person.prenom}} </td>
-             <td style="text-align:center"> {{person.nom}} </td>
-             <td style="text-align:center"> <img src="{{person.image.url}}" style="width: 80px;height:60px"> </td>
-           </tr>
-           {% endfor %}              
-      {% endif %}
-        </table>
-    </div>
-      </div> 
-    </div>
+    Un peu de conversation, huile sur toile de Lilly Martin Spencer, vers 1851-1852
+    
+    Peinture à l'huile de Jean de Francqueville intitulée « En famille ».
+    
+    Portrait d'un chef camerounais et de sa famille (entre 1910 et 1930).
+    
+    Famille inuit (1917).
+    
+    Famille européenne photographiée au début du xxe siècle (1912).
+    
+    Famille congolaise (2007).
+    
+    Repas de famille au Japon (1980).
+    La famille est :
+    Le portrait de famille est une des formes picturales répandues d'abord dans les familles nobles puis chez les familles bourgeoises (ici la famille Souchay vers 1805).
+    
+    Un peu de conversation, huile sur toile de Lilly Martin Spencer, vers 1851-1852
+    
+    Peinture à l'huile de Jean de Francqueville intitulée « En famille ».
+    
+    Portrait d'un chef camerounais et de sa famille (entre 1910 et 1930).
+    
+    Famille inuit (1917).
+    
   </div>
 </div>
+<div class="col-sm-7" style="margin-left:5px">
+  <h2 style="text-align:center"><strong>ANNONCE DE LA SEMAINE</strong></h2>
+  <h5 style="text-align:center"><strong>Vous pouvez voir nos annonces ici !</strong></h5>
+  <div class="card shadow" style="height:200px">
+    <div class="card-body">
+      <h2 class="card-title" style="text-align:center"><u>{{annonce.titre}}</u></h2>
+      <div id="main" style="margin:auto;">
+        <marquee class="marq"  direction = "left" loop="" > 
+            <div class="geek1"><strong>{{annonce.content}}</strong></div> 
+        </marquee> 
+        <marquee class="marq"  direction = "right" loop="" > 
+          <div class="geek1"><strong>{{annonce.content}}</strong></div> 
+      </marquee> 
+    </div>
+   </div>
+  </div>
 
-</body>
+  <div class="card" style="height:200px;">
+  <table>
+    <th style="width:30%; text-align:center">
+      <select style="background-color: #7fb2ec98;" class="form-control" id="genreId" name="formNiveau" onchange="searchDatas()">   
+        <option value="">---  ---</option>
+        <option value="HOMME">HOMME</option>
+        <option value="FEMME">FEMME</option>
+    </select>
+    </th>
+    <th style="width:5%"></th>
+    <th style="width:30%;text-align:center">
+      <input style="background-color: #7fb2ec98;" type="text" id="txtmembre" onKeyup="searchMember()" class="form-control bg-blue border-10 small" placeholder="Rechercher ...">
+    </th>
+  </table>          
 
-<script>
-  function searchDatas(){
-
-      var input,table,tr,td,filter,displayD;
-      input = document.getElementById("genreId");
-      filter = input.value.toUpperCase();
-      table = document.getElementById("mTable");
-      tr = table.getElementsByTagName("tr");
-      
-      for(i=0;i<tr.length;i++)
-      {
-          td = tr[i].getElementsByTagName("td")[0];
-          
-          if (td){
-            displayD = td.innerText;
-            if(displayD.toUpperCase().indexOf(filter)>-1)
-            {
-              tr[i].style.display="";
-            }else
-            {
-              tr[i].style.display="none";
-            }
-          }
-      }
-    }
-
-    function searchMember(){
-      var input, filter, table, tr, td, i, textval;
-    input = document.getElementById("txtmembre");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("mTable");
-    tr = document.getElementsByTagName("tr");
-    for  (i = 0; i < tr.length; i++){
-      td = tr[i].getElementsByTagName("td")[0];         
-      td1 = tr[i].getElementsByTagName("td")[1];         
-      td2 = tr[i].getElementsByTagName("td")[2];         
-      td3 = tr[i].getElementsByTagName("td")[3];         
-            
-
-      if(td){
-        textval = td.textContent || td.textContent;
-        textval1 = td1.textContent || td1.textContent;
-        textval2 = td2.textContent || td2.textContent;
-        textval3 = td3.textContent || td3.textContent;
-       
-
-
-        if (textval.toUpperCase().indexOf(filter) > -1 || textval1.toUpperCase().indexOf(filter) > -1 || textval2.toUpperCase().indexOf(filter) > -1
-        || textval3.toUpperCase().indexOf(filter) > -1 ){ 
-          tr[i].style.display="";
-      }
-      else{
-        tr[i].style.display="none";
-      }
-    }     
-    }
-    }
-</script>
-</html>
+  <div style="overflow-y:scroll; overflow-x:hidden;margin-top:5px;height:200px;">
+    <table id="mTable" class="table table-striped" style="background-color: #7fb2ec98;">
+        <tr>
+         <th style="text-align:center;"><strong>GENERATION</strong></th>
+         <th style="text-align:center"><strong>PRENOM</strong></th>
+         <th style="text-align:center"><strong>NOM</strong></th>
+         <th style="text-align:center"><strong>AVATAR</strong></th>
+        </tr>
+        {% if persons %}
+         {% for person in persons %}
+       <tr>
+         <td style="text-align:center;display:none"> {{person.genre}} </td>
+         <td style="text-align:center;width:10%;"> {{person.gene}} </td>
+         <td style="text-align:center"> {{person.prenom}} </td>
+         <td style="text-align:center"> {{person.nom}} </td>
+         <td style="text-align:center"> <img src="{{person.image.url}}" style="width: 80px;height:60px"> </td>
+       </tr>
+       {% endfor %}              
+  {% endif %}
+    </table>
+</div>
+  </div> 
+</div>
+</div>
 
 
-</html>
-
+{% endblock content %}

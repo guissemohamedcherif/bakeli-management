@@ -32,6 +32,8 @@ urlpatterns = [
     path('update-members2/',views.MemberEdit2, name='updateMember2'),
     path('homePage/',views.getHomePage, name='home'),
     path('',views.annoncePageView, name='annoncePage'),
+    path('apropos',views.Apropos, name='aproposdenous'),
+    path('membres',views.webMember, name='membres'),
 
 ]
 

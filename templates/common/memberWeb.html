@@ -1,0 +1,176 @@
+{% extends 'common/baseAnnonce.html' %}
+{% block content %}
+
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+      }
+      
+      html {
+        box-sizing: border-box;
+      }
+      
+      *, *:before, *:after {
+        box-sizing: inherit;
+      }
+      
+      .column {
+        float: left;
+        width: 33.3%;
+        margin-bottom: 16px;
+        padding: 0 8px;
+      }
+      
+      .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        margin: 8px;
+      }
+      
+      .about-section {
+        padding: 50px;
+        text-align: center;
+        background-color: #474e5d;
+        color: white;
+      }
+      
+      .container {
+        padding: 0 16px;
+      }
+      
+      .container::after, .row::after {
+        content: "";
+        clear: both;
+        display: table;
+      }
+      
+      .title {
+        color: grey;
+      }
+      
+     
+      
+      .button:hover {
+        background-color: #555;
+      }
+      
+      @media screen and (max-width: 650px) {
+        .column {
+          width: 100%;
+          display: block;
+        }
+      }
+</style>
+<div class="row">
+{% if persons %}
+      {% for person in persons %}
+
+    <div class="column">
+      <div class="card" style="width: 300px; height: 400px;">
+        <img src="{{person.image.url}}" style="width:100%; height:50%">
+        <div class="container">
+          <h2>{{person.prenom}}  {{person.nom}}</h2>
+          <p class="title">{{person.gene}}</p>
+          <p>{{person.tel}}</p>
+          <p>{{person.adress}}</p>
+          <p><a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm build-link" data-toggle="modal" data-target="#myModalInf"
+            data-prenom="{{ person.prenom }}"  data-image="{{ person.image.url }}" data-nom="{{ person.nom }}" data-tel="{{person.tel}}" data-adress="{{person.adress}}"
+            data-datenaiss="{{person.datenaiss}}" data-lieunaiss="{{person.lieunaiss}}" data-datedeces="{{person.lieudeces}}" data-lieudeces="{{person.lieudeces}}"
+            style="width:100px; margin-left:150px;">Infos</a></p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}              
+    {% endif %}
+  </div>
+    
+  <!-- Modal -->
+  <div class="modal fade" id="myModalInf" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </div>
+         
+        <div style="margin:auto">
+            <img id="idImg" src="" width="300px" height="200px">
+          </div>
+          <div>
+            <div class="card">
+              <div class="card-body" style="margin-left:30px">
+                <div class="row" >
+                  <div class="col">
+                    <p><strong>PRENOM :</strong></p>
+                  </div>
+                  <div class="col"> <p id="idPrenom"></p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <p><strong>NOM :</strong></p>
+                  </div>
+                  <div class="col"> <p id="idNom"></p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <p><strong>TELEPHONE :</strong></p>
+                  </div>
+                  <div class="col"> <p id="idTel"></p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <p><strong>ADRESSE :</strong></p>
+                  </div>
+                  <div class="col"> <p id="idAdress"></p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <p><strong>DATE DE NAISSANCE :</strong></p>
+                  </div>
+                  <div class="col"> <p id="idDatenaiss"></p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <p><strong>LIEU DE NAISSANCE :</strong></p>
+                  </div>
+                  <div class="col"> <p id="idLieunaiss"></p>
+                  </div>
+                </div>
+                
+               
+              </div>
+          </div>
+        </div>
+            
+      </div>
+    </div>
+    </div>
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      $('.build-link').click(function(){
+        $('#idPrenom').html($(this).data('prenom'));
+        $('#idNom').html($(this).data('nom'));
+        $('#idTel').html($(this).data('tel'));
+        $('#idAdress').html($(this).data('adress'));
+        $('#idDatenaiss').html($(this).data('datenaiss'));
+        $('#idLieunaiss').html($(this).data('lieunaiss'));
+        $('#idImg').attr("src",$(this).data('image'));
+      });
+    </script>
+{% endblock content %}
